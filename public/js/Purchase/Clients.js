@@ -1,8 +1,6 @@
 function Clients() {
     var table;
     this.init = function () {
-        
-
         table = this.table();
         $("#new").click(this.save);
         $("#edit").click(this.edit);
@@ -19,9 +17,7 @@ function Clients() {
         var url = "", method = "";
         var id = $("#frm #id").val();
         var msg = '';
-
         var validate = $(".input-courses").validate();
-
         if (validate.length == 0) {
             if (id == '') {
                 method = 'POST';
@@ -97,13 +93,36 @@ function Clients() {
             dataType: 'JSON',
             success: function (data) {
                 if (data.success == true) {
-
-                    toastr.warning("Ok");
+                    obj.setList(data.data);
                 }
             }, error: function (err) {
 
             }
         })
+    }
+
+    this.setList = function (data) {
+        var html = "";
+        $.each(data, function (i, val) {
+            html += '<div class="panel panel-default">';
+            html += '<div class="panel-heading">';
+            html += '<div class="row"><div class="col-lg-5">' + val[0].course + '</div><div class="col-lg-4">' + val[0].location + '</div></div>';
+            html += '</div>'
+            html += '<table class="table table-condensed" style="wdth:100%">'
+            $.each(val, function (i, value) {
+                html += '<tr>';
+                html += '<td align="left" width="30%"> ';
+                html += value.daytext + ',' + value.weekday.day + ' /' + value.weekday.month + '.....' + value.hour + ' - ' + value.finished + '</td>';
+                html += '<td align="center">' + value.address + '</td>';
+                html += '<td align="center"><a class="btn btn-success" href="clients/' + value.course_id + '/' + value.location_id + '">Register</button></td>';
+                html += '</tr>'
+            });
+
+            html += '</table></div>';
+        })
+
+
+        $("#content-list").html(html);
     }
 
 }

@@ -25,8 +25,14 @@ Route::resource('/parameters', 'Administration\ParametersController');
 Route::resource('/schedules', 'Administration\SchedulesController');
 Route::get('/schedules/getTable/{day}/{course_id}/{location_id}', 'Administration\SchedulesController@getTable');
 
+Route::post('/schedules/detail', 'Administration\SchedulesController@storeDetail');
+Route::get('/schedules/{id}/editDetail', 'Administration\SchedulesController@getDetail');
+Route::delete('/schedules/detail/{id}', 'Administration\SchedulesController@destroyItem');
+
+
 Route::get('/clients', 'Purchase\ClientsController@index');
 Route::get('/clients/getList', 'Purchase\ClientsController@getList');
+Route::get('/clients/{course_id}/{location_id}', 'Purchase\ClientsController@formInput');
 
 
 Route::get('/api/listLocations', function() {
@@ -39,13 +45,6 @@ Route::get('/api/listCourses', function() {
 
 Route::get('/api/listSchedules', function(Request $request) {
     $query = DB::table("schedules");
-    if ($_GET["course_id"] != 0) {
-        $query->where("course_id", $_GET["course_id"]);
-    }
-    if ($_GET["day"] != 0) {
-        $query->where("course_id", $_GET["day"]);
-    }
-
     return Datatables::queryBuilder($query)->make(true);
 });
 Route::get('/api/listParameter', function() {

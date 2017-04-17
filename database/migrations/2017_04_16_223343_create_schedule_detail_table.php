@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCoursesTable extends Migration {
+class CreateScheduleDetailTable extends Migration {
 
     /**
      * Run the migrations.
@@ -12,12 +12,14 @@ class CreateCoursesTable extends Migration {
      * @return void
      */
     public function up() {
-        Schema::create('courses', function (Blueprint $table) {
+        Schema::create('schedules_detail', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('description');
-            $table->integer('value');
-            $table->integer('order');
-            $table->boolean('dui');
+            $table->integer('schedule_id');
+            $table->integer('day');
+            $table->integer('course_id');
+            $table->time('hour');
+            $table->time('hour_end');
+            $table->integer('duration');
             $table->timestamps();
         });
     }
@@ -28,7 +30,7 @@ class CreateCoursesTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::dropIfExists('courses');
+        Schema::dropIfExists('schedules_detail');
     }
 
 }

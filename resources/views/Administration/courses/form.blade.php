@@ -32,6 +32,14 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label for="email">DUI</label>
+                            <input type="checkbox" class="input-courses" id="dui" name='dui'>
+                        </div>
+                    </div>
+                </div>
                 {!!Form::close()!!}
             </div>
             <div class="modal-footer">

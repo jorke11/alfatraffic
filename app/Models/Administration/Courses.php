@@ -8,6 +8,6 @@ class Courses extends Model {
 
     protected $table = "courses";
     protected $primaryKey = "id";
-    protected $fillable = ["id", "description", "value", "order"];
+    protected $fillable = ["id", "description", "value", "order", "dui"];
 
 }

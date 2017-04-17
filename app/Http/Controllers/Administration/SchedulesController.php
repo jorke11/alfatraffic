@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Administration\Courses;
 use App\Models\Administration\Schedules;
+use App\Models\Administration\SchedulesDetail;
 use App\Models\Administration\Locations;
 use DB;
 
@@ -14,6 +15,7 @@ class SchedulesController extends Controller {
     public $day;
 
     public function __construct() {
+        date_default_timezone_set("America/Bogota");
         $this->middleware("auth");
         $this->day = array("1" => "monday", "2" => "tuesday", "3" => "wednesday", "4" => "thurday",
             "5" => "friday", "6" => "saturday", "7" => "sunday");
@@ -41,19 +43,52 @@ class SchedulesController extends Controller {
         if ($request->ajax()) {
             $input = $request->all();
             unset($input["id"]);
-            $result = Schedules::create($input);
+            $result = Schedules::create($input)->id;
             if ($result) {
-                $data = $this->getTable($input["day"], 0)->getData();
-                return response()->json(['success' => true, "data" => $data->data]);
+                $header = Schedules::findOrfail($result);
+                return response()->json(['success' => true, "header" => $header]);
             } else {
                 return response()->json(['success' => false]);
             }
         }
     }
 
+    public function storeDetail(Request $request) {
+        if ($request->ajax()) {
+            $input = $request->all();
+            unset($input["id"]);
+            $input["hour_end"] = date('H:i', strtotime('+' . $input["duration"] . ' hour', strtotime(date('H:i'))));
+            $result = SchedulesDetail::create($input);
+            if ($result) {
+                $detail = $this->getDetailAll($input["schedule_id"]);
+                return response()->json(['success' => true, "detail" => $detail]);
+            } else {
+                return response()->json(['success' => false]);
+            }
+        }
+    }
+
+    public function getDetailAll($id) {
+        return DB::table("schedules_detail")
+                        ->select("schedules_detail.id", "schedules_detail.schedule_id", "schedules_detail.day", "courses.description as course", "schedules_detail.hour", "schedules_detail.duration", "schedules_detail.course_id", "parameters.description as daytext")
+                        ->join("courses", "courses.id", "schedules_detail.course_id")
+                        ->join("parameters", "parameters.code", DB::raw("schedules_detail.day and parameters.group='days'"))
+                        ->where("schedules_detail.schedule_id", $id)
+                        ->get()->toArray();
+    }
+
+    public function getDetail($id) {
+        return (array) DB::table("schedules_detail")
+                        ->select("schedules_detail.id", "schedules_detail.schedule_id", "schedules_detail.day", "locations.description as location", "courses.description as course", "schedules_detail.hour", "schedules_detail.duration", "schedules_detail.course_id")
+                        ->join("courses", "courses.id", "schedules_detail.course_id")
+                        ->where("schedules_detail.id", $id)
+                        ->first();
+    }
+
     public function edit($id) {
-        $suppliers = Schedules::FindOrFail($id);
-        return response()->json($suppliers);
+        $header = Schedules::FindOrFail($id);
+        $detail = $this->getDetailAll($id);
+        return response()->json(["success" => true, "header" => $header, "detail" => $detail]);
     }
 
     public function update(Request $request, $id) {
@@ -80,20 +115,17 @@ class SchedulesController extends Controller {
         }
     }
 
-    public function getTable($day, $course_id) {
+    public function destroyItem(Request $req, $id) {
+        $input = $req->all();
+        $record = SchedulesDetail::FindOrFail($id);
+        $result = $record->delete();
 
-        $query = DB::table("schedules")
-                ->select("schedules.id", "schedules.day", "schedules.hour", "courses.description as course", "locations.description as location")
-                ->join("courses", "courses.id", "schedules.course_id")
-                ->join("locations", "locations.id", "schedules.location_id")
-                ->where("day", $day);
-
-        if ($course_id != 0) {
-            $query->where("course_id", $course_id);
+        if ($result) {
+            $detail = $this->getDetailAll($input["schedule_id"]);
+            return response()->json(['success' => true, "detail" => $detail]);
+        } else {
+            return response()->json(['success' => false]);
         }
-
-
-        return response()->json(["success" => true, "data" => $query->get()]);
     }
 
 }

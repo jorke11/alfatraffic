@@ -8,6 +8,6 @@ class Schedules extends Model {
 
     protected $table = "schedules";
     protected $primaryKey = "id";
-    protected $fillable = ["id", "day", "course_id", "hour","location_id"];
+    protected $fillable = ["id", "description","location_id"];
 
 }

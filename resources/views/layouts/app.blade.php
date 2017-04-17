@@ -11,8 +11,8 @@
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Styles -->
-        <link href="/css/app.css" rel="stylesheet">
-        {!!Html::script('/vendor/template/vendors/jquery/dist/jquery.min.js')!!}
+        <!--<link href="/css/app.css" rel="stylesheet">-->
+        {!!Html::script('/vendor/jquery.min.js')!!}
         {!!Html::script('/vendor/jquery-ui.js')!!}
 
         {!!Html::script('/vendor/DataTables-1.10.13/media/js/jquery.dataTables.min.js')!!}
@@ -45,10 +45,11 @@
         {!!Html::script('/vendor/datetimepicker/js/jquery.datetimepicker.full.min.js')!!}
 
 
-        {!!Html::style('/vendor/template/vendors/bootstrap/dist/css/bootstrap.min.css')!!}
-        {!!Html::style('/vendor/template/vendors/font-awesome/css/font-awesome.min.css')!!}
-        {!!Html::style('/vendor/template/vendors/nprogress/nprogress.css')!!}
-        {!!Html::style('/vendor/template/vendors/google-code-prettify/bin/prettify.min.css')!!}
+        {!!Html::style('/vendor/bootstrap-3.3.7/dist/css/bootstrap.min.css')!!}
+        {!!Html::script('/vendor/bootstrap-3.3.7/dist/js/bootstrap.min.js')!!}
+
+        {!!Html::style('/vendor/font-awesome-4.7.0/css/font-awesome.min.css')!!}
+
 
         {!!Html::style('/vendor/select2/css/select2.min.css')!!}
         {!!Html::script('/vendor/select2/js/select2.js')!!}
@@ -91,10 +92,10 @@ echo json_encode([
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administration <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="{{ url('/locations') }}">Locations</a></li>
-                                    <li><a href="{{url('/schedules') }}">Schedules</a></li>
-                                    <li><a href="{{url('/courses') }}">Courses</a></li>
                                     <li><a href="{{url('/parameters') }}">Parameters</a></li>
+                                    <li><a href="{{ url('/locations') }}">Locations</a></li>
+                                    <li><a href="{{url('/courses') }}">Courses</a></li>
+                                    <li><a href="{{url('/schedules') }}">Schedules</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href="{{url('/clients') }}">Client</a></li>
                                 </ul>
@@ -139,7 +140,7 @@ echo json_encode([
         </div>
 
         <!-- Scripts -->
-        <script src="/js/app.js"></script>
+        <!--<script src="/js/app.js"></script>-->
         {!!Html::script('/vendor/plugins.js')!!}
     </body>
 </html>

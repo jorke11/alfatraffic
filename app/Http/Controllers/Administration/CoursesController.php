@@ -26,6 +26,7 @@ class CoursesController extends Controller {
             unset($input["id"]);
 //            $user = Auth::User();
 //            $input["users_id"] = 1;
+            $input["dui"] = (isset($input["dui"])) ? true : false;
             $result = Courses::create($input);
             if ($result) {
                 return response()->json(['success' => true]);
@@ -43,6 +44,7 @@ class CoursesController extends Controller {
     public function update(Request $request, $id) {
         $category = Courses::FindOrFail($id);
         $input = $request->all();
+        $input["dui"] = (isset($input["dui"])) ? true : false;
         $result = $category->fill($input)->save();
         if ($result) {
             return response()->json(['success' => true]);

@@ -8,6 +8,7 @@ use App\Models\Administration\Locations;
 use App\Models\Administration\Courses;
 use App\Models\Administration\Parameters;
 use App\Models\Administration\Schedules;
+use DB;
 
 class ClientsController extends Controller {
 
@@ -15,6 +16,7 @@ class ClientsController extends Controller {
     public $days;
 
     public function __construct() {
+        date_default_timezone_set("America/Bogota");
         $this->days = array("1" => "monday", "2" => "tuesday", "3" => "wednesday", "4" => "thurday",
             "5" => "friday", "6" => "saturday", "7" => "sunday");
         $this->months = array(
@@ -74,6 +76,7 @@ class ClientsController extends Controller {
     }
 
     public function getList() {
+
         $courses = Courses::all()->toArray();
         $month = Parameters::where("group", "show")->first();
         $locations = Locations::all();
@@ -81,46 +84,86 @@ class ClientsController extends Controller {
         $resp = array();
         $cont = 0;
 
-        foreach ($locations as $loc) {
-            for ($i = $init; $i < $month->value + $init; $i++) {
-                for ($j = (int) date("d"); $j <= cal_days_in_month(CAL_GREGORIAN, $i, date("y")); $j++) {
-                    $sche = Schedules::
-                                    where("day", $this->getDay($j))
-                                    ->where("location_id", $loc["id"])
-                                    ->get()->toArray();
-                    if (count($sche) > 0) {
-                        $cour = array();
-                        foreach ($sche as $val) {
-                            if (!in_array($val["course_id"], $cour)) {
-                                $cour[] = $val["course_id"];
-                            }
-                        }
 
-                        $resp[$cont][] = array(
-                            "day" => $j,
-                            "day_text" => $this->getDayText($this->getDay($j)),
-                            "weekday" => $this->getDay($j),
-                            "courses" => implode(",", $cour),
-                            "location" => $loc["id"],
-                            "location_text" => $loc["description"]
-                        );
-                    }
+        for ($i = $init; $i < $month->value + $init; $i++) {
+            for ($j = (int) date("d"); $j <= cal_days_in_month(CAL_GREGORIAN, $i, date("y")); $j++) {
 
-                    if ($this->getDay($j) == 7) {
-                        $cont++;
-                    }
+                $resp[$cont][] = array(
+                    "day" => $j,
+                    "month" => $i,
+                    "monthtext" => $this->getMonth($i),
+                    "weekday" => $this->getDay($j),
+                );
+
+                if ($this->getDay($j) == 7) {
+                    $cont++;
                 }
             }
         }
 
-
         $cont = 0;
         $number = array();
+        $cal = array();
+
         foreach ($resp as $i => $value) {
-            $resp[$i] = $this->setWeeek($value);
+            $cal = array();
+            $number = array();
+            $dayreal = array();
+            foreach ($value as $val) {
+//                $sche = DB::table("schedules")
+//                                ->select("schedules.id", "schedules.day", "schedules.duration", "courses.description as course", "locations.description as location", "schedules.hour", "locations.address", "schedules.location_id")
+//                                ->join("courses", "courses.id", "schedules.course_id")
+//                                ->join("locations", "locations.id", "schedules.location_id")
+//                                ->where("schedules.day", $val["weekday"])
+//                                ->orderBy("schedules.day", "asc")
+//                                ->orderBy("schedules.location_id", "asc")
+//                                ->get()->toArray();
+//
+//
+//                if (count($sche) > 0) {
+//                    foreach ($sche as $i => $schem) {
+//                        $nuevafecha = strtotime('+' . $schem->duration . ' hour', strtotime($schem->hour));
+//                        $nuevafecha = date('H:i:s', $nuevafecha);
+//                        $sche[$i]->finished = $nuevafecha;
+//                        $sche[$i]->daymonth = $val["day"];
+//                        $sche[$i]->month = $val["month"];
+//                        $sche[$i]->daytext = $this->getDayText($schem->day);
+//                        $cal[] = $schem;
+//                    }
+//                }
+
+                $number[] = $val["weekday"];
+                $dayreal[] = array("day" => $val["day"], "month" => $val["month"]);
+            }
+
+
+            $sche = DB::table("schedules")
+                            ->select("schedules.id", "schedules.day", "schedules.duration", "courses.description as course", "locations.description as location", "schedules.hour", "locations.address", "schedules.location_id", "schedules.course_id")
+                            ->join("courses", "courses.id", "schedules.course_id")
+                            ->join("locations", "locations.id", "schedules.location_id")
+                            ->whereIn("schedules.day", $number)
+                            ->orderBy("schedules.location_id", "asc")
+                            ->orderBy("schedules.day", "asc")
+                            ->get()->toArray();
+
+            foreach ($dayreal as $val) {
+//                dd($val);
+//                exit;
+                foreach ($sche as $i => $value) {
+                    if ($value->day == $this->getDay($val["day"])) {
+                        $sche[$i]->weekday = $val;
+                        $sche[$i]->daytext = $this->getDayText($this->getDay($val["day"]));
+                        $sche[$i]->month = $val["month"];
+                        $nuevafecha = strtotime('+' . $value->duration . ' hour', strtotime($value->hour));
+                        $nuevafecha = date('H:i:s', $nuevafecha);
+                        $sche[$i]->finished = $nuevafecha;
+                    }
+                }
+            }
+            $content[] = $sche;
         }
 
-        return response()->json(["success" => true, "data" => $resp]);
+        return response()->json(["success" => true, "data" => $content]);
     }
 
     public function setWeeek($arrWeek) {
@@ -150,6 +193,13 @@ class ClientsController extends Controller {
             }
         }
         return $resp;
+    }
+
+    public function formInput($course_id, $location_id) {
+        $course = Courses::findOrFail($course_id);
+        $location = Locations::findOrFail($location_id);
+//        dd($course);
+        return view("Purchase.client.form",compact("course","location"));
     }
 
 }

@@ -1,13 +1,14 @@
-function Parameter() {
+function Registry() {
     var table;
     this.init = function () {
-        table = this.table();
-        $("#btnNew").click(this.new);
-        $("#btnSave").click(this.save);
-    }
-
-    this.new = function () {
-        $(".input-parameters").cleanFields();
+//        table = this.table();
+        
+        $("#new").click(this.save);
+        $("#edit").click(this.edit);
+        $("#btnNew").click(function () {
+            $(".input-courses").cleanFields();
+            $("#modalNew").modal("show");
+        });
     }
 
     this.save = function () {
@@ -17,17 +18,15 @@ function Parameter() {
         var url = "", method = "";
         var id = $("#frm #id").val();
         var msg = '';
-
-        var validate = $(".input-parameters").validate();
-
+        var validate = $(".input-courses").validate();
         if (validate.length == 0) {
             if (id == '') {
                 method = 'POST';
-                url = "parameters";
+                url = "courses";
                 msg = "Created Record";
             } else {
                 method = 'PUT';
-                url = "parameters/" + id;
+                url = "courses/" + id;
                 msg = "Edited Record";
             }
 
@@ -39,7 +38,7 @@ function Parameter() {
                 success: function (data) {
                     if (data.success == true) {
                         $("#modalNew").modal("hide");
-                        $(".input-parameters").setFields({data: data});
+                        $(".input-courses").setFields({data: data});
                         table.ajax.reload();
                         toastr.success(msg);
                     }
@@ -50,10 +49,10 @@ function Parameter() {
         }
     }
 
-    this.showModal = function (id) {
+    this.show = function (id) {
         var frm = $("#frmEdit");
         var data = frm.serialize();
-        var url = "/parameters/" + id + "/edit";
+        var url = "/courses/" + id + "/edit";
         $("#modalNew").modal("show");
         $.ajax({
             url: url,
@@ -61,7 +60,7 @@ function Parameter() {
             data: data,
             dataType: 'JSON',
             success: function (data) {
-                $(".input-parameters").setFields({data: data});
+                $(".input-courses").setFields({data: data});
             }
         })
     }
@@ -70,7 +69,7 @@ function Parameter() {
         toastr.remove();
         if (confirm("Deseas eliminar")) {
             var token = $("input[name=_token]").val();
-            var url = "/parameters/" + id;
+            var url = "/courses/" + id;
             $.ajax({
                 url: url,
                 headers: {'X-CSRF-TOKEN': token},
@@ -89,38 +88,45 @@ function Parameter() {
     }
 
     this.table = function () {
-        return $('#tbl').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: "/api/listParameter",
-            columns: [
-                {data: "id"},
-                {data: "description"},
-                {data: "code"},
-                {data: "value"},
-                {data: "group"},
-            ],
-            order: [[1, 'ASC']],
-            aoColumnDefs: [
-                {
-                    aTargets: [0, 1, 2, 3,4],
-                    mRender: function (data, type, full) {
-                        return '<a href="#" onclick="obj.showModal(' + full.id + ')">' + data + '</a>';
-                    }
-                },
-                {
-                    targets: [5],
-                    searchable: false,
-                    mData: null,
-                    mRender: function (data, type, full) {
-                        return '<button class="btn btn-danger btn-xs" onclick="obj.delete(' + data.id + ')"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>';
-                    }
+        $.ajax({
+            url: "clients/getList",
+            method: "get",
+            dataType: 'JSON',
+            success: function (data) {
+                if (data.success == true) {
+                    obj.setList(data.data);
                 }
-            ],
-        });
+            }, error: function (err) {
+
+            }
+        })
+    }
+
+    this.setList = function (data) {
+        var html = "";
+        $.each(data, function (i, val) {
+            html += '<div class="panel panel-default">';
+            html += '<div class="panel-heading">';
+            html += '<div class="row"><div class="col-lg-5">'+val[0].course+'</div><div class="col-lg-4">'+val[0].location+'</div></div>';
+            html += '</div>'
+            html += '<table class="table table-condensed" style="wdth:100%">'
+            $.each(val, function (i, value) {
+                html += '<tr>';
+                html += '<td align="left" width="30%"> ';
+                html += value.daytext + ',' + value.weekday.day + ' /' + value.weekday.month + '.....' + value.hour + ' - ' + value.finished + '</td>';
+                html += '<td align="center">' + value.address + '</td>';
+                html += '<td align="center"><a class="btn btn-success" href="clients/' + value.course_id + '">Register</button></td>';
+                html += '</tr>'
+            });
+
+            html += '</table></div>';
+        })
+
+
+        $("#content-list").html(html);
     }
 
 }
 
-var obj = new Parameter();
+var obj = new Registry();
 obj.init();
