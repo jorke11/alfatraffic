@@ -15,7 +15,7 @@
                         @foreach($locations as $i=>$val)
                         <tr>
                             <td>
-                                <input type="checkbox" name="locations[]" value="{{$i}}"> {{$val->description}}
+                                <input type="checkbox" name="locations[]" value="{{$val->id}}" class="input-locations"> {{$val->description}}
                             </td>
                         </tr>
                         @endforeach
@@ -35,7 +35,7 @@
                         @foreach($courses as $i=>$val)
                         <tr>
                             <td>
-                                <input type="checkbox" name="locations[]" value="{{$i}}"> {{$val->description}}
+                                <input type="checkbox" name="courses[]" value="{{$val->id}}" class="input-courses"> {{$val->description}}
                             </td>
                         </tr>
                         @endforeach
@@ -48,14 +48,14 @@
                 <table class="table table-condensed" id="tbl">
                     <thead>
                         <tr>
-                            <th>Star Date</th>
+                            <th>Start Date</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($star as $i =>$val)
+                        @foreach($start as $i =>$val)
                         <tr>
                             <td>
-                                <input type="checkbox" name="locations[]" value="{{$val["id"]}}"> {{$val["month"]}} {{$val["year"]}}
+                                <input type="checkbox" name="locations[]" value="{{$val->code}}"> {{$val->description}}
                             </td>
                         </tr>
                         @endforeach

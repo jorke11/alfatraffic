@@ -32,7 +32,7 @@ Route::delete('/schedules/detail/{id}', 'Administration\SchedulesController@dest
 
 Route::get('/clients', 'Purchase\ClientsController@index');
 Route::get('/clients/getList', 'Purchase\ClientsController@getList');
-Route::get('/clients/{course_id}/{location_id}', 'Purchase\ClientsController@formInput');
+Route::get('/clients/{schedule_id}/{month}/{day_week}', 'Purchase\ClientsController@formInput');
 
 
 Route::get('/api/listLocations', function() {

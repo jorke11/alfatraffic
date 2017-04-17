@@ -221,23 +221,29 @@
                         <div class="col-lg-3"><label>Fee</label></div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-6 text-left">{{$course["description"]}}</div>
-                        <div class="col-lg-3">{{$course["value"]}}</div>
+                        <div class="col-lg-6 text-left">{{$sche[0]["course"]}}</div>
+                        <div class="col-lg-3">{{$sche[0]["value"]}}</div>
                     </div>
                     <br>
                     <div class="row">
                         <div class="col-lg-6 text-left"><label>Course Schedule</label></div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-6 text-left"></div>
+                        <div class="col-lg-12 text-left">
+                            @foreach($sche as $val)
+                            <div class="row">
+                                <div class="col-lg-6">{{$val["day"]}}, {{$month}}/{{$val["dayweek"]}} .....{{$val["hour"]}} - {{$val["hour_end"]}}</div>
+                            </div>
+                            @endforeach
+                        </div>
                     </div>
                     <br>
                     <div class="row">
                         <div class="col-lg-6 text-left"><label>Location</label></div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-6 text-left">{{$location["description"]}}<br>
-                            {{$location["address"]}}
+                        <div class="col-lg-6 text-left">{{$sche[0]["location"]}}<br>
+                            {{$sche[0]["address"]}}
                         </div>
                     </div>
                 </div>
