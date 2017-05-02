@@ -65,26 +65,7 @@
         </div>
     </div>
     <div class="col-lg-9">
-        <div class="panel panel-default">
-            <!-- Default panel contents -->
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-lg-5">Course</div>
-                    <div class="col-lg-4">Course</div>
-                </div>
-            </div>
-
-            <!-- Table -->
-            <table class="table" style='wdth:100%'>
-                <tr align='center'>
-                    <td>Data</td>
-                    <td >Hour</td>
-                    <td>
-                        <button class="btn btn-success">Register</button>
-                    </td>
-                </tr>
-            </table>
-        </div>
+       
         <div id="content-list">
 
         </div>
