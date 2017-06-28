@@ -21,6 +21,7 @@ Route::get('/home', 'HomeController@index');
 Route::resource('/locations', 'Administration\LocationsController');
 Route::resource('/courses', 'Administration\CoursesController');
 Route::resource('/parameters', 'Administration\ParametersController');
+Route::resource('/addon', 'Administration\AddonController');
 
 Route::resource('/schedules', 'Administration\SchedulesController');
 Route::get('/schedules/getTable/{day}/{course_id}/{location_id}', 'Administration\SchedulesController@getTable');
@@ -33,6 +34,14 @@ Route::delete('/schedules/detail/{id}', 'Administration\SchedulesController@dest
 Route::get('/clients', 'Purchase\ClientsController@index');
 Route::get('/clients/getList', 'Purchase\ClientsController@getList');
 Route::get('/clients/{schedule_id}/{month}/{day_week}', 'Purchase\ClientsController@formInput');
+Route::post('/ClientDui', 'Purchase\ClientsController@formDui');
+Route::post('/payment', 'Purchase\ClientsController@payment');
+Route::post('/paymentDui', 'Purchase\ClientsController@paymentDui');
+
+
+
+Route::resource('/role', 'Security\RoleController');
+Route::put('/role/savePermission/{id}', 'Security\RoleController@savePermissionRole');
 
 
 Route::get('/api/listLocations', function() {
@@ -51,4 +60,18 @@ Route::get('/api/listParameter', function() {
     return Datatables::queryBuilder(
                     DB::table('parameters')->orderBy("id", "asc")
             )->make(true);
+});
+
+Route::get('/api/listRole', function() {
+    return Datatables::eloquent(App\Models\Security\Roles::query())->make(true);
+});
+
+Route::get('/api/listAddon', function() {
+    $sql = DB::table('addon')
+            ->select("addon.id", "addon.description", "schedules.description as schedule")
+            ->join("schedules", "schedules.id", "addon.schedule_id")
+            
+            ->orderBy("id", "asc");
+
+    return Datatables::queryBuilder($sql)->make(true);
 });

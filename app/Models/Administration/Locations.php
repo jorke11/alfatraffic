@@ -8,6 +8,6 @@ class Locations extends Model {
 
     protected $table = "locations";
     protected $primaryKey = "id";
-    protected $fillable = ["id", "description", "address", "order"];
+    protected $fillable = ["id", "description", "address", "order", "latitude", "longitude"];
 
 }

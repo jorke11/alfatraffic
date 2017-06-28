@@ -97,6 +97,8 @@ function Locations() {
                 {data: "id"},
                 {data: "description"},
                 {data: "address"},
+                {data: "latitude"},
+                {data: "longitude"},
                 {data: "order"}
             ],
             order: [[1, 'ASC']],
@@ -108,7 +110,7 @@ function Locations() {
                     }
                 },
                 {
-                    targets: [4],
+                    targets: [6],
                     searchable: false,
                     mData: null,
                     mRender: function (data, type, full) {

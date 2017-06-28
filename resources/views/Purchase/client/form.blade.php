@@ -13,6 +13,7 @@
     }
 </style>
 <div class="container-fluid">
+    {!! Form::open(['id'=>'frm','url' => 'payment', 'method' => 'post']) !!}
     <div class="row">
         <div class="col-lg-6">
             <div class="row">
@@ -208,6 +209,7 @@
                     <button class="btn btn-success" id="complete">Complete Registration</button>
                 </div>
             </div>
+            <br>
         </div>
 
         <div class="col-lg-6  " >
@@ -246,10 +248,24 @@
                             {{$sche[0]["address"]}}
                         </div>
                     </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-6 text-left"><label>AddOn</label></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 text-left">
+                            @foreach($addon as $val)
+                            <div class="row">
+                                <div class="col-lg-6">{{$val->description}}</div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    {!!Form::close()!!}
 </div>
 
 {!!Html::script('js/Purchase/Registry.js')!!}

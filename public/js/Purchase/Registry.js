@@ -2,13 +2,20 @@ function Registry() {
     var table;
     this.init = function () {
 //        table = this.table();
-        
+
         $("#new").click(this.save);
         $("#edit").click(this.edit);
         $("#btnNew").click(function () {
             $(".input-courses").cleanFields();
             $("#modalNew").modal("show");
         });
+
+        $('#datetimepicker3').datetimepicker({
+            format: 'd.m.Y H:i',
+            inline: true,
+            lang: 'ru'
+        });
+
     }
 
     this.save = function () {
@@ -107,7 +114,7 @@ function Registry() {
         $.each(data, function (i, val) {
             html += '<div class="panel panel-default">';
             html += '<div class="panel-heading">';
-            html += '<div class="row"><div class="col-lg-5">'+val[0].course+'</div><div class="col-lg-4">'+val[0].location+'</div></div>';
+            html += '<div class="row"><div class="col-lg-5">' + val[0].course + '</div><div class="col-lg-4">' + val[0].location + '</div></div>';
             html += '</div>'
             html += '<table class="table table-condensed" style="wdth:100%">'
             $.each(val, function (i, value) {

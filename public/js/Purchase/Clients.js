@@ -1,7 +1,21 @@
 function Clients() {
     var table;
     this.init = function () {
-        table = this.table();
+
+        var location = [], courses = [], dates = [];
+        $("input[name='locations[]']:checked").each(function () {
+            location.push($(this).val());
+        })
+        $("input[name='courses[]']:checked").each(function () {
+            courses.push($(this).val());
+        })
+
+        $("input[name='dates[]']:checked").each(function () {
+            dates.push($(this).val());
+        })
+
+        table = this.table(location, courses, dates);
+
         $("#new").click(this.save);
         $("#edit").click(this.edit);
         $("#btnNew").click(function () {
@@ -13,14 +27,21 @@ function Clients() {
         $(".input-locations").click(function () {
             obj.reload();
         })
+
         $(".input-courses").click(function () {
             obj.reload();
         })
 
+        $(".input-dates").click(function () {
+            obj.reload();
+        })
+
+        
+
     }
 
     this.reload = function () {
-        var location = [], courses = [];
+        var location = [], courses = [], dates = [];
         $("input[name='locations[]']:checked").each(function () {
             location.push($(this).val());
         })
@@ -28,7 +49,11 @@ function Clients() {
             courses.push($(this).val());
         })
 
-        obj.table(location,courses);
+        $("input[name='dates[]']:checked").each(function () {
+            dates.push($(this).val());
+        })
+
+        obj.table(location, courses, dates);
     }
 
     this.save = function () {

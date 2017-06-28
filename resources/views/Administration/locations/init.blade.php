@@ -22,6 +22,8 @@
                             <th></th>
                             <th>Description</th>
                             <th>Address</th>
+                            <th>Latitude</th>
+                            <th>Longitude</th>
                             <th>Order</th>
                             <th>Action</th>
                         </tr>

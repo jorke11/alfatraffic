@@ -55,7 +55,7 @@
                         @foreach($start as $i =>$val)
                         <tr>
                             <td>
-                                <input type="checkbox" name="locations[]" value="{{$val->code}}"> {{$val->description}}
+                                <input type="checkbox" {{($val->code==(int)date('m'))?'checked':''}} name="dates[]" value="{{$val->code}}" class="input-dates"> {{$val->description}}
                             </td>
                         </tr>
                         @endforeach

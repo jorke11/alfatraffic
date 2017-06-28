@@ -22,6 +22,7 @@
                             <th></th>
                             <th>Description</th>
                             <th>Value</th>
+                            <th>Dui</th>
                             <th>Order</th>
                             <th>Action</th>
                         </tr>

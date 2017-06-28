@@ -97,6 +97,7 @@ function Courses() {
                 {data: "id"},
                 {data: "description"},
                 {data: "value"},
+                {data: "dui"},
                 {data: "order"}
             ],
             order: [[1, 'ASC']],
@@ -108,7 +109,7 @@ function Courses() {
                     }
                 },
                 {
-                    targets: [4],
+                    targets: [5],
                     searchable: false,
                     mData: null,
                     mRender: function (data, type, full) {

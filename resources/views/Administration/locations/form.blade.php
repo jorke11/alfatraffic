@@ -27,6 +27,22 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="form-group">
+                            <label for="email">Latitude</label>
+                            <input type="text" class="form-control input-locations" id="latitude" name='latitude'>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label for="email">Longitude</label>
+                            <input type="text" class="form-control input-locations" id="longitude" name='longitude'>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
                             <label for="email">Order</label>
                             <input type="text" class="form-control input-locations" id="order" name='order' required>
                         </div>
