@@ -27,7 +27,7 @@ class ClientsController extends Controller {
         $quantity = Parameters::where("group", "show")->first();
         $end = (int) date("m") + $quantity->value;
 
-        $start = Parameters::where("group", "months")
+        $start = Parameters::where("group", "Months")
                 ->where("code", ">=", (int) date("m"))
                 ->where("code", "<=", $end)
                 ->get();
