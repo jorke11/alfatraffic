@@ -15,7 +15,7 @@
                         @foreach($locations as $i=>$val)
                         <tr>
                             <td>
-                                <input type="checkbox" name="locations[]" value="{{$val->id}}" class="input-locations"> {{$val->description}}
+                                <input type="checkbox" name="locations[]" <?php echo ($i == 0) ? 'checked' : '' ?> value="{{$val->id}}" class="input-locations"> {{$val->description}}
                             </td>
                         </tr>
                         @endforeach
@@ -35,7 +35,7 @@
                         @foreach($courses as $i=>$val)
                         <tr>
                             <td>
-                                <input type="checkbox" name="courses[]" value="{{$val->id}}" class="input-courses"> {{$val->description}}
+                                <input type="checkbox" name="courses[]" <?php echo ($i == 0) ? 'checked' : '' ?> value="{{$val->id}}" class="input-courses"> {{$val->description}}
                             </td>
                         </tr>
                         @endforeach
@@ -65,7 +65,7 @@
         </div>
     </div>
     <div class="col-lg-9">
-       
+
         <div id="content-list">
 
         </div>

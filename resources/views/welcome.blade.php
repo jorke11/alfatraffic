@@ -1,99 +1,3 @@
-<!--<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <title>Alfa Traffic</title>
-
-         Fonts 
-        <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
-
-         Styles 
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Raleway', sans-serif;
-                font-weight: 100;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-            <div class="top-right links">
-                @if (Auth::check())
-                <a href="{{ url('/home') }}">Home</a>
-                @else
-                <a href="{{ url('/login') }}">Login</a>
-                <a href="{{ url('/register') }}">Register</a>
-                @endif
-            </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    AlfaTraffic
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Page</a>
-                    <a href="https://laracasts.com">Courses</a>
-                </div>
-            </div>
-        </div>
-    </body>
-</html>-->
-
-
-
-
 <!DOCTYPE html>
 <html class="nojs html css_verticalspacer" lang="es-ES">
     <head>
@@ -161,12 +65,12 @@
                     </div>
                 </div>
                 <div class="size_fixed grpelem shared_content" id="u4791" data-content-guid="u4791_content"><!-- custom html -->
-
-
                 </div>
+
                 <div class="browser_width shared_content" id="u17556-bw" data-content-guid="u17556-bw_content">
                     <div id="u17556"><!-- simple frame --></div>
                 </div>
+                
                 <div class="browser_width shared_content" id="u841-bw" data-content-guid="u841-bw_content">
                     <div class="museBGSize shared_content" id="u841" data-content-guid="u841_content"><!-- simple frame --></div>
                 </div>
@@ -251,7 +155,7 @@
                                         <div class="fluid_height_spacer"></div>
                                     </div>
                                     <a class="nonblock nontext transition clearfix grpelem shared_content" id="u4511-6" href="drivered" data-content-guid="u4511-6_content"><!-- content --><p>Drivers</p><p>Ed</p></a>
-                                    <a class="nonblock nontext clip_frame grpelem shared_content" id="u4533" href="drivers-ed.html" data-content-guid="u4533_content"><!-- image --><img class="block temp_no_img_src" id="u4533_img" data-orig-src="images/drivers%20ed.png?crc=348343397" alt="" width="69" height="103" src="images/blank.gif?crc=4208392903"/></a>
+                                    <a class="nonblock nontext clip_frame grpelem shared_content" id="u4533" href="/drivered" data-content-guid="u4533_content"><!-- image --><img class="block temp_no_img_src" id="u4533_img" data-orig-src="images/drivers%20ed.png?crc=348343397" alt="" width="69" height="103" src="images/blank.gif?crc=4208392903"/></a>
                                     <a class="nonblock nontext transition clearfix grpelem shared_content" id="u4520-6" href="scholarship" data-content-guid="u4520-6_content"><!-- content --><p>Scholarship</p><p>Grant Program</p></a>
                                     <a class="nonblock nontext clip_frame grpelem shared_content" id="u4523" href="scholarship" data-content-guid="u4523_content"><!-- image --><img class="block temp_no_img_src" id="u4523_img" data-orig-src="images/scholarship%20grant%20program.png?crc=141172607" alt="" width="101" height="77" src="images/blank.gif?crc=4208392903"/></a>
                                 </div>
@@ -399,7 +303,7 @@
                     <img class="block temp_no_img_src" id="u23889_img" data-orig-src="images/new%20driver.png?crc=4049516167" alt="" width="110" height="68" src="images/blank.gif?crc=4208392903"/>
                 </div>
                 <div id="u849-4-wrapper" class="shared_content" data-content-guid="u849-4-wrapper_content">
-                    <a class="nonblock nontext transition clearfix" id="u849-4" href="defensive-driving.html"><!-- content --><p id="u849-2">DEFENSIVE DRIVING</p></a>
+                    <a class="nonblock nontext transition clearfix" id="u849-4" href="/defensive"><!-- content --><p id="u849-2">DEFENSIVE DRIVING</p></a>
                 </div>
                 <div class="izquierda clearfix grpelem shared_content" id="u23884-4" data-content-guid="u23884-4_content"><!-- content -->
                     <p>Got a speeding ticket or a DUI?&nbsp; Consider taking a class before court to lower fines by 60% or more. Every student is issued a Certificate of Completion good for point reduction, satisfying court orders, lowering insurance cost or reinstating your license. Classes offered daily in 7 locations across town.</p>
@@ -420,12 +324,12 @@
                                 <div class="shadow grpelem shared_content" id="u4453" data-content-guid="u4453_content"><!-- simple frame -->
                                     <div class="fluid_height_spacer"></div>
                                 </div>
-                                <a class="nonblock nontext transition clearfix grpelem shared_content" id="u4454-6" href="adult-drivers-training.html" data-content-guid="u4454-6_content"><!-- content --><p>Adult Drivers</p><p>Training</p></a>
-                                <a class="nonblock nontext transition clearfix grpelem shared_content" id="u4457-6" href="teen-driving-lessons.html" data-content-guid="u4457-6_content"><!-- content --><p>Teen Driving</p><p>Lessons</p></a>
-                                <a class="nonblock nontext transition clearfix grpelem shared_content" id="u4508-6" href="road-test.html" data-content-guid="u4508-6_content"><!-- content --><p>Road</p><p>Test</p></a>
-                                <a class="nonblock nontext clip_frame grpelem shared_content" id="u4553" href="adult-drivers-training.html" data-content-guid="u4553_content"><!-- image --><img class="block temp_no_img_src" id="u4553_img" data-orig-src="images/adult%20drivers%20training.png?crc=4189046996" alt="" width="106" height="91" src="images/blank.gif?crc=4208392903"/></a>
-                                <a class="nonblock nontext clip_frame grpelem shared_content" id="u4563" href="road-test.html" data-content-guid="u4563_content"><!-- image --><img class="block temp_no_img_src" id="u4563_img" data-orig-src="images/road%20test.png?crc=4229973826" alt="" width="93" height="79" src="images/blank.gif?crc=4208392903"/></a>
-                                <a class="nonblock nontext clip_frame grpelem shared_content" id="u4573" href="teen-driving-lessons.html" data-content-guid="u4573_content"><!-- image --><img class="block temp_no_img_src" id="u4573_img" data-orig-src="images/teen%20drivers.png?crc=343386948" alt="" width="72" height="107" src="images/blank.gif?crc=4208392903"/></a>
+                                <a class="nonblock nontext transition clearfix grpelem shared_content" id="u4454-6" href="/adultdrivers" data-content-guid="u4454-6_content"><!-- content --><p>Adult Drivers</p><p>Training</p></a>
+                                <a class="nonblock nontext transition clearfix grpelem shared_content" id="u4457-6" href="/teendriving" data-content-guid="u4457-6_content"><!-- content --><p>Teen Driving</p><p>Lessons</p></a>
+                                <a class="nonblock nontext transition clearfix grpelem shared_content" id="u4508-6" href="/roadtest" data-content-guid="u4508-6_content"><!-- content --><p>Road</p><p>Test</p></a>
+                                <a class="nonblock nontext clip_frame grpelem shared_content" id="u4553" href="/adultdrivers" data-content-guid="u4553_content"><!-- image --><img class="block temp_no_img_src" id="u4553_img" data-orig-src="images/adult%20drivers%20training.png?crc=4189046996" alt="" width="106" height="91" src="images/blank.gif?crc=4208392903"/></a>
+                                <a class="nonblock nontext clip_frame grpelem shared_content" id="u4563" href="/roadtest" data-content-guid="u4563_content"><!-- image --><img class="block temp_no_img_src" id="u4563_img" data-orig-src="images/road%20test.png?crc=4229973826" alt="" width="93" height="79" src="images/blank.gif?crc=4208392903"/></a>
+                                <a class="nonblock nontext clip_frame grpelem shared_content" id="u4573" href="/teendriving" data-content-guid="u4573_content"><!-- image --><img class="block temp_no_img_src" id="u4573_img" data-orig-src="images/teen%20drivers.png?crc=343386948" alt="" width="72" height="107" src="images/blank.gif?crc=4208392903"/></a>
                             </div>
                         </div>
                     </div>
@@ -438,7 +342,7 @@
                         <p>GOT A TICKET?</p>
                     </div>
                 </div>
-                <a class="nonblock nontext transition rounded-corners clearfix shared_content" id="u16225-4" href="schedule.html" data-content-guid="u16225-4_content"><!-- content --><p id="u16225-2">SCHEDULE</p></a>
+                <a class="nonblock nontext transition rounded-corners clearfix shared_content" id="u16225-4" href="/clients" data-content-guid="u16225-4_content"><!-- content --><p id="u16225-2">SCHEDULE</p></a>
                 <div class="clip_frame grpelem shared_content" id="u23891" data-content-guid="u23891_content"><!-- image -->
                     <img class="block temp_no_img_src" id="u23891_img" data-orig-src="images/got%20a%20ticket.png?crc=4060159616" alt="" width="140" height="72" src="images/blank.gif?crc=4208392903"/>
                 </div>
@@ -447,12 +351,12 @@
                         <div class="ContainerGroup clearfix" id="u187785"><!-- stack box -->
                             <div class="Container invi clearfix grpelem" id="u187786"><!-- column -->
                                 <div class="shadow rounded-corners colelem shared_content" id="u187789" data-content-guid="u187789_content"><!-- simple frame --></div>
-                                <a class="nonblock nontext arriba transition rounded-corners rgba-background clearfix colelem shared_content" id="u188072-4" href="sandy-springs.html" data-content-guid="u188072-4_content"><!-- content --><p>Sandy Springs</p></a>
-                                <a class="nonblock nontext arriba transition rounded-corners rgba-background clearfix colelem shared_content" id="u188075-4" href="buckhead-atlanta.html" data-content-guid="u188075-4_content"><!-- content --><p>Buckhead / Atlanta</p></a>
-                                <a class="nonblock nontext arriba transition rounded-corners rgba-background clearfix colelem shared_content" id="u188078-4" href="midtown-atlanta.html" data-content-guid="u188078-4_content"><!-- content --><p>Midtown / Atlanta</p></a>
-                                <a class="nonblock nontext arriba transition rounded-corners rgba-background clearfix colelem shared_content" id="u188081-4" href="smyrna-austell.html" data-content-guid="u188081-4_content"><!-- content --><p>Smyrna / Austell</p></a>
-                                <a class="nonblock nontext arriba transition rounded-corners rgba-background clearfix colelem shared_content" id="u188084-4" href="marietta-east-cobb.html" data-content-guid="u188084-4_content"><!-- content --><p>Marietta / East Cobb</p></a>
-                                <a class="nonblock nontext arriba transition rounded-corners rgba-background clearfix colelem shared_content" id="u188087-4" href="doraville-chamblee.html" data-content-guid="u188087-4_content"><!-- content --><p>Doraville / Chamblee</p></a>
+                                <a class="nonblock nontext arriba transition rounded-corners rgba-background clearfix colelem shared_content" id="u188072-4" href="/sandysprings" data-content-guid="u188072-4_content"><!-- content --><p>Sandy Springs</p></a>
+                                <a class="nonblock nontext arriba transition rounded-corners rgba-background clearfix colelem shared_content" id="u188075-4" href="/buckheadatlanta" data-content-guid="u188075-4_content"><!-- content --><p>Buckhead / Atlanta</p></a>
+                                <a class="nonblock nontext arriba transition rounded-corners rgba-background clearfix colelem shared_content" id="u188078-4" href="/midtownatlanta" data-content-guid="u188078-4_content"><!-- content --><p>Midtown / Atlanta</p></a>
+                                <a class="nonblock nontext arriba transition rounded-corners rgba-background clearfix colelem shared_content" id="u188081-4" href="/smyrnaaustell" data-content-guid="u188081-4_content"><!-- content --><p>Smyrna / Austell</p></a>
+                                <a class="nonblock nontext arriba transition rounded-corners rgba-background clearfix colelem shared_content" id="u188084-4" href="/mariettaeastcobb" data-content-guid="u188084-4_content"><!-- content --><p>Marietta / East Cobb</p></a>
+                                <a class="nonblock nontext arriba transition rounded-corners rgba-background clearfix colelem shared_content" id="u188087-4" href="/doravillechamblee" data-content-guid="u188087-4_content"><!-- content --><p>Doraville / Chamblee</p></a>
                                 <a class="nonblock nontext arriba transition rounded-corners rgba-background clearfix colelem shared_content" id="u188090-4" href="duluth-lawrenceville.html" data-content-guid="u188090-4_content"><!-- content --><p>Duluth / Lawrenceville</p></a>
                             </div>
                         </div>
@@ -479,27 +383,27 @@
                                         <p id="u4625-2">7 METRO ATLANTA</p>
                                         <p id="u4625-4">LOCATIONS</p>
                                     </div>
-                                    <a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u4646-4" href="sandy-springs.html" data-content-guid="u4646-4_content"><!-- content --><p>Sandy Springs</p></a>
-                                    <a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u4649-4" href="buckhead-atlanta.html" data-content-guid="u4649-4_content"><!-- content --><p>Buckhead / Atlanta</p></a>
-                                    <a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u4652-4" href="midtown-atlanta.html" data-content-guid="u4652-4_content"><!-- content --><p>Midtown / Atlanta</p></a>
-                                    <a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u4655-4" href="smyrna-austell.html" data-content-guid="u4655-4_content"><!-- content --><p>Smyrna / Austell</p></a>
-                                    <a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u4658-4" href="marietta-east-cobb.html" data-content-guid="u4658-4_content"><!-- content --><p>Marietta / East Cobb</p></a>
-                                    <a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u4661-4" href="doraville-chamblee.html" data-content-guid="u4661-4_content"><!-- content --><p>Doraville / Chamblee</p></a>
+                                    <a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u4646-4" href="/sandysprings" data-content-guid="u4646-4_content"><!-- content --><p>Sandy Springs</p></a>
+                                    <a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u4649-4" href="/buckheadatlanta" data-content-guid="u4649-4_content"><!-- content --><p>Buckhead / Atlanta</p></a>
+                                    <a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u4652-4" href="/midtownatlanta" data-content-guid="u4652-4_content"><!-- content --><p>Midtown / Atlanta</p></a>
+                                    <a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u4655-4" href="/smyrnaaustell" data-content-guid="u4655-4_content"><!-- content --><p>Smyrna / Austell</p></a>
+                                    <a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u4658-4" href="/mariettaeastcobb" data-content-guid="u4658-4_content"><!-- content --><p>Marietta / East Cobb</p></a>
+                                    <a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u4661-4" href="/doravillechamblee" data-content-guid="u4661-4_content"><!-- content --><p>Doraville / Chamblee</p></a>
                                     <a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u4667-4" href="duluth-lawrenceville.html" data-content-guid="u4667-4_content"><!-- content --><p>Duluth / Lawrenceville</p></a>
-                                    <a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u13308-4" href="about-us.html" data-content-guid="u13308-4_content"><!-- content --><p>ABOUT US</p></a>
+                                    <a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u13308-4" href="/aboutus" data-content-guid="u13308-4_content"><!-- content --><p>ABOUT US</p></a>
                                 </div>
                                 <div class="clearfix grpelem" id="pu2030-4"><!-- column -->
                                     <div class="rgba-background clearfix colelem shared_content" id="u2030-4" data-content-guid="u2030-4_content"><!-- content -->
                                         <p id="u2030-2">DRIVING IS A NECESSITY, NOT A LUXURY IN ATLANTA</p>
                                     </div>
-                                    <a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u4591-4" href="dui-risk-reduction.html" data-content-guid="u4591-4_content"><!-- content --><p>DUI/Risk Reduction</p></a>
+                                    <a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u4591-4" href="/duirisk" data-content-guid="u4591-4_content"><!-- content --><p>DUI/Risk Reduction</p></a>
                                     <a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u4589-4" href="duiclinical" data-content-guid="u4589-4_content"><!-- content --><p>DUI Clinical Evaluations</p></a>
-                                    <a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u4584-4" href="victim-impact-panel.html" data-content-guid="u4584-4_content"><!-- content --><p>Victim Impact Panel</p></a>
-                                    <a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u4586-4" href="defensive-driving.html" data-content-guid="u4586-4_content"><!-- content --><p>Defensive Driving</p></a>
-                                    <a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u4588-4" href="drivers-ed.html" data-content-guid="u4588-4_content"><!-- content --><p>Drivers Ed</p></a>
-                                    <a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u4587-4" href="teen-driving-lessons.html" data-content-guid="u4587-4_content"><!-- content --><p>Teen Driving Lessons</p></a>
-                                    <a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u4585-4" href="adult-drivers-training.html" data-content-guid="u4585-4_content"><!-- content --><p>Adult Drivers Training</p></a>
-                                    <a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u4590-4" href="road-test.html" data-content-guid="u4590-4_content"><!-- content --><p>Road Test</p></a>
+                                    <a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u4584-4" href="/victimimpact" data-content-guid="u4584-4_content"><!-- content --><p>Victim Impact Panel</p></a>
+                                    <a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u4586-4" href="/defensive" data-content-guid="u4586-4_content"><!-- content --><p>Defensive Driving</p></a>
+                                    <a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u4588-4" href="/drivered" data-content-guid="u4588-4_content"><!-- content --><p>Drivers Ed</p></a>
+                                    <a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u4587-4" href="/teendriving" data-content-guid="u4587-4_content"><!-- content --><p>Teen Driving Lessons</p></a>
+                                    <a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u4585-4" href="/adultdrivers" data-content-guid="u4585-4_content"><!-- content --><p>Adult Drivers Training</p></a>
+                                    <a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u4590-4" href="/roadtest" data-content-guid="u4590-4_content"><!-- content --><p>Road Test</p></a>
                                     <div class="clearfix colelem shared_content" id="u4619-4" data-content-guid="u4619-4_content"><!-- content -->
                                         <p>Alfa Driving School&nbsp;&nbsp; ©&nbsp;&nbsp; All rights reserved</p>
                                     </div>
@@ -718,7 +622,7 @@
                     </div>
                     <div class="browser_width" id="accordionu188545-bw">
                         <ul class="AccordionWidget clearfix" id="accordionu188545"><!-- vertical box -->
-                            <li class="AccordionPanel clearfix colelem100" id="u188546"><!-- vertical box --><div class="AccordionPanelTab clearfix colelem100" id="u188547-3"><!-- content --><p class="shared_content" data-content-guid="u188547-3_0_content">&nbsp;</p></div><div class="AccordionPanelContent disn clearfix colelem100" id="u188548"><!-- column --><div class="clearfix colelem" id="pu189063-4"><!-- group --><a class="nonblock nontext transition rounded-corners clearfix grpelem shared_content" id="u189063-4" href="schedule.html" data-content-guid="u189063-4_content"><!-- content --><p id="u189063-2">SCHEDULE</p></a><div class="PamphletWidget clearfix grpelem" id="pamphletu189205"><!-- none box --><div class="popup_anchor" id="u189206popup"><div class="ContainerGroup clearfix" id="u189206"><!-- stack box --><div class="Container invi clearfix grpelem" id="u189207"><!-- column --><div class="shadow rounded-corners colelem shared_content" id="u189212" data-content-guid="u189212_content"><!-- simple frame --></div><a class="nonblock nontext arriba transition rounded-corners rgba-background clearfix colelem shared_content" id="u189209-4" href="sandy-springs.html" data-content-guid="u189209-4_content"><!-- content --><p>Sandy Springs</p></a><a class="nonblock nontext arriba transition rounded-corners rgba-background clearfix colelem shared_content" id="u189210-4" href="buckhead-atlanta.html" data-content-guid="u189210-4_content"><!-- content --><p>Buckhead / Atlanta</p></a><a class="nonblock nontext arriba transition rounded-corners rgba-background clearfix colelem shared_content" id="u189213-4" href="midtown-atlanta.html" data-content-guid="u189213-4_content"><!-- content --><p>Midtown / Atlanta</p></a><a class="nonblock nontext arriba transition rounded-corners rgba-background clearfix colelem shared_content" id="u189211-4" href="smyrna-austell.html" data-content-guid="u189211-4_content"><!-- content --><p>Smyrna / Austell</p></a><a class="nonblock nontext arriba transition rounded-corners rgba-background clearfix colelem shared_content" id="u189208-4" href="marietta-east-cobb.html" data-content-guid="u189208-4_content"><!-- content --><p>Marietta / East Cobb</p></a><a class="nonblock nontext arriba transition rounded-corners rgba-background clearfix colelem shared_content" id="u189214-4" href="doraville-chamblee.html" data-content-guid="u189214-4_content"><!-- content --><p>Doraville / Chamblee</p></a><a class="nonblock nontext arriba transition rounded-corners rgba-background clearfix colelem shared_content" id="u189215-4" href="duluth-lawrenceville.html" data-content-guid="u189215-4_content"><!-- content --><p>Duluth / Lawrenceville</p></a></div></div></div><div class="ThumbGroup clearfix grpelem" id="u189218"><!-- none box --><div class="popup_anchor" id="u189219popup"><div class="Thumb popup_element clearfix" id="u189219"><!-- group --><div class="transition rounded-corners clearfix grpelem shared_content" id="u189220-4" data-content-guid="u189220-4_content"><!-- content --><p id="u189220-2">LOCATIONS</p></div></div></div></div></div></div><div class="rounded-corners clearfix colelem shared_content" id="u189181-4" data-content-guid="u189181-4_content"><!-- content --><p id="u189181-2">DRIVING IS A NECESSITY, NOT A LUXURY IN ATLANTA</p></div><div class="clearfix colelem shared_content" id="pu189185" data-content-guid="pu189185_content"><!-- group --><div class="rounded-corners grpelem" id="u189185"><!-- simple frame --></div><div class="rounded-corners grpelem" id="u189189"><!-- simple frame --></div><div class="rounded-corners grpelem" id="u189195"><!-- simple frame --></div><div class="clip_frame grpelem" id="u189169"><!-- image --><img class="block temp_no_img_src" id="u189169_img" data-orig-src="images/menu%20alfa.png?crc=176286078" alt="" width="146" height="145" src="images/blank.gif?crc=4208392903"/></div></div><a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u189022-4" href="dui-risk-reduction.html" data-content-guid="u189022-4_content"><!-- content --><p>DUI/Risk Reduction</p></a><a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u189028-4" href="duiclinical" data-content-guid="u189028-4_content"><!-- content --><p>DUI Clinical Evaluations</p></a><a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u189033-4" href="victim-impact-panel.html" data-content-guid="u189033-4_content"><!-- content --><p>Victim Impact Panel</p></a><a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u189038-4" href="defensive-driving.html" data-content-guid="u189038-4_content"><!-- content --><p>Defensive Driving</p></a><a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u189043-4" href="drivers-ed.html" data-content-guid="u189043-4_content"><!-- content --><p>Drivers Ed</p></a><a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u189048-4" href="teen-driving-lessons.html" data-content-guid="u189048-4_content"><!-- content --><p>Teen Driving Lessons</p></a><a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u189053-4" href="adult-drivers-training.html" data-content-guid="u189053-4_content"><!-- content --><p>Adult Drivers Training</p></a><a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u189058-4" href="road-test.html" data-content-guid="u189058-4_content"><!-- content --><p>Road Test</p></a></div></li>
+                            <li class="AccordionPanel clearfix colelem100" id="u188546"><!-- vertical box --><div class="AccordionPanelTab clearfix colelem100" id="u188547-3"><!-- content --><p class="shared_content" data-content-guid="u188547-3_0_content">&nbsp;</p></div><div class="AccordionPanelContent disn clearfix colelem100" id="u188548"><!-- column --><div class="clearfix colelem" id="pu189063-4"><!-- group --><a class="nonblock nontext transition rounded-corners clearfix grpelem shared_content" id="u189063-4" href="/clients" data-content-guid="u189063-4_content"><!-- content --><p id="u189063-2">SCHEDULE</p></a><div class="PamphletWidget clearfix grpelem" id="pamphletu189205"><!-- none box --><div class="popup_anchor" id="u189206popup"><div class="ContainerGroup clearfix" id="u189206"><!-- stack box --><div class="Container invi clearfix grpelem" id="u189207"><!-- column --><div class="shadow rounded-corners colelem shared_content" id="u189212" data-content-guid="u189212_content"><!-- simple frame --></div><a class="nonblock nontext arriba transition rounded-corners rgba-background clearfix colelem shared_content" id="u189209-4" href="/sandysprings" data-content-guid="u189209-4_content"><!-- content --><p>Sandy Springs</p></a><a class="nonblock nontext arriba transition rounded-corners rgba-background clearfix colelem shared_content" id="u189210-4" href="/buckheadatlanta" data-content-guid="u189210-4_content"><!-- content --><p>Buckhead / Atlanta</p></a><a class="nonblock nontext arriba transition rounded-corners rgba-background clearfix colelem shared_content" id="u189213-4" href="/midtownatlanta" data-content-guid="u189213-4_content"><!-- content --><p>Midtown / Atlanta</p></a><a class="nonblock nontext arriba transition rounded-corners rgba-background clearfix colelem shared_content" id="u189211-4" href="/smyrnaaustell" data-content-guid="u189211-4_content"><!-- content --><p>Smyrna / Austell</p></a><a class="nonblock nontext arriba transition rounded-corners rgba-background clearfix colelem shared_content" id="u189208-4" href="/mariettaeastcobb" data-content-guid="u189208-4_content"><!-- content --><p>Marietta / East Cobb</p></a><a class="nonblock nontext arriba transition rounded-corners rgba-background clearfix colelem shared_content" id="u189214-4" href="/doravillechamblee" data-content-guid="u189214-4_content"><!-- content --><p>Doraville / Chamblee</p></a><a class="nonblock nontext arriba transition rounded-corners rgba-background clearfix colelem shared_content" id="u189215-4" href="duluth-lawrenceville.html" data-content-guid="u189215-4_content"><!-- content --><p>Duluth / Lawrenceville</p></a></div></div></div><div class="ThumbGroup clearfix grpelem" id="u189218"><!-- none box --><div class="popup_anchor" id="u189219popup"><div class="Thumb popup_element clearfix" id="u189219"><!-- group --><div class="transition rounded-corners clearfix grpelem shared_content" id="u189220-4" data-content-guid="u189220-4_content"><!-- content --><p id="u189220-2">LOCATIONS</p></div></div></div></div></div></div><div class="rounded-corners clearfix colelem shared_content" id="u189181-4" data-content-guid="u189181-4_content"><!-- content --><p id="u189181-2">DRIVING IS A NECESSITY, NOT A LUXURY IN ATLANTA</p></div><div class="clearfix colelem shared_content" id="pu189185" data-content-guid="pu189185_content"><!-- group --><div class="rounded-corners grpelem" id="u189185"><!-- simple frame --></div><div class="rounded-corners grpelem" id="u189189"><!-- simple frame --></div><div class="rounded-corners grpelem" id="u189195"><!-- simple frame --></div><div class="clip_frame grpelem" id="u189169"><!-- image --><img class="block temp_no_img_src" id="u189169_img" data-orig-src="images/menu%20alfa.png?crc=176286078" alt="" width="146" height="145" src="images/blank.gif?crc=4208392903"/></div></div><a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u189022-4" href="/duirisk" data-content-guid="u189022-4_content"><!-- content --><p>DUI/Risk Reduction</p></a><a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u189028-4" href="duiclinical" data-content-guid="u189028-4_content"><!-- content --><p>DUI Clinical Evaluations</p></a><a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u189033-4" href="/victimimpact" data-content-guid="u189033-4_content"><!-- content --><p>Victim Impact Panel</p></a><a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u189038-4" href="/defensive" data-content-guid="u189038-4_content"><!-- content --><p>Defensive Driving</p></a><a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u189043-4" href="/drivered" data-content-guid="u189043-4_content"><!-- content --><p>Drivers Ed</p></a><a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u189048-4" href="/teendriving" data-content-guid="u189048-4_content"><!-- content --><p>Teen Driving Lessons</p></a><a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u189053-4" href="/adultdrivers" data-content-guid="u189053-4_content"><!-- content --><p>Adult Drivers Training</p></a><a class="nonblock nontext arriba transition rgba-background clearfix colelem shared_content" id="u189058-4" href="/roadtest" data-content-guid="u189058-4_content"><!-- content --><p>Road Test</p></a></div></li>
                         </ul>
                     </div>
                     <span class="nonblock nontext MuseLinkActive logo clip_frame placeholder" data-placeholder-for="u1081_content"><!-- placeholder node --></span>

@@ -151,33 +151,36 @@ function Clients() {
 
     this.setList = function (data) {
         var html = "", rowspan = 0;
+        console.log(data)
         $.each(data, function (i, val) {
-            html += '<div class="panel panel-default">';
-            html += '<div class="panel-heading">';
-            html += '<div class="row"><div class="col-lg-5">' + val[0].course + '</div><div class="col-lg-4">' + val[0].location + '</div></div>';
-            html += '</div>'
-            html += '<table class="table table-condensed" style="wdth:100%">'
+            if (val != undefined) {
+                html += '<div class="panel panel-default">';
+                html += '<div class="panel-heading">';
+                html += '<div class="row"><div class="col-lg-5">' + val[0].course + '</div><div class="col-lg-4">' + val[0].location + '</div></div>';
+                html += '</div>'
+                html += '<table class="table table-condensed" style="wdth:100%">'
 
-            rowspan = val.length;
-            $.each(val, function (i, value) {
-                if (i == 0) {
-                    html += '<tr>';
-                    html += '<td align="left" width="40%"> ';
-                    html += value.day + ',' + value.month + ' /' + value.dayweek + '.....' + value.hour + ' - ' + value.hour_end + '</td>';
-                    html += '<td rowspan="' + rowspan + '" align="center">' + value.address + '</td>';
-                    html += '<td rowspan="' + rowspan + '" align="center"><a class="btn btn-success" href="clients/' + value.schedule_id + '/' + value.month + '/' + val[0].dayweek + '">Register</button></td>';
-                    html += '</tr>'
-                } else {
-                    html += '<tr>';
-                    html += '<td align="left"> ';
-                    html += value.day + ',' + value.month + ' /' + value.dayweek + '.....' + value.hour + ' - ' + value.hour_end + '</td>';
-                    html += '</tr>'
-                }
+                rowspan = val.length;
+                $.each(val, function (i, value) {
+                    if (i == 0) {
+                        html += '<tr>';
+                        html += '<td align="left" width="40%"> ';
+                        html += value.day + ',' + value.month + ' /' + value.dayweek + '.....' + value.hour + ' - ' + value.hour_end + '</td>';
+                        html += '<td rowspan="' + rowspan + '" align="center">' + value.address + '</td>';
+                        html += '<td rowspan="' + rowspan + '" align="center"><a class="btn btn-success" href="clients/' + value.schedule_id + '/' + value.month + '/' + val[0].dayweek + '">Register</button></td>';
+                        html += '</tr>'
+                    } else {
+                        html += '<tr>';
+                        html += '<td align="left"> ';
+                        html += value.day + ',' + value.month + ' /' + value.dayweek + '.....' + value.hour + ' - ' + value.hour_end + '</td>';
+                        html += '</tr>'
+                    }
 
 
-            });
+                });
 //
-            html += '</table></div>';
+                html += '</table></div>';
+            }
         })
 
 
