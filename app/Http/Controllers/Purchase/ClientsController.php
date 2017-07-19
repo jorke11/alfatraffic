@@ -31,8 +31,7 @@ class ClientsController extends Controller {
                 ->where("code", ">=", (int) date("m"))
                 ->where("code", "<=", $end)
                 ->get();
-        
-        
+
         return view("Purchase.client.init", compact("locations", "courses", "start"));
     }
 
@@ -53,6 +52,8 @@ class ClientsController extends Controller {
 
         $end = ($month->value + $init);
 
+//        echo cal_days_in_month(CAL_GREGORIAN, 1, date("y"));exit;
+
 
         for ($i = $init; $i <= $end; $i++) {
 
@@ -61,6 +62,7 @@ class ClientsController extends Controller {
             if (in_array($i, $in["start_date"])) {
 
                 for ($j = $initSecond; $j <= cal_days_in_month(CAL_GREGORIAN, $i, date("y")); $j++) {
+//                for ($j = $initSecond; $j <= date('t', mktime(0, 0, 0, $i + 1, 0, date("y"))); $j++) {
 //            for ($j = 26; $j <= 29; $j++) {
                     $day = $this->getDay($j);
 
@@ -78,7 +80,9 @@ class ClientsController extends Controller {
                     }
 
                     $sche = $sche->get()->toArray();
-
+//                    echo $day;
+//                    $sche = $sche->toSql();
+//                    dd($sche);
                     if (count($sche) > 0) {
                         foreach ($sche as $value) {
 
@@ -86,7 +90,6 @@ class ClientsController extends Controller {
                                     ->select("day")
                                     ->orderBy("day", "asc")
                                     ->first();
-
                             if ($initial["day"] == $day) {
                                 $data = $this->getSchedule($value["schedule_id"]);
 

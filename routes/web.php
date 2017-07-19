@@ -38,7 +38,12 @@ Route::post('/ClientDui', 'Purchase\ClientsController@formDui');
 Route::post('/payment', 'Purchase\ClientsController@payment');
 Route::post('/paymentDui', 'Purchase\ClientsController@paymentDui');
 
-
+Route::get('/drivered', 'pageController@driverEd');
+Route::get('/scholarship', 'pageController@scholarship');
+Route::get('/duirisk', 'pageController@duirisk');
+Route::get('/victimimpact', 'pageController@victimimpact');
+Route::get('/duiclinical', 'pageController@duiclinical');
+Route::get('/victimimpact', 'pageController@victimimpact');
 
 Route::resource('/role', 'Security\RoleController');
 Route::put('/role/savePermission/{id}', 'Security\RoleController@savePermissionRole');

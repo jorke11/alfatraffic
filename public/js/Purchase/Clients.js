@@ -1,7 +1,6 @@
 function Clients() {
     var table;
     this.init = function () {
-
         var location = [], courses = [], dates = [];
         $("input[name='locations[]']:checked").each(function () {
             location.push($(this).val());
@@ -23,7 +22,6 @@ function Clients() {
             $("#modalNew").modal("show");
         });
 
-
         $(".input-locations").click(function () {
             obj.reload();
         })
@@ -35,8 +33,6 @@ function Clients() {
         $(".input-dates").click(function () {
             obj.reload();
         })
-
-        
 
     }
 
