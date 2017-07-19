@@ -27,7 +27,7 @@ class ClientsController extends Controller {
         $quantity = Parameters::where("group", "show")->first();
         $end = (int) date("m") + $quantity->value;
 
-        $start = Parameters::where("group", "months")
+        $start = Parameters::where("group", "Months")
                 ->where("code", ">=", (int) date("m"))
                 ->where("code", "<=", $end)
                 ->get();
@@ -61,8 +61,8 @@ class ClientsController extends Controller {
 
             if (in_array($i, $in["start_date"])) {
 
-                for ($j = $initSecond; $j <= cal_days_in_month(CAL_GREGORIAN, $i, date("y")); $j++) {
-//                for ($j = $initSecond; $j <= date('t', mktime(0, 0, 0, $i + 1, 0, date("y"))); $j++) {
+//                for ($j = $initSecond; $j <= cal_days_in_month(CAL_GREGORIAN, $i, date("y")); $j++) {
+                for ($j = $initSecond; $j <= date('t', mktime(0, 0, 0, $i + 1, 0, date("y"))); $j++) {
 //            for ($j = 26; $j <= 29; $j++) {
                     $day = $this->getDay($j);
 
