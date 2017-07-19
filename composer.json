@@ -11,7 +11,8 @@
         "paypal/rest-api-sdk-php": "^1.11",
         "yajra/laravel-datatables-oracle": "~6.0",
          "ext-gd": "*",
-         "ext-calendar": "*"
+         "ext-calendar": "*",
+        "fisharebest/ext-calendar": "2.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
