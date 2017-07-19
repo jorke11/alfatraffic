@@ -38,6 +38,8 @@ class ClientsController extends Controller {
     public function getDay($day) {
         $i = strtotime(date("Y-m-" . $day));
         $resp = jddayofweek(cal_to_jd(CAL_GREGORIAN, date("m", $i), date("d", $i), date("Y", $i)), 0);
+        
+//        $resp = jddayofweek(cal_to_jd(date('t', mktime(0, 0, 0, $i + 1, 0, date("y")))), 0);
 
         return ($resp == 0) ? 7 : $resp;
     }
