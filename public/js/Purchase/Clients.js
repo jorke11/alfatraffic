@@ -1,6 +1,7 @@
 function Clients() {
     var table;
     this.init = function () {
+        
         var location = [], courses = [], dates = [];
         $("input[name='locations[]']:checked").each(function () {
             location.push($(this).val());
@@ -165,14 +166,14 @@ function Clients() {
                     if (i == 0) {
                         html += '<tr>';
                         html += '<td align="left" width="40%"> ';
-                        html += value.day + ',' + value.month + ' /' + value.dayweek + '.....' + value.hour + ' - ' + value.hour_end + '</td>';
+                        html += value.dateFormated + '.....' + value.hour + ' - ' + value.hour_end + '</td>';
                         html += '<td rowspan="' + rowspan + '" align="center">' + value.address + '</td>';
-                        html += '<td rowspan="' + rowspan + '" align="center"><a class="btn btn-success" href="clients/' + value.schedule_id + '/' + value.month + '/' + val[0].dayweek + '">Register</button></td>';
+                        html += '<td rowspan="' + rowspan + '" align="center"><a class="btn btn-success" href="clients/' + value.schedule_id + '/' + value.date + '">Register</button></td>';
                         html += '</tr>'
                     } else {
                         html += '<tr>';
                         html += '<td align="left"> ';
-                        html += value.day + ',' + value.month + ' /' + value.dayweek + '.....' + value.hour + ' - ' + value.hour_end + '</td>';
+                        html += value.dateFormated + '.....' + value.hour + ' - ' + value.hour_end + '</td>';
                         html += '</tr>'
                     }
 

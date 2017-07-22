@@ -234,7 +234,7 @@
                         <div class="col-lg-12 text-left">
                             @foreach($sche as $val)
                             <div class="row">
-                                <div class="col-lg-6">{{$val["day"]}}, {{$month}}/{{$val["dayweek"]}} .....{{$val["hour"]}} - {{$val["hour_end"]}}</div>
+                                <div class="col-lg-6">{{$val["dateFormated"]}} .....{{$val["hour"]}} - {{$val["hour_end"]}}</div>
                             </div>
                             @endforeach
                         </div>

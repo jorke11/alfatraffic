@@ -38,8 +38,6 @@ class ClientsController extends Controller {
     public function getDay($day) {
         $i = strtotime(date("Y-m-" . $day));
         $resp = jddayofweek(cal_to_jd(CAL_GREGORIAN, date("m", $i), date("d", $i), date("Y", $i)), 0);
-        
-//        $resp = jddayofweek(cal_to_jd(date('t', mktime(0, 0, 0, $i + 1, 0, date("y")))), 0);
 
         return ($resp == 0) ? 7 : $resp;
     }
@@ -63,8 +61,8 @@ class ClientsController extends Controller {
 
             if (in_array($i, $in["start_date"])) {
 
-//                for ($j = $initSecond; $j <= cal_days_in_month(CAL_GREGORIAN, $i, date("y")); $j++) {
-                for ($j = $initSecond; $j <= date('t', mktime(0, 0, 0, $i + 1, 0, date("y"))); $j++) {
+                for ($j = $initSecond; $j <= cal_days_in_month(CAL_GREGORIAN, $i, date("y")); $j++) {
+//                for ($j = $initSecond; $j <= date('t', mktime(0, 0, 0, $i + 1, 0, date("y"))); $j++) {
 //            for ($j = 26; $j <= 29; $j++) {
                     $day = $this->getDay($j);
 
@@ -81,28 +79,35 @@ class ClientsController extends Controller {
                         $sche->whereIn("schedules_detail.course_id", $in["courses"]);
                     }
 
+
                     $sche = $sche->get()->toArray();
+
 //                    echo $day;
 //                    $sche = $sche->toSql();
-//                    dd($sche);
+
                     if (count($sche) > 0) {
+
                         foreach ($sche as $value) {
 
                             $initial = SchedulesDetail::where("schedule_id", $value["schedule_id"])
                                     ->select("day")
                                     ->orderBy("day", "asc")
                                     ->first();
-                            if ($initial["day"] == $day) {
-                                $data = $this->getSchedule($value["schedule_id"]);
 
+                            if ($initial["day"] == $day) {
+
+                                $data = $this->getSchedule($value["schedule_id"]);
+                                $dayCont = $j;
+
+                                $data[0]["date"] = date("Y/m/d", strtotime(date("Y-" . $i . "-" . $j)));
+                                $data[0]["dateFormated"] = date("l, d / F", strtotime($data[0]["date"]));
                                 foreach ($data as $key => $value) {
-                                    if ($key == 0) {
-                                        $data[$key]["dayweek"] = $j;
-                                    } else {
-                                        $data[$key]["dayweek"] = $j + ($data[$key]["day_id"] - $data[$key - 1]["day_id"]);
+                                    if ($key > 0) {
+                                        $data[$key]["date"] = date("Y/m/d", strtotime('+' . $key . " days", strtotime($data[0]["date"])));
+                                        $data[$key]["dateFormated"] = date("l, d / F", strtotime($data[$key]["date"]));
                                     }
-                                    $data[$key]["month"] = $i;
                                 }
+
                                 $resp[] = $data;
                             }
                         }
@@ -111,6 +116,8 @@ class ClientsController extends Controller {
             }
             $cont++;
         }
+
+//        dd($resp);
         return response()->json(["success" => true, "data" => $resp]);
     }
 
@@ -124,25 +131,22 @@ class ClientsController extends Controller {
                         ->get()->toArray();
     }
 
-    public function formInput($schedule_id, $month, $day_week) {
+    public function formInput($schedule_id, $year, $month, $day_week) {
         \Session::put("schedule_id", $schedule_id);
+        \Session::put("year", $year);
         \Session::put("month", $month);
         \Session::put("day_week", $day_week);
 
         $sche = $this->getSchedule($schedule_id);
+        $sche[0]["date"] = date("Y/m/d", strtotime(date($year . "-" . $month . "-" . $day_week)));
+        $sche[0]["dateFormated"] = date("l, d / F", strtotime($sche[0]["date"]));
 
         foreach ($sche as $key => $value) {
             $sche[$key]["value"] = "$ " . number_format($sche[$key]["value"], 2, ",", ".");
 
-            if ($key == 0) {
-                $sche[$key]["dayweek"] = $day_week;
-            } else {
-                $temp = $sche[$key]["day_id"] - $sche[$key - 1]["day_id"];
-                if ($temp == 0) {
-                    $sche[$key]["dayweek"] = $day_week + 1;
-                } else {
-                    $sche[$key]["dayweek"] = $day_week + ($temp);
-                }
+            if ($key > 0) {
+                $sche[$key]["date"] = date("Y/m/d", strtotime('+' . $key . " days", strtotime($sche[0]["date"])));
+                $sche[$key]["dateFormated"] = date("l, d / F", strtotime($sche[$key]["date"]));
             }
         }
 

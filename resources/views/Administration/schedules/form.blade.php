@@ -49,7 +49,7 @@
                 <div class="page-title" style="">
                     <div class="row">
                         <div class="col-lg-12 text-right">
-                            <button class="btn btn-info btn-sm" id='btnNewDetail'>
+                            <button class="btn btn-info btn-sm" id='btnNewDetail' disabled="">
                                 <span class="glyphicon glyphicon-plus" aria-hidden="true"> Detail</span>
                             </button>
                         </div>

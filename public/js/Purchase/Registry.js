@@ -16,6 +16,27 @@ function Registry() {
             lang: 'ru'
         });
 
+        $("#frm #name").blur(function () {
+            $("#name_building").val($(this).val());
+        })
+
+        $("#last_name").blur(function () {
+            $("#last_name_building").val($(this).val());
+        })
+
+        $("#address").blur(function () {
+            $("#address_building").val($(this).val());
+        })
+        $("#city_id").blur(function () {
+            $("#city_id_building").val($(this).val());
+        })
+        $("#state").blur(function () {
+            $("#state_building").val($(this).val());
+        })
+        $("#zip_code").blur(function () {
+            $("#zip_code_building").val($(this).val());
+        })
+        $("#date_birth").datetimepicker({format: 'Y-m-d h:i'});
     }
 
     this.save = function () {

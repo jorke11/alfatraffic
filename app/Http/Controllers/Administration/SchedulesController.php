@@ -106,10 +106,16 @@ class SchedulesController extends Controller {
         $record = Schedules::FindOrFail($id);
         $day = $record->day;
 
+        $detail = SchedulesDetail::where("schedule_id", $record->id)->get();
+
+        foreach ($detail as $value) {
+            $row = SchedulesDetail::find($value->id);
+            $row->delete();
+        }
         $result = $record->delete();
+
         if ($result) {
-            $data = $this->getTable($day, 0)->getData();
-            return response()->json(['success' => true, "data" => $data->data]);
+            return response()->json(['success' => true]);
         } else {
             return response()->json(['success' => false]);
         }

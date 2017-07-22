@@ -55,6 +55,7 @@ function Schedules() {
                         $(".input-schedules").setFields({data: data.header});
                         table.ajax.reload();
                         toastr.success("ok");
+                        $("#btnNewDetail").attr("disabled",false);
                     }
                 }
             })

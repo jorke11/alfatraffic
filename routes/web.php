@@ -33,7 +33,7 @@ Route::delete('/schedules/detail/{id}', 'Administration\SchedulesController@dest
 
 Route::get('/clients', 'Purchase\ClientsController@index');
 Route::get('/clients/getList', 'Purchase\ClientsController@getList');
-Route::get('/clients/{schedule_id}/{month}/{day_week}', 'Purchase\ClientsController@formInput');
+Route::get('/clients/{schedule_id}/{year}/{month}/{day_week}', 'Purchase\ClientsController@formInput');
 Route::post('/ClientDui', 'Purchase\ClientsController@formDui');
 Route::post('/payment', 'Purchase\ClientsController@payment');
 Route::post('/paymentDui', 'Purchase\ClientsController@paymentDui');
