@@ -10,15 +10,35 @@ use App\Models\Administration\Parameters;
 use App\Models\Administration\Schedules;
 use App\Models\Administration\SchedulesDetail;
 use App\Models\Administration\Addon;
+use App\Models\Administration\Events;
 use DB;
+use PayPal\Rest\ApiContext;
+use PayPal\Auth\OAuthTokenCredential;
+use PayPal\Api\Amount;
+use PayPal\Api\Details;
+use PayPal\Api\Item;
+use PayPal\Api\ItemList;
+use PayPal\Api\Payer;
+use PayPal\Api\Payment;
+use PayPal\Api\RedirectUrls;
+use PayPal\Api\ExecutePayment;
+use PayPal\Api\PaymentExecution;
+use PayPal\Api\Transaction;
+use Session;
+use Illuminate\Support\Facades\Input;
 
 class ClientsController extends Controller {
 
     public $months;
     public $days;
+    private $_api_context;
 
     public function __construct() {
         date_default_timezone_set("America/Bogota");
+        $paypal_conf = \Config::get("paypal");
+        $this->_api_context = new ApiContext(new OAuthTokenCredential($paypal_conf["client_id"], $paypal_conf["secret"]));
+//        $this->_apiContext = Payment::ApiContext($paypal_conf["client_id"], $paypal_conf["secret"]);
+        $this->_api_context->setConfig($paypal_conf["settings"]);
     }
 
     public function index() {
@@ -52,6 +72,8 @@ class ClientsController extends Controller {
 
         $end = ($month->value + $init);
 
+        $events = Events::where("dateevent", ">=", date("Y-m-d"))->get();
+
 //        echo cal_days_in_month(CAL_GREGORIAN, 1, date("y"));exit;
 
 
@@ -81,7 +103,7 @@ class ClientsController extends Controller {
 
 
                     $sche = $sche->get()->toArray();
-
+//                    dd($sche);
 //                    echo $day;
 //                    $sche = $sche->toSql();
 
@@ -94,15 +116,45 @@ class ClientsController extends Controller {
                                     ->orderBy("day", "asc")
                                     ->first();
 
+
                             if ($initial["day"] == $day) {
 
                                 $data = $this->getSchedule($value["schedule_id"]);
+
                                 $dayCont = $j;
 
                                 $data[0]["date"] = date("Y/m/d", strtotime(date("Y-" . $i . "-" . $j)));
                                 $data[0]["dateFormated"] = date("l, d / F", strtotime($data[0]["date"]));
+
+                                if (isset($data[0]["hour"])) {
+                                    $data[0]["hour"] = date("h.i A", strtotime($data[0]["hour"]));
+                                }
+
+                                foreach ($events as $value) {
+                                    if ((strtotime($data[0]["date"]) == strtotime($value->dateevent)) && $value->course_id == $data[0]["course_id"] && $value->location_id == $data[0]["location_id"]) {
+
+                                        if ($value->action_id == 1) {
+                                            $data[0]["message"] = $value->description;
+                                        } else {
+                                            unset($data[0]);
+                                        }
+                                    }
+                                }
+
                                 foreach ($data as $key => $value) {
                                     if ($key > 0) {
+                                        foreach ($events as $value) {
+                                            if ((strtotime($data[$key]["date"]) == strtotime($value->dateevent)) && $value->course_id == $data[0]["course_id"] && $value->location_id == $data[0]["location_id"]) {
+                                                if ($value->action_id == 1) {
+                                                    $data[$key]["message"] = $value->description;
+                                                } else {
+                                                    unset($data[$key]);
+                                                }
+                                            }
+                                        }
+
+                                        $data[$key]["hour"] = date("h.i A", strtotime($data[$key]["hour"]));
+                                        $data[$key]["hour_end"] = date("h.i A", strtotime($data[$key]["hour_end"]));
                                         $data[$key]["date"] = date("Y/m/d", strtotime('+' . $key . " days", strtotime($data[0]["date"])));
                                         $data[$key]["dateFormated"] = date("l, d / F", strtotime($data[$key]["date"]));
                                     }
@@ -123,7 +175,8 @@ class ClientsController extends Controller {
 
     public function getSchedule($schedule_id) {
         return SchedulesDetail::where("schedule_id", $schedule_id)
-                        ->select("schedules_detail.id", "parameters.code as day_id", "schedules.location_id", "courses.id as course_id", "courses.value", "schedules_detail.schedule_id", "locations.description as location", "courses.description as course", "parameters.description as day", "schedules_detail.hour", "schedules_detail.hour_end", "locations.address")
+                        ->select("schedules_detail.id", "parameters.code as day_id", "schedules.location_id", "courses.id as course_id", "courses.value", "schedules_detail.schedule_id", "locations.description as location", "courses.description as course", "parameters.description as day", "schedules_detail.hour", "schedules_detail.hour_end", "locations.address"
+                                , "locations.phone")
                         ->join("schedules", "schedules.id", "schedules_detail.schedule_id")
                         ->join("locations", "locations.id", "schedules.location_id")
                         ->join("courses", "courses.id", "schedules_detail.course_id")
@@ -140,7 +193,6 @@ class ClientsController extends Controller {
         $sche = $this->getSchedule($schedule_id);
         $sche[0]["date"] = date("Y/m/d", strtotime(date($year . "-" . $month . "-" . $day_week)));
         $sche[0]["dateFormated"] = date("l, d / F", strtotime($sche[0]["date"]));
-
         foreach ($sche as $key => $value) {
             $sche[$key]["value"] = "$ " . number_format($sche[$key]["value"], 2, ",", ".");
 
@@ -155,9 +207,9 @@ class ClientsController extends Controller {
         session(['sche' => $sche, "months" => $month, "addon" => $addon]);
 
         if ($course->dui == true) {
-            return view("Purchase.client.formdui", compact("sche", "month", "addon"));
+            return view("Purchase.client.formdui", compact("sche", "month", "addon", "schedule_id", "day_week", "year"));
         } else {
-            return view("Purchase.client.form", compact("sche", "month", "addon"));
+            return view("Purchase.client.form", compact("sche", "month", "addon", "schedule_id", "day_week", "year"));
         }
     }
 
@@ -173,7 +225,102 @@ class ClientsController extends Controller {
 
     public function payment(Request $req) {
         $in = $req->all();
-        dd($in);
+        $sche = $this->getSchedule($in["schedule_id"]);
+
+        $price = $sche[0]["value"];
+        $course = $sche[0]["course"];
+        $payer = new Payer();
+        $payer->setPaymentMethod("paypal");
+
+
+        $item = new Item();
+
+        $item->setName('Price Course')
+                ->setCurrency('USD')
+                ->setQuantity(1)
+                ->setPrice($price);
+
+        $item_list = new ItemList();
+        $item_list->setItems([$item]);
+
+
+        $amount = new Amount();
+        $amount->setCurrency('USD')
+                ->setTotal($price);
+
+
+        $transaction = new Transaction();
+        $transaction->setAmount($amount)
+                ->setItemList($item_list)
+                ->setDescription($course);
+
+
+        $redirect_urls = new RedirectUrls();
+
+        $redirect_urls = new RedirectUrls();
+        $redirect_urls->setReturnUrl(\URL::route("payment.status"))
+                ->setCancelUrl(\URL::route("payment.status"));
+
+        $payment = new Payment();
+        $payment->setIntent('Sale')
+                ->setPayer($payer)
+                ->setRedirectUrls($redirect_urls)
+                ->setTransactions(array($transaction));
+
+        try {
+            $payment->create($this->_api_context);
+        } catch (\PayPal\Exception\PayPalConnectionException $ex) {
+            Session::flash('alert', 'Something Went wrong, funds could not be loaded');
+            Session::flash('alertClass', 'danger no-auto-close');
+            $err_data = json_decode($ex->getData(), true);
+            dd($err_data);
+        }
+
+        foreach ($payment->getLinks() as $link) {
+            if ($link->getRel() == 'approval_url') {
+                $redirect_url = $link->getHref();
+                break;
+            }
+        }
+
+        Session::put('paypal_payment_id', $payment->getId());
+        if (isset($redirect_url)) {
+            /** redirect to paypal * */
+            return \Redirect::away($redirect_url);
+        } else {
+            dd("problemas");
+        }
+    }
+
+    public function getPaymentStatus() {
+        /** Get the payment ID before session clear * */
+        $payment_id = Session::get('paypal_payment_id');
+        /** clear the session payment ID * */
+        Session::forget('paypal_payment_id');
+        if (empty(Input::get('PayerID')) || empty(Input::get('token'))) {
+            \Session::put('error', 'Payment failed');
+            echo "error";
+            Exit;
+        }
+        $payment = Payment::get($payment_id, $this->_api_context);
+        /** PaymentExecution object includes information necessary * */
+        /** to execute a PayPal account payment. * */
+        /** The payer_id is added to the request query parameters * */
+        /** when the user is redirected from paypal back to your site * */
+        $execution = new PaymentExecution();
+        $execution->setPayerId(Input::get('PayerID'));
+        /*         * Execute the payment * */
+        $result = $payment->execute($execution, $this->_api_context);
+
+        if ($result->getState() == 'approved') {
+
+            /** it's all right * */
+            /** Here Write your database logic like that insert record or value in database if you want * */
+//            \Session::put('success', 'Payment success');
+            return \Redirect::route('paypal.clients')->with("success", 'Payment success');
+        }
+        \Session::put('error', 'Payment failed');
+//        return Redirect::route('addmoney.paywithpaypal');
     }
 
     public function paymentDui(Request $req) {

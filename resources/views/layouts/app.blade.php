@@ -7,8 +7,9 @@
 
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
-
+        <script>var PATH = '{{url("/")}}'</script>
         <title>Alfa Traffic</title>
+        <link rel="shortcut icon" type="image/png" href="{!!asset('images/favicon.ico')!!}"/>
 
         <!-- Styles -->
         <!--<link href="/css/app.css" rel="stylesheet">-->
@@ -63,9 +64,31 @@ echo json_encode([
 ]);
 ?>
         </script>
+        <style>
+            .navbar-default {
+                background-color: white;
+                box-shadow: 0 4px 4px -4px #9B9B9B;
+            }
+            .panel-yellow>.panel-heading{
+                color: black;
+                background-color: #fff212;
+                border-color: #337ab7;
+                font-weight: bold;
+            }
+            .panel-yellow {
+
+            }
+        </style>
     </head>
     <body>
         <div id="app">
+            <!--            <div class="container-fluid" style="padding: 0;margin:0 auto;">
+                            <div class="row" >
+                                <div class="col-lg-12" style="padding: 0;margin:0 auto;">
+                                    <img src='images/linea.png' width="99%">
+                                </div>
+                            </div>
+                        </div>-->
             <nav class="navbar navbar-default navbar-static-top">
                 <div class="container">
                     <div class="navbar-header">
@@ -80,7 +103,7 @@ echo json_encode([
 
                         <!-- Branding Image -->
                         <a class="navbar-brand" href="{{ url('/') }}">
-                            {{ config('app.name', 'Laravel') }}
+                            <img alt="Brand" src="{{ url('/') }}/images/logo80x26.png">
                         </a>
                     </div>
 
@@ -97,6 +120,7 @@ echo json_encode([
                                     <li><a href="{{url('/courses') }}">Courses</a></li>
                                     <li><a href="{{url('/schedules') }}">Schedules</a></li>
                                     <li><a href="{{url('/addon') }}">AddON</a></li>
+                                    <li><a href="{{url('/events') }}">Events</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href="{{url('/clients') }}">Client</a></li>
                                 </ul>
@@ -106,7 +130,7 @@ echo json_encode([
                                 <ul class="dropdown-menu">
                                     <li><a href="{{url('/users') }}">Users</a></li>
                                     <li><a href="{{url('/role') }}">Role</a></li>
-                                    
+
                                 </ul>
                             </li>
                             <li class="dropdown">

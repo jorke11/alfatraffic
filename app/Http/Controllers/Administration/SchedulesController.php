@@ -9,20 +9,17 @@ use App\Models\Administration\Schedules;
 use App\Models\Administration\SchedulesDetail;
 use App\Models\Administration\Locations;
 use DB;
+use App\Models\Administration\Parameters;
 
 class SchedulesController extends Controller {
-
-    public $day;
 
     public function __construct() {
         date_default_timezone_set("America/Bogota");
         $this->middleware("auth");
-        $this->day = array("1" => "monday", "2" => "tuesday", "3" => "wednesday", "4" => "thurday",
-            "5" => "friday", "6" => "saturday", "7" => "sunday");
     }
 
     public function index() {
-        $day = $this->day;
+        $day = Parameters::where("group", "days")->get();
         $courses = Courses::all();
         $locations = Locations::all();
         $today = $this->getDay();
@@ -89,6 +86,27 @@ class SchedulesController extends Controller {
         $header = Schedules::FindOrFail($id);
         $detail = $this->getDetailAll($id);
         return response()->json(["success" => true, "header" => $header, "detail" => $detail]);
+    }
+
+    public function getModalData($id) {
+        $location = Locations::Find($id);
+        $days = null;
+        $courses = null;
+
+        if ($location != null) {
+            if ($location->days != '') {
+                $days = Parameters::where("group", "days");
+                $arr = json_decode($location->days);
+                $days->whereIn("code", $arr);
+                $days = $days->get();
+            }
+            if ($location->courses != '') {
+                $arr = json_decode($location->courses);
+                $courses = Courses::whereIn("id", $arr)->get();
+            }
+        }
+
+        return response()->json(["success" => true, "days" => $days, "courses" => $courses]);
     }
 
     public function update(Request $request, $id) {

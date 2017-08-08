@@ -83,7 +83,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Modal title</h4>
+                <h4 class="modal-title">Add Detail</h4>
             </div>
             <div class="modal-body">
                 <div class="container-fluid">
@@ -96,11 +96,8 @@
                             <div class="col-lg-12">
                                 <div class="form-group">
                                     <label for="email">Courses</label>
-                                    <select class="form-control input-detail" name="course_id" id="course_id">
+                                    <select class="form-control input-detail" name="course_id" id="course_id" required>
                                         <option value="0">Selection</option>
-                                        @foreach($courses as $i=>$val)
-                                        <option value="{{$val->id}}">{{$val->description}}</option>
-                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -110,11 +107,8 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="email">Day</label>
-                                    <select class="form-control input-detail" name="day" id="day">
+                                    <select class="form-control input-detail" name="day" id="day" required>
                                         <option value="0">Selection</option>
-                                        @foreach($day as $i=>$val)
-                                        <option value="{{$i}}">{{$val}}</option>
-                                        @endforeach
                                     </select>
                                 </div>
 
@@ -122,7 +116,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="email">Hour</label>
-                                    <input id="hour" name="hour" class="form-control input-detail" value="{{date("H:i")}}">
+                                    <input id="hour" name="hour" class="form-control input-detail" value="{{date("H:i")}}" required>
 
                                 </div>
                             </div>
@@ -131,7 +125,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="email">Duration</label>
-                                    <input id="duration" name="duration" class="form-control input-detail" value="1">
+                                    <input id="duration" name="duration" class="form-control input-detail" value="1" required>
                                 </div>
                             </div>
                         </div>

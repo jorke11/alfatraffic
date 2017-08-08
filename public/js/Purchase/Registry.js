@@ -10,11 +10,7 @@ function Registry() {
             $("#modalNew").modal("show");
         });
 
-        $('#datetimepicker3').datetimepicker({
-            format: 'd.m.Y H:i',
-            inline: true,
-            lang: 'ru'
-        });
+
 
         $("#frm #name").blur(function () {
             $("#name_building").val($(this).val());
@@ -36,7 +32,25 @@ function Registry() {
         $("#zip_code").blur(function () {
             $("#zip_code_building").val($(this).val());
         })
-        $("#date_birth").datetimepicker({format: 'Y-m-d h:i'});
+        $("#date_birth").datetimepicker({format: 'm/d/y'});
+
+        $("#saveDate").click(function () {
+            $("#date-selected").val($("#datetimepicker3").val());
+            $("#modaldui").modal("hide");
+            $("#frm").submit();
+        });
+        $("#complete").click(function () {
+            if ($("#date-selected").val() != '') {
+
+            } else {
+                $("#modaldui").modal("show");
+                $('#datetimepicker3').datetimepicker({
+                    format: 'Y/m/d H:i',
+                });
+            }
+        })
+
+
     }
 
     this.save = function () {

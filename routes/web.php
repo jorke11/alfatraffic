@@ -23,20 +23,32 @@ Route::resource('/courses', 'Administration\CoursesController');
 Route::resource('/parameters', 'Administration\ParametersController');
 Route::resource('/addon', 'Administration\AddonController');
 
+Route::resource('events', 'Administration\EventsController');
+
+
 Route::resource('/schedules', 'Administration\SchedulesController');
 Route::get('/schedules/getTable/{day}/{course_id}/{location_id}', 'Administration\SchedulesController@getTable');
 
 Route::post('/schedules/detail', 'Administration\SchedulesController@storeDetail');
 Route::get('/schedules/{id}/editDetail', 'Administration\SchedulesController@getDetail');
 Route::delete('/schedules/detail/{id}', 'Administration\SchedulesController@destroyItem');
+Route::get('/schedules/{id}/getModal', 'Administration\SchedulesController@getModalData');
 
 
-Route::get('/clients', 'Purchase\ClientsController@index');
+//Route::get('/clients', 'Purchase\ClientsController@index');
+Route::get('clients', ["as" => "paypal.clients", "uses" => 'Purchase\ClientsController@index']);
 Route::get('/clients/getList', 'Purchase\ClientsController@getList');
 Route::get('/clients/{schedule_id}/{year}/{month}/{day_week}', 'Purchase\ClientsController@formInput');
 Route::post('/ClientDui', 'Purchase\ClientsController@formDui');
-Route::post('/payment', 'Purchase\ClientsController@payment');
+
+
+Route::post('payment', 'Purchase\ClientsController@payment');
+Route::get('payment', ["as" => "payment.status", "uses" => 'Purchase\ClientsController@getPaymentStatus']);
 Route::post('/paymentDui', 'Purchase\ClientsController@paymentDui');
+Route::get('paypal', 'Payment\PaypalController@index');
+Route::post('paypal/payment', ["as" => "paypal.payment", "uses" => 'Payment\PaypalController@payment']);
+Route::get('paypal/payment', ["as" => "paypal.status", "uses" => 'Payment\PaypalController@getPaymentStatus']);
+
 
 Route::get('/drivered', 'PageController@driverEd');
 Route::get('/scholarship', 'PageController@scholarship');
@@ -65,6 +77,9 @@ Route::put('/role/savePermission/{id}', 'Security\RoleController@savePermissionR
 Route::get('/api/listLocations', function() {
     return Datatables::queryBuilder(DB::table("locations"))->make(true);
 });
+Route::get('/api/listEvents', function() {
+    return Datatables::queryBuilder(DB::table("events"))->make(true);
+});
 
 Route::get('/api/listCourses', function() {
     return Datatables::queryBuilder(DB::table("courses"))->make(true);
@@ -88,7 +103,6 @@ Route::get('/api/listAddon', function() {
     $sql = DB::table('addon')
             ->select("addon.id", "addon.description", "schedules.description as schedule")
             ->join("schedules", "schedules.id", "addon.schedule_id")
-            
             ->orderBy("id", "asc");
 
     return Datatables::queryBuilder($sql)->make(true);

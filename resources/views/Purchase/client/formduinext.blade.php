@@ -19,7 +19,7 @@
             <div class="row">
                 <div class="col-lg-6">
                     <label for="email">Calendar</label>
-                    <input type="text" id="datetimepicker3" name='datetimepicker3'>
+                    <input type="text" id="datetimepicker3" name='datetimepicker3' class="form-control">
                 </div>
             </div>
             <div class="row">

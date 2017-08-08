@@ -1,7 +1,7 @@
 function Clients() {
     var table;
     this.init = function () {
-        
+
         var location = [], courses = [], dates = [];
         $("input[name='locations[]']:checked").each(function () {
             location.push($(this).val());
@@ -136,7 +136,7 @@ function Clients() {
         param.start_date = start_date;
 
         $.ajax({
-            url: "clients/getList",
+            url: PATH + "/clients/getList",
             method: "get",
             data: param,
             dataType: 'JSON',
@@ -152,35 +152,37 @@ function Clients() {
 
     this.setList = function (data) {
         var html = "", rowspan = 0;
-        console.log(data)
+
         $.each(data, function (i, val) {
             if (val != undefined) {
-                html += '<div class="panel panel-default">';
-                html += '<div class="panel-heading">';
-                html += '<div class="row"><div class="col-lg-5">' + val[0].course + '</div><div class="col-lg-4">' + val[0].location + '</div></div>';
-                html += '</div>'
-                html += '<table class="table table-condensed" style="wdth:100%">'
+                if (val[0] != undefined) {
+                    html += '<div class="panel panel-yellow">';
+                    html += '<div class="panel-heading">';
+                    html += '<div class="row"><div class="col-lg-5">' + val[0].course + '</div><div class="col-lg-4">' + val[0].location + '</div></div>';
+                    html += '</div>'
+                    html += '<table class="table table-condensed" style="wdth:100%">'
 
-                rowspan = val.length;
-                $.each(val, function (i, value) {
-                    if (i == 0) {
-                        html += '<tr>';
-                        html += '<td align="left" width="40%"> ';
-                        html += value.dateFormated + '.....' + value.hour + ' - ' + value.hour_end + '</td>';
-                        html += '<td rowspan="' + rowspan + '" align="center">' + value.address + '</td>';
-                        html += '<td rowspan="' + rowspan + '" align="center"><a class="btn btn-success" href="clients/' + value.schedule_id + '/' + value.date + '">Register</button></td>';
-                        html += '</tr>'
-                    } else {
-                        html += '<tr>';
-                        html += '<td align="left"> ';
-                        html += value.dateFormated + '.....' + value.hour + ' - ' + value.hour_end + '</td>';
-                        html += '</tr>'
-                    }
-
-
-                });
+                    rowspan = val.length;
+                    $.each(val, function (i, value) {
+                        value.message = (value.message == null) ? '' : "<br><strong>" + value.message + "</strong>";
+                        if (i == 0) {
+                            value.phone = (value.phone == null) ? '' : "<br>Phone: " + value.phone;
+                            html += '<tr>';
+                            html += '<td align="left" width="40%"> ';
+                            html += value.dateFormated + '.....' + value.hour + ' - ' + value.hour_end + '</td>';
+                            html += '<td rowspan="' + rowspan + '" align="center">' + value.address + value.phone + value.message + '</td>';
+                            html += '<td rowspan="' + rowspan + '" align="center"><a class="btn btn-primary" href="' + PATH + '/clients/' + value.schedule_id + '/' + value.date + '">Register</button></td>';
+                            html += '</tr>'
+                        } else {
+                            html += '<tr>';
+                            html += '<td align="left"> ';
+                            html += value.dateFormated + '.....' + value.hour + ' - ' + value.hour_end + '</td>';
+                            html += '</tr>'
+                        }
+                    });
 //
-                html += '</table></div>';
+                    html += '</table></div>';
+                }
             }
         })
 

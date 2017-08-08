@@ -8,6 +8,10 @@ function Locations() {
             $(".input-locations").cleanFields();
             $("#modalNew").modal("show");
         });
+
+        $('#days').select2();
+        $('#courses').select2();
+
     }
 
     this.save = function () {
@@ -61,7 +65,10 @@ function Locations() {
             data: data,
             dataType: 'JSON',
             success: function (data) {
+                $(".input-locations").cleanFields();
                 $(".input-locations").setFields({data: data});
+                $("#days").val(data.days).trigger('change');
+                $("#courses").val(data.courses).trigger('change');
             }
         })
     }
@@ -96,10 +103,12 @@ function Locations() {
             columns: [
                 {data: "id"},
                 {data: "description"},
+                {data: "phone"},
                 {data: "address"},
                 {data: "latitude"},
                 {data: "longitude"},
-                {data: "order"}
+                {data: "order"},
+                {data: "status_id"}
             ],
             order: [[1, 'ASC']],
             aoColumnDefs: [
@@ -110,7 +119,7 @@ function Locations() {
                     }
                 },
                 {
-                    targets: [6],
+                    targets: [8],
                     searchable: false,
                     mData: null,
                     mRender: function (data, type, full) {

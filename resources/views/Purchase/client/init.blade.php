@@ -65,7 +65,13 @@
         </div>
     </div>
     <div class="col-lg-9">
-
+        @if(Session::has('success'))
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="alert alert-success"><strong>Successfull Purchase!</strong></div>
+            </div>
+        </div>
+        @endif
         <div id="content-list">
 
         </div>

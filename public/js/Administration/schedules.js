@@ -16,6 +16,34 @@ function Schedules() {
 
 
         $("#btnAddDetail").click(this.saveDetail);
+
+        $("#location_id").change(this.dayslocation);
+    }
+
+    this.dayslocation = function () {
+        $(this).val();
+
+        var url = "/schedules/" + $(this).val() + "/getModal";
+        $.ajax({
+            url: url,
+            method: "GET",
+            dataType: 'JSON',
+            success: function (data) {
+                var html = "";
+                html += "<option value='0'>Seleccione</option>";
+                $.each(data.courses, function (i, val) {
+                    html += "<option value='" + val.id + "'>" + val.description + "</option>";
+                })
+                $("#course_id").html(html);
+                html = "";
+                html += "<option value='0'>Seleccione</option>";
+                $.each(data.days, function (i, val) {
+                    html += "<option value='" + val.code + "'>" + val.description + "</option>";
+                })
+                $("#day").html(html);
+            }
+        })
+
     }
 
     this.new = function () {
@@ -55,7 +83,7 @@ function Schedules() {
                         $(".input-schedules").setFields({data: data.header});
                         table.ajax.reload();
                         toastr.success("ok");
-                        $("#btnNewDetail").attr("disabled",false);
+                        $("#btnNewDetail").attr("disabled", false);
                     }
                 }
             })
@@ -116,6 +144,7 @@ function Schedules() {
             success: function (data) {
                 $('#myTabs a[href="#management"]').tab('show');
                 $(".input-schedules").setFields({data: data.header});
+                $("#btnNewDetail").attr("disabled", false);
                 obj.setTableDetail(data.detail);
 
             }

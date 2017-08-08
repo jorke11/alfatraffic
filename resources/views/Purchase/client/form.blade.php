@@ -15,6 +15,11 @@
 <div class="container-fluid">
     {!! Form::open(['id'=>'frm','url' => 'payment', 'method' => 'post']) !!}
     <div class="row">
+        <input type="hidden" name="schedule_id" value="{{$schedule_id}}">
+        <input type="hidden" name="year" value="{{$year}}">
+        <input type="hidden" name="month" value="{{$month}}">
+        <input type="hidden" name="day_week" value="{{$day_week}}">
+        
         <div class="col-lg-6">
             <div class="row">
                 <div class="col-lg-6">
@@ -213,7 +218,7 @@
         </div>
 
         <div class="col-lg-6  " >
-            <div class="panel panel-default column-left">
+            <div class="panel panel-yellow column-left">
                 <div class="panel-heading">
                     <h3 class="panel-title">Order Summary</h3>
                 </div>

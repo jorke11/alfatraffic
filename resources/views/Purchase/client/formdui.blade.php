@@ -13,7 +13,11 @@
     }
 </style>
 <div class="container-fluid">
-    {!! Form::open(['id'=>'frm','url' => 'ClientDui', 'method' => 'post']) !!}
+    {!! Form::open(['id'=>'frm','url' => 'payment', 'method' => 'post']) !!}
+    <input type="hidden" name="schedule_id" value="{{$schedule_id}}">
+    <input type="hidden" name="year" value="{{$year}}">
+    <input type="hidden" name="month" value="{{$month}}">
+    <input type="hidden" name="day_week" value="{{$day_week}}">
     <div class="row">
         <div class="col-lg-6">
             <div class="row">
@@ -111,15 +115,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="form-group">
-                        <label for="email">Reason for Attending</label>
-                        <input type="text" class="form-control input-category input-sm" id="reason" name='reason' required>
-                    </div>
-                </div>
-            </div>
             <br>
             <div class="row">
                 <div class="col-lg-12">
@@ -203,17 +198,20 @@
                         <input type="text" class="form-control input-category input-sm" id="security_code_building" name='security_code_building' required>
                     </div>
                 </div>
+
+                <input type="hidden" class="input-category" id="date-selected" name='date-selected'>
+
             </div>
             <div class="row">
                 <div class="col-lg-3 col-lg-offset-4">
-                    <button class="btn btn-primary" id="complete">Continue Registration <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></button>
+                    <button type="button" class="btn btn-primary" id="complete">Continue Registration <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></button>
                 </div>
             </div>
             <br>
         </div>
 
         <div class="col-lg-6  " >
-            <div class="panel panel-default column-left">
+            <div class="panel panel-yellow column-left">
                 <div class="panel-heading">
                     <h3 class="panel-title">Order Summary</h3>
                 </div>
@@ -234,7 +232,7 @@
                         <div class="col-lg-12 text-left">
                             @foreach($sche as $val)
                             <div class="row">
-                                <div class="col-lg-6">{{$val["day"]}}, {{$month}}/{{$val["dayweek"]}} .....{{$val["hour"]}} - {{$val["hour_end"]}}</div>
+                                <div class="col-lg-6">{{$val["dateFormated"]}} .....{{$val["hour"]}} - {{$val["hour_end"]}}</div>
                             </div>
                             @endforeach
                         </div>
@@ -268,5 +266,27 @@
     {!!Form::close()!!}
 </div>
 
-{!!Html::script('js/Purchase/Registry.js')!!}
-@endsection
+<div class="modal fade" tabindex="-1" role="dialog" id="modaldui">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add Calendar</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <input type="text" id="datetimepicker3" name='datetimepicker3' class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" id="saveDate">Save changes</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+    {!!Html::script('js/Purchase/Registry.js')!!}
+    @endsection

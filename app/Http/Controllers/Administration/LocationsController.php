@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Administration;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Administration\Locations;
+use App\Models\Administration\Courses;
+use App\Models\Administration\Parameters;
 
 class LocationsController extends Controller {
 
@@ -13,7 +15,9 @@ class LocationsController extends Controller {
     }
 
     public function index() {
-        return view("Administration.locations.init");
+        $day = Parameters::where("group", "days")->get();
+        $courses = Courses::all();
+        return view("Administration.locations.init", compact("day", "courses"));
     }
 
     public function create() {
@@ -25,7 +29,15 @@ class LocationsController extends Controller {
             $input = $request->all();
             unset($input["id"]);
 //            $user = Auth::User();
-//            $input["users_id"] = 1;
+            $input["status_id"] = 1;
+
+            if (isset($input["days"])) {
+                $input["days"] = json_encode($input["days"]);
+            }
+            if (isset($input["courses"])) {
+                $input["courses"] = json_encode($input["courses"]);
+            }
+
             $result = Locations::create($input);
             if ($result) {
                 return response()->json(['success' => true]);
@@ -36,13 +48,24 @@ class LocationsController extends Controller {
     }
 
     public function edit($id) {
-        $suppliers = Locations::FindOrFail($id);
-        return response()->json($suppliers);
+        $row = Locations::Find($id);
+        $row->days = json_decode($row->days);
+        $row->courses = json_decode($row->courses);
+        return response()->json($row);
     }
 
     public function update(Request $request, $id) {
         $category = Locations::FindOrFail($id);
         $input = $request->all();
+
+        if (isset($input["days"])) {
+            $input["days"] = json_encode($input["days"]);
+        }
+        if (isset($input["courses"])) {
+            $input["courses"] = json_encode($input["courses"]);
+        }
+        $input["status_id"] = 1;
+
         $result = $category->fill($input)->save();
         if ($result) {
             return response()->json(['success' => true]);
