@@ -1,21 +1,13 @@
-function Locations() {
+function Purchases() {
     var table;
     this.init = function () {
         table = this.table();
-        $("#new").click(this.save);
-        $("#edit").click(this.edit);
-        $("#btnNew").click(function () {
-            $(".input-locations").cleanFields();
-            $("#modalNew").modal("show");
-        });
+        $("#btnNew").click(this.new);
+        $("#btnSave").click(this.save);
+    }
 
-        $('#courses').select2();
-
-        $('.hours').datetimepicker({
-            datepicker: false,
-            format: 'H:i'
-        });
-
+    this.new = function () {
+        $(".input-parameters").cleanFields();
     }
 
     this.save = function () {
@@ -26,19 +18,18 @@ function Locations() {
         var id = $("#frm #id").val();
         var msg = '';
 
-        var validate = $(".input-locations").validate();
+        var validate = $(".input-parameters").validate();
 
         if (validate.length == 0) {
             if (id == '') {
                 method = 'POST';
-                url = "locations";
+                url = "parameters";
                 msg = "Created Record";
             } else {
                 method = 'PUT';
-                url = "locations/" + id;
+                url = "parameters/" + id;
                 msg = "Edited Record";
             }
-
 
             $.ajax({
                 url: url,
@@ -48,7 +39,7 @@ function Locations() {
                 success: function (data) {
                     if (data.success == true) {
                         $("#modalNew").modal("hide");
-                        $(".input-locations").setFields({data: data});
+                        $(".input-parameters").setFields({data: data});
                         table.ajax.reload();
                         toastr.success(msg);
                     }
@@ -59,10 +50,10 @@ function Locations() {
         }
     }
 
-    this.show = function (id) {
+    this.showModal = function (id) {
         var frm = $("#frmEdit");
         var data = frm.serialize();
-        var url = "/locations/" + id + "/edit";
+        var url = "/parameters/" + id + "/edit";
         $("#modalNew").modal("show");
         $.ajax({
             url: url,
@@ -70,21 +61,7 @@ function Locations() {
             data: data,
             dataType: 'JSON',
             success: function (data) {
-                $(".input-locations").cleanFields();
-                $(".input-locations").setFields({data: data});
-                $("#courses").val(data.courses).trigger('change');
-
-                $.each(data.days, function (i, val) {
-                    $(".hours").each(function () {
-                        if ($(this).attr("id") == "init_" + val.day) {
-                            $($(this).val(val.init));
-                        }
-                        if ($(this).attr("id") == "end_" + val.day) {
-                            $($(this).val(val.init));
-                        }
-                    });
-                })
-
+                $(".input-parameters").setFields({data: data});
             }
         })
     }
@@ -93,7 +70,7 @@ function Locations() {
         toastr.remove();
         if (confirm("Deseas eliminar")) {
             var token = $("input[name=_token]").val();
-            var url = "/locations/" + id;
+            var url = "/parameters/" + id;
             $.ajax({
                 url: url,
                 headers: {'X-CSRF-TOKEN': token},
@@ -115,27 +92,26 @@ function Locations() {
         return $('#tbl').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "/api/listLocations",
+            ajax: "/api/listPurchases",
             columns: [
                 {data: "id"},
-                {data: "description"},
-                {data: "phone"},
-                {data: "address"},
-                {data: "latitude"},
-                {data: "longitude"},
-                {data: "order"},
-                {data: "status_id"}
+                {data: "name"},
+                {data: "last_name"},
+                {data: "telephone"},
+                {data: "state"},
+                {data: "email"},
+                {data: "status"},
             ],
             order: [[1, 'ASC']],
             aoColumnDefs: [
                 {
-                    aTargets: [0, 1, 2, 3],
+                    aTargets: [0, 1, 2, 3,4],
                     mRender: function (data, type, full) {
-                        return '<a href="#" onclick="obj.show(' + full.id + ')">' + data + '</a>';
+                        return '<a href="#" onclick="obj.showModal(' + full.id + ')">' + data + '</a>';
                     }
                 },
                 {
-                    targets: [8],
+                    targets: [7],
                     searchable: false,
                     mData: null,
                     mRender: function (data, type, full) {
@@ -148,5 +124,5 @@ function Locations() {
 
 }
 
-var obj = new Locations();
+var obj = new Purchases();
 obj.init();

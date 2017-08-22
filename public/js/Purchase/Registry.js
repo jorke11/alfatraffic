@@ -23,11 +23,12 @@ function Registry() {
         $("#address").blur(function () {
             $("#address_building").val($(this).val());
         })
+
         $("#city_id").blur(function () {
             $("#city_id_building").val($(this).val());
         })
-        $("#state").blur(function () {
-            $("#state_building").val($(this).val());
+        $("#state_id").change(function () {
+            $("#state_id_building").val($(this).val()).change();
         })
         $("#zip_code").blur(function () {
             $("#zip_code_building").val($(this).val());
@@ -40,13 +41,23 @@ function Registry() {
             $("#frm").submit();
         });
         $("#complete").click(function () {
-            if ($("#date-selected").val() != '') {
+            var validate = $(".input-category").validate();
+            if (validate.length == 0) {
 
+                if ($("#email").val() == $("#confirm_email").val()) {
+                    if ($("#date-selected").val() != '') {
+                        $("#frm").submit();
+                    } else {
+                        $("#modaldui").modal("show");
+                        $('#datetimepicker3').datetimepicker({
+                            format: 'Y/m/d H:i',
+                        });
+                    }
+                } else {
+                    toastr.error("Email and confirmation must be equals!");
+                }
             } else {
-                $("#modaldui").modal("show");
-                $('#datetimepicker3').datetimepicker({
-                    format: 'Y/m/d H:i',
-                });
+                toastr.error("Fields Required!");
             }
         })
 

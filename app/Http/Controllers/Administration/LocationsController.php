@@ -55,18 +55,28 @@ class LocationsController extends Controller {
     }
 
     public function update(Request $request, $id) {
-        $category = Locations::FindOrFail($id);
+        $row = Locations::FindOrFail($id);
         $input = $request->all();
 
-        if (isset($input["days"])) {
-            $input["days"] = json_encode($input["days"]);
+        $input["init"] = array_filter($input["init"]);
+        $input["end"] = array_filter($input["end"]);
+        $day = null;
+        if (count($input["init"]) > 0) {
+
+            foreach ($input["init"] as $i => $value) {
+                $day[] = array("day" => $i + 1, "init" => $value, "end" => $input["end"][$i]);
+            }
+        }
+
+        if ($day != null) {
+            $input["days"] = json_encode($day);
         }
         if (isset($input["courses"])) {
             $input["courses"] = json_encode($input["courses"]);
         }
         $input["status_id"] = 1;
 
-        $result = $category->fill($input)->save();
+        $result = $row->fill($input)->save();
         if ($result) {
             return response()->json(['success' => true]);
         } else {

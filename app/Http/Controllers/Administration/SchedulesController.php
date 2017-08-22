@@ -97,7 +97,13 @@ class SchedulesController extends Controller {
             if ($location->days != '') {
                 $days = Parameters::where("group", "days");
                 $arr = json_decode($location->days);
-                $days->whereIn("code", $arr);
+                
+                foreach ($arr as $value) {
+                    $wh[]=$value->day;
+                }
+                
+                                
+                $days->whereIn("code", $wh);
                 $days = $days->get();
             }
             if ($location->courses != '') {

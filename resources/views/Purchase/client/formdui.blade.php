@@ -54,7 +54,12 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="email">State</label>
-                                <input type="text" class="form-control input-category input-sm" id="state" name='state' required>
+                                <select id="state_id" name="state_id" class="form-control input-category input-sm" required="">
+                                    <option value="0">Selection</option>
+                                    @foreach($states as $val)
+                                    <option value="{{$val->id}}">{{$val->description}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -78,7 +83,7 @@
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label for="email">Telephone</label>
-                        <input type="text" class="form-control input-category input-sm" id="telephone" name='telephone' required>
+                        <input type="text" class="form-control input-category input-sm" id="telephone" name='telephone' data-type="number" required>
                     </div>
                 </div>
             </div>
@@ -102,7 +107,7 @@
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="text" class="form-control input-category input-sm" id="email" name='email' required>
+                        <input type="email" class="form-control input-category input-sm" id="email" name='email' data-type="email" required>
                     </div>
                 </div>
             </div>
@@ -111,7 +116,7 @@
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label for="email">Confirm Email</label>
-                        <input type="text" class="form-control input-category input-sm" id="confirm_email" name='confirm_email' required>
+                        <input type="text" class="form-control input-category input-sm" id="confirm_email" name='confirm_email' data-type="email" required>
                     </div>
                 </div>
             </div>
@@ -163,7 +168,12 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="email">State</label>
-                                <input type="text" class="form-control input-category input-sm" id="state_building" name='state_building' required>
+                                <select id="state_id_building" name="state_id_building" class="form-control input-category input-sm" required="">
+                                    <option value="0">Selection</option>
+                                    @foreach($states as $val)
+                                    <option value="{{$val->id}}">{{$val->description}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="col-lg-6">

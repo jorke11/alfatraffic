@@ -26,6 +26,20 @@ Route::resource('/addon', 'Administration\AddonController');
 Route::resource('events', 'Administration\EventsController');
 
 
+Route::get('/purchases', 'Report\PurchasesController@index');
+
+
+Route::resource('/email', 'Administration\EmailController');
+Route::post('/email/detail', 'Administration\EmailController@storeDetail');
+Route::put('/email/detail/{id}', 'Administration\EmailController@updateDetail');
+Route::get('/email/detail/{id}/edit', 'Administration\EmailController@editDetail');
+Route::delete('/email/detail/{id}', 'Administration\EmailController@destroyDetail');
+
+Route::get('/api/listEmail', function() {
+    return Datatables::eloquent(App\Models\Administration\Email::query())->make(true);
+});
+
+
 Route::resource('/schedules', 'Administration\SchedulesController');
 Route::get('/schedules/getTable/{day}/{course_id}/{location_id}', 'Administration\SchedulesController@getTable');
 
@@ -36,10 +50,13 @@ Route::get('/schedules/{id}/getModal', 'Administration\SchedulesController@getMo
 
 
 //Route::get('/clients', 'Purchase\ClientsController@index');
+Route::get('clients/page/{id}', 'Purchase\ClientsController@index');
 Route::get('clients', ["as" => "paypal.clients", "uses" => 'Purchase\ClientsController@index']);
 Route::get('/clients/getList', 'Purchase\ClientsController@getList');
 Route::get('/clients/{schedule_id}/{year}/{month}/{day_week}', 'Purchase\ClientsController@formInput');
 Route::post('/ClientDui', 'Purchase\ClientsController@formDui');
+Route::get('clients/testNotification/{id}', 'Purchase\ClientsController@testNotification');
+Route::get('clients/testSendNotification/{id}', 'Purchase\ClientsController@testSendNotification');
 
 
 Route::post('payment', 'Purchase\ClientsController@payment');
@@ -89,9 +106,16 @@ Route::get('/api/listSchedules', function(Request $request) {
     $query = DB::table("schedules");
     return Datatables::queryBuilder($query)->make(true);
 });
+
 Route::get('/api/listParameter', function() {
     return Datatables::queryBuilder(
                     DB::table('parameters')->orderBy("id", "asc")
+            )->make(true);
+});
+
+Route::get('/api/listPurchases', function() {
+    return Datatables::queryBuilder(
+                    DB::table('vpurchases')->orderBy("id", "desc")
             )->make(true);
 });
 

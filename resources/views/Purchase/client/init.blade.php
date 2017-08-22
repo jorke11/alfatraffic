@@ -35,7 +35,8 @@
                         @foreach($courses as $i=>$val)
                         <tr>
                             <td>
-                                <input type="checkbox" name="courses[]" value="{{$val->id}}" class="input-courses"> {{$val->description}}
+                                <input type="checkbox" name="courses[]" value="{{$val->id}}" {{($course_id==$val->id)?'checked':''}}
+                                       class="input-courses"> {{$val->description}}
                             </td>
                         </tr>
                         @endforeach

@@ -226,78 +226,6 @@ jQuery.fn.currentDate = function (min, format) {
     return this;
 }
 
-//jQuery.fn.validate = function (param) {
-//    param = param || {};
-//    var arrData = []
-//    this.each(function () {
-//        var elem = $(this);
-//
-//        if (elem.attr('disabled') != 'disabled') {
-//
-//            if (elem.attr("required")) {
-//                if (elem.hasClass("Seeker")) {
-//                    var sel = elem.next("span")
-//                            .children('.selection')
-//                            .find('span.select2-selection--single');
-//                    if (elem.val() == "0" || elem.val() == null || elem.val() == "-1") {
-//                        arrData.push({id: elem.attr("id"), value: elem.val(), element: elem.get(0).tagName});
-//                        sel.css({'border': '1px solid red'});
-//                    } else {
-//                        sel.css({'border': '1px solid #aaaaaa'});
-//                    }
-//                } else {
-//                  console.log(elem.data("type"))
-//                    if (elem.data("type") != 'undefined') {
-//                        console.log("asdassss");  
-//                        if (elem.data("type") == 'number') {
-//                            if (isNaN(elem.val())) {
-//                                elem.addClass("error");
-//                                arrData.push({id: elem.attr("id"), value: elem.val(), element: elem.get(0).tagName});
-//                            } else {
-//                                elem.removeClass("error");
-//                            }
-//                        } else if (elem.data("type") == 'address') {
-//                            if (elem.val() == '') {
-//                                arrData.push({id: elem.attr("id"), value: elem.val(), element: elem.get(0).tagName});
-//                                elem.addClass("error");
-//                            } else {
-//                                elem.removeClass("error");
-//                            }
-//                        } else {
-//                            var sel = elem.next("span")
-//                                    .children('.selection')
-//                                    .find('span.select2-selection--single');
-//
-//
-//                            if (elem.get(0).tagName == 'SELECT') {
-//                                if (elem.val() == '0') {
-//                                    arrData.push({id: elem.attr("id"), value: elem.val(), element: elem.get(0).tagName});
-//
-//                                    sel.css({'border': '1px solid red'});
-//                                } else {
-//                                    sel.css({'border': '1px solid #aaaaaa'});
-//                                }
-//                            } else if (elem.get(0).tagName == 'INPUT') {
-//                                if (elem.val() == '') {
-//                                    arrData.push({id: elem.attr("id"), value: elem.val(), element: elem.get(0).tagName});
-//                                    elem.addClass("error");
-//                                } else {
-//                                    elem.removeClass("error");
-//                                }
-//                            }
-//
-//                        }
-//                    }else{
-//                      console.log("asda");  
-//                    }
-//                }
-//            }
-//
-//        }
-//    })
-//    return arrData;
-//}
-
 
 jQuery.fn.validate = function (param) {
     param = param || {};
@@ -321,6 +249,17 @@ jQuery.fn.validate = function (param) {
                             elem.after('<small class="help-block" id="error_' + elem.attr("id") + '" data-fv-validator="notEmpty" data-fv-for="firstName" data-fv-result="INVALID" style="">' + elem.attr("id") + ' is not Numeric</small>')
                             elem.parent().parent().addClass("has-error")
                             arrData.push({id: elem.attr("id"), value: elem.val(), element: elem.get(0).tagName});
+                        } else if (elem.data("type") == 'email') {
+                            var caract = new RegExp(/^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/);
+                            var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;;
+                            if (caract.test(elem.val()) == false) {
+                                elem.after('<small class="help-block" id="error_' + elem.attr("id") + '" data-fv-validator="notEmpty" data-fv-for="firstName" data-fv-result="INVALID" style="">' + elem.attr("id") + ' is not valid email</small>')
+                                elem.parent().parent().addClass("has-error")
+                                arrData.push({id: elem.attr("id"), value: elem.val(), element: elem.get(0).tagName});
+                            } else {
+                                elem.parent().parent().removeClass("has-error")
+                            }
+
                         } else {
                             elem.parent().parent().removeClass("has-error")
                         }

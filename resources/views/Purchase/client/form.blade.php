@@ -19,7 +19,7 @@
         <input type="hidden" name="year" value="{{$year}}">
         <input type="hidden" name="month" value="{{$month}}">
         <input type="hidden" name="day_week" value="{{$day_week}}">
-        
+
         <div class="col-lg-6">
             <div class="row">
                 <div class="col-lg-6">
@@ -55,7 +55,13 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="email">State</label>
-                                <input type="text" class="form-control input-category input-sm" id="state" name='state' required>
+                                <select id="state_id" name="state_id" class="form-control input-category input-sm" required="">
+                                    <option value="0">Selection</option>
+                                    @foreach($states as $val)
+                                    <option value="{{$val->id}}">{{$val->description}}</option>
+                                    @endforeach
+                                </select>
+
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -116,7 +122,7 @@
                     </div>
                 </div>
             </div>
-
+            @if($sche[0]["course_id"]!=1)
             <div class="row">
                 <div class="col-lg-12">
                     <div class="form-group">
@@ -125,6 +131,7 @@
                     </div>
                 </div>
             </div>
+            @endif
             <br>
             <div class="row">
                 <div class="col-lg-12">
@@ -173,7 +180,12 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="email">State</label>
-                                <input type="text" class="form-control input-category input-sm" id="state_building" name='state_building' required>
+                                <select id="state_id_building" name="state_id_building" class="form-control input-category input-sm" required="">
+                                    <option value="0">Selection</option>
+                                    @foreach($states as $val)
+                                    <option value="{{$val->id}}">{{$val->description}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="col-lg-6">

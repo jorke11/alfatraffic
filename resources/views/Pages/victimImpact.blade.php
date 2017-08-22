@@ -112,9 +112,9 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
            <div class="fluid_height_spacer"></div>
           </div>
           <a class="nonblock nontext transition clearfix grpelem" id="u1341-6" href="/duirisk"><!-- content --><p>DUI Class</p><p>Risk Reduction</p></a>
-          <a class="nonblock nontext transition clearfix grpelem" id="u1359-6" href="/victimimpact.html"><!-- content --><p>Victim</p><p>Impact Panel</p></a>
+          <a class="nonblock nontext transition clearfix grpelem" id="u1359-6" href="/victimimpact"><!-- content --><p>Victim</p><p>Impact Panel</p></a>
           <a class="nonblock nontext MuseLinkActive transition clearfix grpelem" id="u1364-6" href="/duiclinical"><!-- content --><p>DUI Clinical</p><p>Evaluation</p></a>
-          <a class="nonblock nontext clip_frame grpelem" id="u13438" href="/victimimpact.html"><!-- image --><img class="block temp_no_img_src" id="u13438_img" data-orig-src="images/22.png?crc=4023786660" alt="" width="106" height="106" src="images/blank.gif?crc=4208392903"/></a>
+          <a class="nonblock nontext clip_frame grpelem" id="u13438" href="/victimimpact"><!-- image --><img class="block temp_no_img_src" id="u13438_img" data-orig-src="images/22.png?crc=4023786660" alt="" width="106" height="106" src="images/blank.gif?crc=4208392903"/></a>
           <a class="nonblock nontext clip_frame grpelem" id="u13450" href="/duirisk"><!-- image --><img class="block temp_no_img_src" id="u13450_img" data-orig-src="images/clinical%20evaluation.png?crc=424931221" alt="" width="97" height="111" src="images/blank.gif?crc=4208392903"/></a>
           <a class="nonblock nontext MuseLinkActive clip_frame grpelem" id="u13832" href="/duiclinical"><!-- image --><img class="block temp_no_img_src" id="u13832_img" data-orig-src="images/risk%20reduction%20alfa.png?crc=3776531114" alt="" width="132" height="98" src="images/blank.gif?crc=4208392903"/></a>
          </div>
@@ -363,7 +363,7 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
           <p>Lowest Fee by Law</p>
          </div>
          <div class="arriba clearfix colelem" id="u127034-4"><!-- content -->
-          <p>$95 - $150.&nbsp; Fee is based on 1st offense or multiple offenses.</p>
+             <p>$95 - $150.&nbsp; Fee is based on 1st offense or multiple offenses.<br><a href="/clients/page/3">Buy</a></p>
          </div>
         </div>
        </div>

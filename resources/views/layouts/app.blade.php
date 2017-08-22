@@ -121,6 +121,7 @@ echo json_encode([
                                     <li><a href="{{url('/schedules') }}">Schedules</a></li>
                                     <li><a href="{{url('/addon') }}">AddON</a></li>
                                     <li><a href="{{url('/events') }}">Events</a></li>
+                                    <li><a href="{{url('/email') }}">Emails</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href="{{url('/clients') }}">Client</a></li>
                                 </ul>
@@ -136,6 +137,7 @@ echo json_encode([
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Report <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
+                                    <li><a href="{{url('/purchases') }}">Purchases</a></li>
                                     <li><a href="{{url('/clock') }}">Turn</a></li>
                                 </ul>
                             </li>

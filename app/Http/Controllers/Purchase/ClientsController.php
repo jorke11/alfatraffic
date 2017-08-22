@@ -11,6 +11,10 @@ use App\Models\Administration\Schedules;
 use App\Models\Administration\SchedulesDetail;
 use App\Models\Administration\Addon;
 use App\Models\Administration\Events;
+use App\Models\Administration\States;
+use App\Models\Administration\Email;
+use App\Models\Administration\EmailDetail;
+use App\Models\Client\Purchases;
 use DB;
 use PayPal\Rest\ApiContext;
 use PayPal\Auth\OAuthTokenCredential;
@@ -25,6 +29,7 @@ use PayPal\Api\ExecutePayment;
 use PayPal\Api\PaymentExecution;
 use PayPal\Api\Transaction;
 use Session;
+use Mail;
 use Illuminate\Support\Facades\Input;
 
 class ClientsController extends Controller {
@@ -41,7 +46,7 @@ class ClientsController extends Controller {
         $this->_api_context->setConfig($paypal_conf["settings"]);
     }
 
-    public function index() {
+    public function index($course_id = -1) {
         $locations = Locations::all();
         $courses = Courses::all();
         $quantity = Parameters::where("group", "show")->first();
@@ -52,7 +57,7 @@ class ClientsController extends Controller {
                 ->where("code", "<=", $end)
                 ->get();
 
-        return view("Purchase.client.init", compact("locations", "courses", "start"));
+        return view("Purchase.client.init", compact("locations", "courses", "start", "course_id"));
     }
 
     public function getDay($day) {
@@ -124,10 +129,11 @@ class ClientsController extends Controller {
                                 $dayCont = $j;
 
                                 $data[0]["date"] = date("Y/m/d", strtotime(date("Y-" . $i . "-" . $j)));
-                                $data[0]["dateFormated"] = date("l, d / F", strtotime($data[0]["date"]));
+                                $data[0]["dateFormated"] = date("l, F d", strtotime($data[0]["date"]));
 
                                 if (isset($data[0]["hour"])) {
-                                    $data[0]["hour"] = date("h.i A", strtotime($data[0]["hour"]));
+                                    $data[0]["hour"] = date("h:i A", strtotime($data[0]["hour"]));
+                                    $data[0]["hour_end"] = date("h:i A", strtotime($data[0]["hour_end"]));
                                 }
 
                                 foreach ($events as $value) {
@@ -153,10 +159,10 @@ class ClientsController extends Controller {
                                             }
                                         }
 
-                                        $data[$key]["hour"] = date("h.i A", strtotime($data[$key]["hour"]));
-                                        $data[$key]["hour_end"] = date("h.i A", strtotime($data[$key]["hour_end"]));
+                                        $data[$key]["hour"] = date("h:i A", strtotime($data[$key]["hour"]));
+                                        $data[$key]["hour_end"] = date("h:i A", strtotime($data[$key]["hour_end"]));
                                         $data[$key]["date"] = date("Y/m/d", strtotime('+' . $key . " days", strtotime($data[0]["date"])));
-                                        $data[$key]["dateFormated"] = date("l, d / F", strtotime($data[$key]["date"]));
+                                        $data[$key]["dateFormated"] = date("l, F d", strtotime($data[$key]["date"]));
                                     }
                                 }
 
@@ -194,7 +200,7 @@ class ClientsController extends Controller {
         $sche[0]["date"] = date("Y/m/d", strtotime(date($year . "-" . $month . "-" . $day_week)));
         $sche[0]["dateFormated"] = date("l, d / F", strtotime($sche[0]["date"]));
         foreach ($sche as $key => $value) {
-            $sche[$key]["value"] = "$ " . number_format($sche[$key]["value"], 2, ",", ".");
+            $sche[$key]["value"] = "$ " . number_format($sche[$key]["value"], 2, ".", ",");
 
             if ($key > 0) {
                 $sche[$key]["date"] = date("Y/m/d", strtotime('+' . $key . " days", strtotime($sche[0]["date"])));
@@ -205,11 +211,11 @@ class ClientsController extends Controller {
         $addon = Addon::where("schedule_id", $schedule_id)->get();
         $course = Courses::find($sche[0]["course_id"]);
         session(['sche' => $sche, "months" => $month, "addon" => $addon]);
-
+        $states = States::all();
         if ($course->dui == true) {
-            return view("Purchase.client.formdui", compact("sche", "month", "addon", "schedule_id", "day_week", "year"));
+            return view("Purchase.client.formdui", compact("sche", "month", "addon", "schedule_id", "day_week", "year", "states"));
         } else {
-            return view("Purchase.client.form", compact("sche", "month", "addon", "schedule_id", "day_week", "year"));
+            return view("Purchase.client.form", compact("sche", "month", "addon", "schedule_id", "day_week", "year", "states"));
         }
     }
 
@@ -225,13 +231,20 @@ class ClientsController extends Controller {
 
     public function payment(Request $req) {
         $in = $req->all();
+
+        $in["status_id"] = 2;
+        $in["date_course"] = $in["year"] . "/" . $in["month"] . "/" . $in["day_week"];
+        unset($in["year"]);
+        unset($in["month"]);
+        unset($in["day_week"]);
+
+
         $sche = $this->getSchedule($in["schedule_id"]);
 
         $price = $sche[0]["value"];
         $course = $sche[0]["course"];
         $payer = new Payer();
         $payer->setPaymentMethod("paypal");
-
 
         $item = new Item();
 
@@ -282,8 +295,9 @@ class ClientsController extends Controller {
                 break;
             }
         }
-
+        $id = Purchases::create($in)->id;
         Session::put('paypal_payment_id', $payment->getId());
+        Session::put('row_id', $id);
         if (isset($redirect_url)) {
             /** redirect to paypal * */
             return \Redirect::away($redirect_url);
@@ -295,8 +309,10 @@ class ClientsController extends Controller {
     public function getPaymentStatus() {
         /** Get the payment ID before session clear * */
         $payment_id = Session::get('paypal_payment_id');
+
         /** clear the session payment ID * */
         Session::forget('paypal_payment_id');
+
         if (empty(Input::get('PayerID')) || empty(Input::get('token'))) {
             \Session::put('error', 'Payment failed');
             echo "error";
@@ -314,18 +330,98 @@ class ClientsController extends Controller {
 
         if ($result->getState() == 'approved') {
 
+            $this->sendEmailPurchase();
             /** it's all right * */
             /** Here Write your database logic like that insert record or value in database if you want * */
 //            \Session::put('success', 'Payment success');
+
             return \Redirect::route('paypal.clients')->with("success", 'Payment success');
         }
         \Session::put('error', 'Payment failed');
 //        return Redirect::route('addmoney.paywithpaypal');
     }
 
+    public function sendEmailPurchase() {
+
+        $row_id = Session::get('row_id');
+        Session::forget('row_id');
+
+        $row = Purchases::find($row_id);
+
+
+        $email = Email::where("description", "invoices")->first();
+
+        if ($email != null) {
+            $emDetail = EmailDetail::where("email_id", $email->id)->get();
+        }
+
+        if (count($emDetail) > 0) {
+            $this->mails = array();
+
+            $this->mails[] = $row->email;
+            foreach ($emDetail as $value) {
+                $this->mails[] = $value->description;
+            }
+
+            $state = States::find($row->state_id);
+
+            $this->subject = "DUI School confirmation with AlfaDrivingSchool.com";
+            $input["state"] = $state->description;
+
+            $input["name"] = ucwords($row->name);
+            $input["last_name"] = ucwords($row->last_name);
+
+            Mail::send("Notifications.purchase", $input, function($msj) {
+                $msj->subject($this->subject);
+                $msj->to($this->mails);
+            });
+
+            $row->status_id = 1;
+            $row->save();
+        }
+    }
+
     public function paymentDui(Request $req) {
         $in = $req->all();
         dd($in);
+    }
+
+    public function testSendNotification($row_id) {
+
+        $row = Purchases::find($row_id);
+        $email = Email::where("description", "invoices")->first();
+
+        if ($email != null) {
+            $emDetail = EmailDetail::where("email_id", $email->id)->get();
+        }
+
+        if (count($emDetail) > 0) {
+            $this->mails = array();
+            $this->mails[] = $row->email;
+            foreach ($emDetail as $value) {
+                $this->mails[] = $value->description;
+            }
+
+            $state = States::find($row->state_id);
+
+            $this->subject = "DUI School confirmation with AlfaDrivingSchool.com";
+            $input["state"] = $state->description;
+
+            $input["name"] = ucwords($row->name);
+            $input["last_name"] = ucwords($row->last_name);
+
+
+            Mail::send("Notifications.purchase", $input, function($msj) {
+                $msj->subject($this->subject);
+                $msj->to($this->mails);
+            });
+        }
+    }
+
+    public function testNotification($id) {
+        $name = "jorge";
+        $last_name = "Pinedo";
+        return view("Notifications.purchase", compact("name", "last_name"));
     }
 
 }
