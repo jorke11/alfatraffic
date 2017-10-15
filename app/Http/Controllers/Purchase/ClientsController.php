@@ -347,7 +347,7 @@ class ClientsController extends Controller {
         Session::forget('row_id');
 
         $row = Purchases::find($row_id);
-
+        $sche = $this->getSchedule($row->schedule_id);
 
         $email = Email::where("description", "invoices")->first();
 
@@ -371,6 +371,20 @@ class ClientsController extends Controller {
             $input["name"] = ucwords($row->name);
             $input["last_name"] = ucwords($row->last_name);
 
+            $sche[0]["date"] = date("Y/m/d", strtotime($row->date_course));
+            $sche[0]["dateFormated"] = date("l, d / F", strtotime($sche[0]["date"]));
+            foreach ($sche as $key => $value) {
+                $sche[$key]["value"] = "$ " . number_format($sche[$key]["value"], 2, ".", ",");
+
+                if ($key > 0) {
+                    $sche[$key]["date"] = date("Y/m/d", strtotime('+' . $key . " days", strtotime($sche[0]["date"])));
+                    $sche[$key]["dateFormated"] = date("l, d / F", strtotime($sche[$key]["date"]));
+                }
+            }
+            $input["sche"] = $sche;
+
+            echo "<pre>";print_r($data);exit;
+            
             Mail::send("Notifications.purchase", $input, function($msj) {
                 $msj->subject($this->subject);
                 $msj->to($this->mails);
@@ -389,6 +403,7 @@ class ClientsController extends Controller {
     public function testSendNotification($row_id) {
 
         $row = Purchases::find($row_id);
+        $sche = $this->getSchedule($row->schedule_id);
         $email = Email::where("description", "invoices")->first();
 
         if ($email != null) {
@@ -410,6 +425,16 @@ class ClientsController extends Controller {
             $input["name"] = ucwords($row->name);
             $input["last_name"] = ucwords($row->last_name);
 
+            $sche[0]["date"] = date("Y/m/d", strtotime($row->date_course));
+            $sche[0]["dateFormated"] = date("l, d / F", strtotime($sche[0]["date"]));
+            foreach ($sche as $key => $value) {
+                $sche[$key]["value"] = "$ " . number_format($sche[$key]["value"], 2, ".", ",");
+
+                if ($key > 0) {
+                    $sche[$key]["date"] = date("Y/m/d", strtotime('+' . $key . " days", strtotime($sche[0]["date"])));
+                    $sche[$key]["dateFormated"] = date("l, d / F", strtotime($sche[$key]["date"]));
+                }
+            }
 
             Mail::send("Notifications.purchase", $input, function($msj) {
                 $msj->subject($this->subject);
@@ -418,10 +443,28 @@ class ClientsController extends Controller {
         }
     }
 
-    public function testNotification($id) {
+    public function testNotification($row_id) {
+        $row = Purchases::find($row_id);
+        $sche = $this->getSchedule($row->schedule_id);
+
+        $sche[0]["date"] = date("Y/m/d", strtotime($row->date_course));
+        $sche[0]["dateFormated"] = date("l, d / F", strtotime($sche[0]["date"]));
+        foreach ($sche as $key => $value) {
+            $sche[$key]["value"] = "$ " . number_format($sche[$key]["value"], 2, ".", ",");
+
+            if ($key > 0) {
+                $sche[$key]["date"] = date("Y/m/d", strtotime('+' . $key . " days", strtotime($sche[0]["date"])));
+                $sche[$key]["dateFormated"] = date("l, d / F", strtotime($sche[$key]["date"]));
+            }
+        }
+
         $name = "jorge";
-        $last_name = "Pinedo";
-        return view("Notifications.purchase", compact("name", "last_name"));
+        $last_name = "jorge";
+        $address = $sche[0]["address"];
+        $location = $sche[0]["location"];
+        $phone = $sche[0]["phone"];
+
+        return view("Notifications.purchase", compact("name", "last_name", "address", "location", "phone", "sche"));
     }
 
 }

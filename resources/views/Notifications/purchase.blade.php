@@ -6,6 +6,8 @@
             .detail th {font-size: 13px;font-weight: normal;padding: 8px;background: #00b065;border-top: 4px solid #aabcfe;border-bottom: 1px solid #fff; color: #039;color:white;}
             .detail tbody td {padding: 8px;background: #f9f9f9;border-bottom: 1px solid #fff;color: #669;border-top: 1px solid transparent;}
             .footer tbody td {padding: 8px;background: white;border-bottom: 1px solid #fff;color: #669;border-top: 1px solid transparent;}
+            .detailend {font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;font-size: 12px;border-collapse: collapse;}
+            .detailend tbody td {padding: 8px;background: #FFFF00;border-bottom: 1px solid #fff;color: #669;border-top: 1px solid transparent;}
         </style>
     </head>
 
@@ -26,7 +28,7 @@
             <tr>
                 <td width="45%" >Dear {{$name}} {{$last_name}}</td>
                 <td><img src="{!!asset('images/email.png')!!}" width="30px" style="display:block"></td>
-                <td>Email us: info@alfadrivingschool.com</td>
+                <td>Email us: <a href="mailto:info@alfadrivingschool.com">info@alfadrivingschool.com</a></td>
             </tr>
             <tr>
                 <td>
@@ -49,7 +51,7 @@
             </tr>
             <tr>
                 <td align="center">Wednesday, August 16 at 1:00PM<br>@ 1533 Howell Mill Road, Atlanta 30318.</td>
-                <td align="center">1533 Howell Mill Road, Atlanta, GA 30318 404-605-9011<br>
+                <td align="center">{{$sche[0]["address"]}}, {{$sche[0]["location"]}} {{$sche[0]["phone"]}}<br>
                     Mon-Fri 9:00AM to 6:00PM and Sat 9:00AM-2:00PM</td>
             </tr>
 
@@ -59,18 +61,14 @@
             <tr>
                 <td align="center"><h3><u>Class Schedule</u></h3></td>
             </tr>
+            @foreach($sche as $i => $val)
             <tr>
-                <td align="center">Day 1: Friday, August 18 from 6:30pm to 10:30pm</td>
+                <td align="center">Day {{($i+1)}} {{$val["dateFormated"]}} .....{{$val["hour"]}} - {{$val["hour_end"]}}</td>
             </tr>
-            <tr>
-                <td align="center">Day 2: Saturday, August 19 from 9:30am to 6:30pm</td>
-            </tr>
-            <tr>
-                <td align="center">Day 3: Sunday, August 20 from 9:30am to 6:30pm</td>
-            </tr>
+            @endforeach
         </table>
         <br>
-        <table class="detail" align="center" width="850" align="center" id="main"  border="0" cellspacing="0"cellpadding="0" >
+        <table class="detailend" align="center" width="850" align="center" id="main"  border="0" cellspacing="0"cellpadding="0" bgcolor="#F4FF77">
             <tr>
                 <td colspan="3"><b>OUR STUDENTS KNOW MORE and SAVE MORE $:</b><br>
                     9 out of 10 attorneys recommend completing DUI School, MADD Victim Impact Panel and obtaining an Alcohol Clinical Evaluation may avoid jail time, license suspensions or lower court cost. ALFA is DDS and Court approved.
@@ -102,7 +100,7 @@
                 <td align="center">DDS Licensed, Court Approved</td>
             </tr>
             <tr>
-                <td align="center"><a href="www.AlfaDrivingSchool.com">www.AlfaDrivingSchool.com</a></td>
+                <td align="center"><a href="http://www.AlfaDrivingSchool.com">www.AlfaDrivingSchool.com</a></td>
             </tr>
         </table>
 
