@@ -78,17 +78,23 @@ echo json_encode([
             .panel-yellow {
 
             }
+            #loading-super{
+                display:scroll;
+                position:fixed;
+                z-index: 10000;
+                left: 45%;
+                top: 40%
+            }
         </style>
     </head>
     <body>
         <div id="app">
-            <!--            <div class="container-fluid" style="padding: 0;margin:0 auto;">
-                            <div class="row" >
-                                <div class="col-lg-12" style="padding: 0;margin:0 auto;">
-                                    <img src='images/linea.png' width="99%">
-                                </div>
-                            </div>
-                        </div>-->
+            <div id="loading-super" class="hidden" >
+                <img src="{!!asset('images/loading2.gif')!!}" >
+                @if(!Auth::guest())
+                <input id="role_id" type="hidden" value="{{Auth::user()->role_id}}">
+                @endif
+            </div>
             <nav class="navbar navbar-default navbar-static-top">
                 <div class="container">
                     <div class="navbar-header">
@@ -176,7 +182,6 @@ echo json_encode([
                     </div>
                 </div>
             </nav>
-
             @yield('content')
         </div>
 

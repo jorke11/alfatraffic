@@ -41,12 +41,16 @@ class ClientsController extends Controller {
     public function __construct() {
         date_default_timezone_set("America/Bogota");
         $paypal_conf = \Config::get("paypal");
+        
         $this->_api_context = new ApiContext(new OAuthTokenCredential($paypal_conf["client_id"], $paypal_conf["secret"]));
 //        $this->_apiContext = Payment::ApiContext($paypal_conf["client_id"], $paypal_conf["secret"]);
         $this->_api_context->setConfig($paypal_conf["settings"]);
     }
 
     public function index($course_id = -1) {
+        
+//        dd(config("mail"));exit;
+        
         $locations = Locations::all();
         $courses = Courses::all();
         $quantity = Parameters::where("group", "show")->first();
@@ -56,7 +60,7 @@ class ClientsController extends Controller {
                 ->where("code", ">=", (int) date("m"))
                 ->where("code", "<=", $end)
                 ->get();
-
+        
         return view("Purchase.client.init", compact("locations", "courses", "start", "course_id"));
     }
 
@@ -76,9 +80,9 @@ class ClientsController extends Controller {
         $cont = 0;
 
         $end = ($month->value + $init);
-
+        
         $events = Events::where("dateevent", ">=", date("Y-m-d"))->get();
-
+        
 //        echo cal_days_in_month(CAL_GREGORIAN, 1, date("y"));exit;
 
 
@@ -92,12 +96,14 @@ class ClientsController extends Controller {
 //                for ($j = $initSecond; $j <= date('t', mktime(0, 0, 0, $i + 1, 0, date("y"))); $j++) {
 //            for ($j = 26; $j <= 29; $j++) {
                     $day = $this->getDay($j);
-
+                    
                     $sche = SchedulesDetail::where("day", $day)
                             ->select("schedule_id")
                             ->join("schedules", "schedules.id", "schedules_detail.schedule_id")
                             ->orderBy("schedule_id", "asc")
                             ->distinct("schedule_id");
+                    
+                    
 
                     if (isset($in["location"]) && $in["location"] != 0) {
                         $sche->whereIn("schedules.location_id", $in["location"]);
@@ -120,12 +126,12 @@ class ClientsController extends Controller {
                                     ->select("day")
                                     ->orderBy("day", "asc")
                                     ->first();
-
+                            
 
                             if ($initial["day"] == $day) {
-
+                                
                                 $data = $this->getSchedule($value["schedule_id"]);
-
+                                
                                 $dayCont = $j;
 
                                 $data[0]["date"] = date("Y/m/d", strtotime(date("Y-" . $i . "-" . $j)));
@@ -191,6 +197,7 @@ class ClientsController extends Controller {
     }
 
     public function formInput($schedule_id, $year, $month, $day_week) {
+//        echo config('mail.host');exit;
         \Session::put("schedule_id", $schedule_id);
         \Session::put("year", $year);
         \Session::put("month", $month);
@@ -383,7 +390,7 @@ class ClientsController extends Controller {
             }
             $input["sche"] = $sche;
 
-            echo "<pre>";print_r($data);exit;
+            
             
             Mail::send("Notifications.purchase", $input, function($msj) {
                 $msj->subject($this->subject);

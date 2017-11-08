@@ -140,9 +140,13 @@ function Clients() {
             method: "get",
             data: param,
             dataType: 'JSON',
+            beforeSend: function () {
+                $("#loading-super").removeClass("hidden");
+            },
             success: function (data) {
                 if (data.success == true) {
                     obj.setList(data.data);
+                    $("#loading-super").addClass("hidden");
                 }
             }, error: function (err) {
 

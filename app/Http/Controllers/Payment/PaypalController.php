@@ -120,8 +120,7 @@ class PaypalController extends Controller {
         $execution->setPayerId(Input::get('PayerID'));
         /*         * Execute the payment * */
         $result = $payment->execute($execution, $this->_api_context);
-        dd($result);
-        exit;
+        
         if ($result->getState() == 'approved') {
 
             /** it's all right * */

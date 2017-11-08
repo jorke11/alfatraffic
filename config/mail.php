@@ -26,7 +26,9 @@ return [
       | the Mailgun mail service which will provide reliable deliveries.
       |
      */
-    'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+//    'host' => env('MAIL_HOST', 'smtp.gmail.com'),
+//    'host' => env('MAIL_HOST', 'a2plcpnl0354.prod.iad2.secureserver.net'),
+    'host' => env('MAIL_HOST', 'mail.new.alfadrivingschool.com'),
     /*
       |--------------------------------------------------------------------------
       | SMTP Host Port
@@ -37,7 +39,9 @@ return [
       | stay compatible with the Mailgun e-mail application by default.
       |
      */
-    'port' => env('MAIL_PORT', 587),
+//    'port' => env('MAIL_PORT', 587),
+//    'port' => env('MAIL_PORT', 465),
+    'port' => env('MAIL_PORT', 25),
     /*
       |--------------------------------------------------------------------------
       | Global "From" Address
@@ -49,7 +53,8 @@ return [
       |
      */
     'from' => [
-        'address' => 'sistemas@superfuds.com.co',
+//        'address' => 'sistemas@superfuds.com.co',
+        'address' => 'info@new.alfadrivingschool.com',
         'name' => 'Notification Alfa driving',
     ],
     /*
@@ -73,7 +78,8 @@ return [
       | connection. You may also set the "password" value below this one.
       |
      */
-    'username' => env('MAIL_USERNAME'),
+    'username' => env('info@new.alfadrivingschool.com'),
+//    'username' => env('sistemas@superfuds.com.co'),
     /*
       |--------------------------------------------------------------------------
       | SMTP Server Password
@@ -84,7 +90,7 @@ return [
       | connection so that the application will be able to send messages.
       |
      */
-    'password' => env('MAIL_PASSWORD'),
+    'password' => env('desarrollo2017+'),
     /*
       |--------------------------------------------------------------------------
       | Sendmail System Path

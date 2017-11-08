@@ -6,6 +6,7 @@ function Locations() {
         $("#edit").click(this.edit);
         $("#btnNew").click(function () {
             $(".input-locations").cleanFields();
+            $("#courses").val(0).trigger('change');
             $("#modalNew").modal("show");
         });
 
@@ -63,19 +64,20 @@ function Locations() {
         var frm = $("#frmEdit");
         var data = frm.serialize();
         var url = "/locations/" + id + "/edit";
-        $("#modalNew").modal("show");
+        
         $.ajax({
             url: url,
             method: "GET",
             data: data,
             dataType: 'JSON',
             success: function (data) {
+                $("#modalNew").modal("show");
                 $(".input-locations").cleanFields();
                 $(".input-locations").setFields({data: data});
                 $("#courses").val(data.courses).trigger('change');
-
                 $.each(data.days, function (i, val) {
                     $(".hours").each(function () {
+                       
                         if ($(this).attr("id") == "init_" + val.day) {
                             $($(this).val(val.init));
                         }
