@@ -69,6 +69,20 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="email">Valor Adulto</label>
+                            <input type="text" class="form-control input-locations input-sm" id="value_adult" name='value_adult' required>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="email">Valor Niños</label>
+                            <input type="text" class="form-control input-locations input-sm" id="value_child" name='value_child' required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-lg-12">
                         <div class="form-group">
                             <label for="email">Customer Service Hours</label>

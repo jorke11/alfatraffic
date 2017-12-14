@@ -24,7 +24,10 @@ Route::resource('/parameters', 'Administration\ParametersController');
 Route::resource('/addon', 'Administration\AddonController');
 
 Route::resource('events', 'Administration\EventsController');
-
+Route::get('/programation', 'Administration\ProgramationController@index');
+Route::post('/programation', 'Administration\ProgramationController@store');
+Route::get('/programation/{mounth}', 'Administration\ProgramationController@index');
+Route::get('/programation/{month}/getMonth', 'Administration\ProgramationController@getMonth');
 
 Route::get('/purchases', 'Report\PurchasesController@index');
 
@@ -131,3 +134,5 @@ Route::get('/api/listAddon', function() {
 
     return Datatables::queryBuilder($sql)->make(true);
 });
+
+require __DIR__ . "/cron.php";

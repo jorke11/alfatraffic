@@ -41,16 +41,16 @@ class ClientsController extends Controller {
     public function __construct() {
         date_default_timezone_set("America/Bogota");
         $paypal_conf = \Config::get("paypal");
-        
+
         $this->_api_context = new ApiContext(new OAuthTokenCredential($paypal_conf["client_id"], $paypal_conf["secret"]));
 //        $this->_apiContext = Payment::ApiContext($paypal_conf["client_id"], $paypal_conf["secret"]);
         $this->_api_context->setConfig($paypal_conf["settings"]);
     }
 
     public function index($course_id = -1) {
-        
+
 //        dd(config("mail"));exit;
-        
+
         $locations = Locations::all();
         $courses = Courses::all();
         $quantity = Parameters::where("group", "show")->first();
@@ -60,7 +60,7 @@ class ClientsController extends Controller {
                 ->where("code", ">=", (int) date("m"))
                 ->where("code", "<=", $end)
                 ->get();
-        
+
         return view("Purchase.client.init", compact("locations", "courses", "start", "course_id"));
     }
 
@@ -80,9 +80,9 @@ class ClientsController extends Controller {
         $cont = 0;
 
         $end = ($month->value + $init);
-        
+
         $events = Events::where("dateevent", ">=", date("Y-m-d"))->get();
-        
+
 //        echo cal_days_in_month(CAL_GREGORIAN, 1, date("y"));exit;
 
 
@@ -96,14 +96,14 @@ class ClientsController extends Controller {
 //                for ($j = $initSecond; $j <= date('t', mktime(0, 0, 0, $i + 1, 0, date("y"))); $j++) {
 //            for ($j = 26; $j <= 29; $j++) {
                     $day = $this->getDay($j);
-                    
+
                     $sche = SchedulesDetail::where("day", $day)
                             ->select("schedule_id")
                             ->join("schedules", "schedules.id", "schedules_detail.schedule_id")
                             ->orderBy("schedule_id", "asc")
                             ->distinct("schedule_id");
-                    
-                    
+
+
 
                     if (isset($in["location"]) && $in["location"] != 0) {
                         $sche->whereIn("schedules.location_id", $in["location"]);
@@ -126,49 +126,55 @@ class ClientsController extends Controller {
                                     ->select("day")
                                     ->orderBy("day", "asc")
                                     ->first();
-                            
+
 
                             if ($initial["day"] == $day) {
-                                
+
                                 $data = $this->getSchedule($value["schedule_id"]);
-                                
+
                                 $dayCont = $j;
-
-                                $data[0]["date"] = date("Y/m/d", strtotime(date("Y-" . $i . "-" . $j)));
-                                $data[0]["dateFormated"] = date("l, F d", strtotime($data[0]["date"]));
-
-                                if (isset($data[0]["hour"])) {
-                                    $data[0]["hour"] = date("h:i A", strtotime($data[0]["hour"]));
-                                    $data[0]["hour_end"] = date("h:i A", strtotime($data[0]["hour_end"]));
+                                foreach ($data as $k => $val) {
+                                    $data[$k]["date"] = date("Y/m/d", strtotime(date("Y-" . $i . "-" . $j)));
+                                    $data[$k]["dateFormated"] = date("l, F d", strtotime($data[$k]["date"]));
+//                                    $data[$k]["hour"] = date("h:i A", strtotime($data[$k]["hour"]));
+                                    $data[$k]["hour"] = date("h:i A", strtotime($data[$k]["hour"]));
+                                    $data[$k]["hour_end"] = date("h:i A", strtotime($data[$k]["hour_end"]));
                                 }
 
-                                foreach ($events as $value) {
-                                    if ((strtotime($data[0]["date"]) == strtotime($value->dateevent)) && $value->course_id == $data[0]["course_id"] && $value->location_id == $data[0]["location_id"]) {
+                                foreach ($events as $a => $value) {
+                                    if ((strtotime($value["date"]) == strtotime($value->dateevent)) && $value->course_id == $value["course_id"] && $value->location_id == $data[0]["location_id"]) {
 
                                         if ($value->action_id == 1) {
-                                            $data[0]["message"] = $value->description;
+                                            $data[$a]["message"] = $value->description;
                                         } else {
-                                            unset($data[0]);
+                                            unset($data[$a]);
                                         }
                                     }
                                 }
 
+
+
                                 foreach ($data as $key => $value) {
                                     if ($key > 0) {
-                                        foreach ($events as $value) {
-                                            if ((strtotime($data[$key]["date"]) == strtotime($value->dateevent)) && $value->course_id == $data[0]["course_id"] && $value->location_id == $data[0]["location_id"]) {
-                                                if ($value->action_id == 1) {
-                                                    $data[$key]["message"] = $value->description;
+                                        $cont = 0;
+                                        foreach ($events as $val) {
+
+
+                                            if ((strtotime($value["date"]) == strtotime($val->dateevent)) && $val->course_id == $value["course_id"] && $val->location_id == $value["location_id"]) {
+                                                if ($val->action_id == 1) {
+                                                    $data[$key]["message"] = $val->description;
+                                                    $cont++;
                                                 } else {
                                                     unset($data[$key]);
                                                 }
                                             }
                                         }
-
-                                        $data[$key]["hour"] = date("h:i A", strtotime($data[$key]["hour"]));
-                                        $data[$key]["hour_end"] = date("h:i A", strtotime($data[$key]["hour_end"]));
-                                        $data[$key]["date"] = date("Y/m/d", strtotime('+' . $key . " days", strtotime($data[0]["date"])));
-                                        $data[$key]["dateFormated"] = date("l, F d", strtotime($data[$key]["date"]));
+                                        if ($cont > 0) {
+                                            $data[$key]["hour"] = date("h:i A", strtotime($value["hour"]));
+                                            $data[$key]["hour_end"] = date("h:i A", strtotime($value["hour_end"]));
+                                            $data[$key]["date"] = date("Y/m/d", strtotime('+' . $key . " days", strtotime($value["date"])));
+                                            $data[$key]["dateFormated"] = date("l, F d", strtotime($data[$key]["date"]));
+                                        }
                                     }
                                 }
 
@@ -390,8 +396,8 @@ class ClientsController extends Controller {
             }
             $input["sche"] = $sche;
 
-            
-            
+
+
             Mail::send("Notifications.purchase", $input, function($msj) {
                 $msj->subject($this->subject);
                 $msj->to($this->mails);

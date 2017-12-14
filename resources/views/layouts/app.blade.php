@@ -128,6 +128,7 @@ echo json_encode([
                                     <li><a href="{{url('/addon') }}">AddON</a></li>
                                     <li><a href="{{url('/events') }}">Events</a></li>
                                     <li><a href="{{url('/email') }}">Emails</a></li>
+                                    <li><a href="{{url('/programation') }}">Programation</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href="{{url('/clients') }}">Client</a></li>
                                 </ul>
