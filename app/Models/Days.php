@@ -12,7 +12,7 @@ class Days extends Model {
      * @var array
      */
     protected $fillable = [
-        'day', 'month', 'year', "is_festive", "number_week"
+        'day', 'month', 'year', "is_festive", "number_week", "date"
     ];
 
 }

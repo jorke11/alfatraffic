@@ -10,10 +10,13 @@ class LocationsTableSeeder extends Seeder {
      * @return void
      */
     public function run() {
-       DB::table('locations')->insert([
+        DB::table('locations')->insert([
             'description' => "test locations",
             'address' => "test address",
-            'order' => 1
+            'order' => 1,
+            "status_id" => 1,
+            "days"=>"",
+            
         ]);
     }
 
