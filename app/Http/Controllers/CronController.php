@@ -28,6 +28,7 @@ class CronController extends Controller {
                 $valid = Days::where("year", $value["year"])->where("month", $value["month"])->where("day", $j)->first();
 
                 if ($valid == null) {
+                    $desc["date"] = date("Y-m-d H:i");
                     print_r($desc);
                     echo "<br>";
                     Days::create($desc);
