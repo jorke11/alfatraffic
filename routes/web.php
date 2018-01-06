@@ -28,6 +28,9 @@ Route::get('/programation', 'Administration\ProgramationController@index');
 Route::post('/programation', 'Administration\ProgramationController@store');
 Route::get('/programation/{mounth}', 'Administration\ProgramationController@index');
 Route::get('/programation/{month}/getMonth', 'Administration\ProgramationController@getMonth');
+Route::delete('/programation/{mounth}', 'Administration\ProgramationController@destroy');
+Route::put('setMessage/{id}', 'Administration\ProgramationController@setMessage');
+Route::get('getMessage/{id}', 'Administration\ProgramationController@getMessage');
 
 Route::get('/purchases', 'Report\PurchasesController@index');
 
@@ -56,7 +59,7 @@ Route::get('/schedules/{id}/getModal', 'Administration\SchedulesController@getMo
 Route::get('clients/page/{id}', 'Purchase\ClientsController@index');
 Route::get('clients', ["as" => "paypal.clients", "uses" => 'Purchase\ClientsController@index']);
 Route::get('/clients/getList', 'Purchase\ClientsController@getList');
-Route::get('/clients/{schedule_id}/{year}/{month}/{day_week}', 'Purchase\ClientsController@formInput');
+Route::get('/clients/{programation_id}', 'Purchase\ClientsController@formInput');
 Route::post('/ClientDui', 'Purchase\ClientsController@formDui');
 Route::get('clients/testNotification/{id}', 'Purchase\ClientsController@testNotification');
 Route::get('clients/testSendNotification/{id}', 'Purchase\ClientsController@testSendNotification');

@@ -14,10 +14,7 @@
 </style>
 <div class="container-fluid">
     {!! Form::open(['id'=>'frm','url' => 'payment', 'method' => 'post']) !!}
-    <input type="hidden" name="schedule_id" value="{{$schedule_id}}">
-    <input type="hidden" name="year" value="{{$year}}">
-    <input type="hidden" name="month" value="{{$month}}">
-    <input type="hidden" name="day_week" value="{{$day_week}}">
+    <input type="hidden" name="programation_id" value="{{$programation_id}}">
     <div class="row">
         <div class="col-lg-6">
             <div class="row">

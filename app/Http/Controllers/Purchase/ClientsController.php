@@ -49,19 +49,39 @@ class ClientsController extends Controller {
 
     public function index($course_id = -1) {
 
-//        dd(config("mail"));exit;
-
         $locations = Locations::all();
         $courses = Courses::all();
         $quantity = Parameters::where("group", "show")->first();
         $end = (int) date("m") + $quantity->value;
 
-        $start = Parameters::where("group", "months")
-                ->where("code", ">=", (int) date("m"))
-                ->where("code", "<=", $end)
-                ->get();
+        $sql = "
+            select month,year 
+            from days 
+            group by 1,2
+            ORDER BY 1 , 2 ASC ";
+
+        $start = DB::select($sql);
+
+        foreach ($start as $i => $value) {
+            $start[$i]->month_text = $this->getMonth($value->month);
+        }
 
         return view("Purchase.client.init", compact("locations", "courses", "start", "course_id"));
+    }
+
+    public function getMonth($month) {
+
+        $months = array(1 => "Enero", 2 => "Febrary", 3 => "march", 4 => "april", 5 => "may", 6 => "june", 7 => "july", 8 => "august", 9 => "september",
+            10 => 'october', 11 => 'november', 12 => "december");
+        $res = "";
+
+        foreach ($months as $i => $value) {
+            if ($month == $i) {
+                $res = $value;
+            }
+        }
+
+        return $res;
     }
 
     public function getDay($day) {
@@ -72,6 +92,66 @@ class ClientsController extends Controller {
     }
 
     public function getList(Request $req) {
+        $in = $req->all();
+        $day = 0;
+
+        $query = \App\Models\Days::select("id", "day", "month", "year");
+        $limit = false;
+        $data = $in["start_date"];
+        $query->where(function($sql) use($data) {
+            foreach ($data as $value) {
+
+                $sql->orWhere("month", $value["value"])->where("year", $value["year"]);
+                if ($value["value"] == (int) date("m")) {
+                    $limit = true;
+                    $sql->where("day", ">=", (int) date("d"));
+                }
+            }
+        });
+
+//        $data = $query->get()->toArray();
+        $data = $query->get();
+
+        $dat = [];
+
+//        dd($data);
+        foreach ($data as $i => $value) {
+//            dd($value);
+            $res = \App\Models\DaysDetail::select("days_detail.id", "courses.description as course", "locations.description as location", "days_detail.date", "days_detail.date as dateFormated", "days_detail.hour", "days_detail.hour_end", "days_detail.day_id", "locations.address", "days_detail.message")
+                            ->join("courses", "courses.id", "days_detail.course_id")
+                            ->join("locations", "locations.id", "days_detail.location_id")
+                            ->where("day_id", $value->id)->whereNull("node_id")->orderBy("day_id")->get()->toArray();
+//                            ->where("day_id", $value->id)->whereNull("node_id")->orderBy("day_id")->toSql();
+//            $res = \App\Models\DaysDetail::where("day_id", $value->id)->whereNull("node_id")->orderBy("day_id")->get()->toArray();
+//            dd($res);
+            if (count($res) > 0) {
+
+                foreach ($res as $j => $val) {
+
+                    $result = \App\Models\DaysDetail::select("days_detail.id", "courses.description as course", "locations.description as location", "days_detail.date", "days_detail.hour", "days_detail.hour_end", "days_detail.day_id", "days_detail.date as dateFormated", "locations.address", "locations.phone", "days_detail.message")
+                                    ->join("courses", "courses.id", "days_detail.course_id")
+                                    ->join("locations", "locations.id", "days_detail.location_id")
+                                    ->where("node_id", $val["id"])->whereNotNull("node_id")->get()->toArray();
+//                                    ->where("node_id", $val["day_id"])->whereNotNull("node_id")->toSql();
+
+                    if (count($result) > 0) {
+                        $result[] = $val;
+                        $res[$j]["node"] = $result;
+                    } else {
+                        $res[$j]["node"][] = $val;
+                    }
+                }
+                $dat[] = $res;
+            }
+//            dd($res);
+        }
+
+//        echo "<pre>";print_r($dat);exit;
+
+        return response()->json(["success" => true, "data" => $dat]);
+    }
+
+    public function getListOld(Request $req) {
         $in = $req->all();
 
         $month = Parameters::where("group", "show")->first();
@@ -159,7 +239,6 @@ class ClientsController extends Controller {
                                         $cont = 0;
                                         foreach ($events as $val) {
 
-
                                             if ((strtotime($value["date"]) == strtotime($val->dateevent)) && $val->course_id == $value["course_id"] && $val->location_id == $value["location_id"]) {
                                                 if ($val->action_id == 1) {
                                                     $data[$key]["message"] = $val->description;
@@ -186,32 +265,50 @@ class ClientsController extends Controller {
             }
             $cont++;
         }
-
 //        dd($resp);
         return response()->json(["success" => true, "data" => $resp]);
     }
 
-    public function getSchedule($schedule_id) {
-        return SchedulesDetail::where("schedule_id", $schedule_id)
-                        ->select("schedules_detail.id", "parameters.code as day_id", "schedules.location_id", "courses.id as course_id", "courses.value", "schedules_detail.schedule_id", "locations.description as location", "courses.description as course", "parameters.description as day", "schedules_detail.hour", "schedules_detail.hour_end", "locations.address"
-                                , "locations.phone")
-                        ->join("schedules", "schedules.id", "schedules_detail.schedule_id")
-                        ->join("locations", "locations.id", "schedules.location_id")
-                        ->join("courses", "courses.id", "schedules_detail.course_id")
-                        ->join("parameters", "parameters.code", DB::raw("schedules_detail.day and parameters.group='days'"))
-                        ->get()->toArray();
+    public function getSchedule($programation_id) {
+
+        $res = \App\Models\DaysDetail::select("days_detail.id", "courses.description as course", "courses.value", "locations.description as location", "days_detail.date", "days_detail.date as dateFormated", "days_detail.hour", "days_detail.hour_end", "days_detail.day_id", "locations.address", "courses.value", "days_detail.course_id", "days_detail.message", "locations.phone")
+                        ->join("courses", "courses.id", "days_detail.course_id")
+                        ->join("locations", "locations.id", "days_detail.location_id")
+                        ->where("days_detail.id", $programation_id)->whereNull("node_id")->orderBy("day_id")->get()->toArray();
+//                            ->where("day_id", $value->id)->whereNull("node_id")->orderBy("day_id")->toSql();
+//            $res = \App\Models\DaysDetail::where("day_id", $value->id)->whereNull("node_id")->orderBy("day_id")->get()->toArray();
+
+
+
+        if (count($res) > 0) {
+
+            foreach ($res as $j => $val) {
+                $result = \App\Models\DaysDetail::select("days_detail.id", "courses.description as course", "locations.description as location", "days_detail.date", "days_detail.hour", "days_detail.hour_end", "days_detail.day_id", "days_detail.date as dateFormated", "locations.address", "locations.phone", "days_detail.message", "days_detail.course_id", "locations.phone")
+                                ->join("courses", "courses.id", "days_detail.course_id")
+                                ->join("locations", "locations.id", "days_detail.location_id")
+                                ->where("node_id", $val["id"])->whereNotNull("node_id")->get()->toArray();
+//                                    ->where("node_id", $val["day_id"])->whereNotNull("node_id")->toSql();
+//                    dd($val);
+                if (count($result) > 0) {
+                    $result[] = $val;
+                    $res[$j]["node"] = $result;
+                } else {
+                    $res[$j]["node"] = $val;
+                }
+                $dat[] = $res;
+            }
+        }
+        return $res;
     }
 
-    public function formInput($schedule_id, $year, $month, $day_week) {
-//        echo config('mail.host');exit;
-        \Session::put("schedule_id", $schedule_id);
-        \Session::put("year", $year);
-        \Session::put("month", $month);
-        \Session::put("day_week", $day_week);
+    public function formInput($programation_id) {
 
-        $sche = $this->getSchedule($schedule_id);
-        $sche[0]["date"] = date("Y/m/d", strtotime(date($year . "-" . $month . "-" . $day_week)));
-        $sche[0]["dateFormated"] = date("l, d / F", strtotime($sche[0]["date"]));
+//        dd($programation_id);
+//        \Session::put("programation_id", $programation_id);
+
+        $sche = $this->getSchedule($programation_id);
+
+//        $sche[0]["dateFormated"] = date("l, d / F", strtotime($sche[0]["date"]));
         foreach ($sche as $key => $value) {
             $sche[$key]["value"] = "$ " . number_format($sche[$key]["value"], 2, ".", ",");
 
@@ -221,14 +318,16 @@ class ClientsController extends Controller {
             }
         }
 
-        $addon = Addon::where("schedule_id", $schedule_id)->get();
+//        $addon = Addon::where("schedule_id", $schedule_id)->get();
+        $addon = array();
+//        dd($sche);
         $course = Courses::find($sche[0]["course_id"]);
-        session(['sche' => $sche, "months" => $month, "addon" => $addon]);
+//        session(['sche' => $sche, "months" => $month, "addon" => $addon]);
         $states = States::all();
         if ($course->dui == true) {
-            return view("Purchase.client.formdui", compact("sche", "month", "addon", "schedule_id", "day_week", "year", "states"));
+            return view("Purchase.client.formdui", compact("programation_id", "sche", "addon", "states"));
         } else {
-            return view("Purchase.client.form", compact("sche", "month", "addon", "schedule_id", "day_week", "year", "states"));
+            return view("Purchase.client.form", compact("programation_id", "sche", "addon", "states"));
         }
     }
 
@@ -245,17 +344,16 @@ class ClientsController extends Controller {
     public function payment(Request $req) {
         $in = $req->all();
 
+        $programation = \App\Models\DaysDetail::find($in["programation_id"]);
+
         $in["status_id"] = 2;
-        $in["date_course"] = $in["year"] . "/" . $in["month"] . "/" . $in["day_week"];
-        unset($in["year"]);
-        unset($in["month"]);
-        unset($in["day_week"]);
+        $in["date_course"] = $programation["date"];
 
-
-        $sche = $this->getSchedule($in["schedule_id"]);
+        $sche = $this->getSchedule($in["programation_id"]);
 
         $price = $sche[0]["value"];
         $course = $sche[0]["course"];
+
         $payer = new Payer();
         $payer->setPaymentMethod("paypal");
 
@@ -308,9 +406,14 @@ class ClientsController extends Controller {
                 break;
             }
         }
+
+
+
         $id = Purchases::create($in)->id;
+
         Session::put('paypal_payment_id', $payment->getId());
         Session::put('row_id', $id);
+        Session::put('programation_id', $in["programation_id"]);
         if (isset($redirect_url)) {
             /** redirect to paypal * */
             return \Redirect::away($redirect_url);
@@ -359,9 +462,11 @@ class ClientsController extends Controller {
         $row_id = Session::get('row_id');
         Session::forget('row_id');
 
-        $row = Purchases::find($row_id);
-        $sche = $this->getSchedule($row->schedule_id);
 
+        $row = Purchases::find($row_id);
+        
+        $sche = $this->getSchedule(Session::get('programation_id'));
+//        dd($sche);
         $email = Email::where("description", "invoices")->first();
 
         if ($email != null) {
@@ -386,6 +491,7 @@ class ClientsController extends Controller {
 
             $sche[0]["date"] = date("Y/m/d", strtotime($row->date_course));
             $sche[0]["dateFormated"] = date("l, d / F", strtotime($sche[0]["date"]));
+//            dd($sche);
             foreach ($sche as $key => $value) {
                 $sche[$key]["value"] = "$ " . number_format($sche[$key]["value"], 2, ".", ",");
 
@@ -397,7 +503,7 @@ class ClientsController extends Controller {
             $input["sche"] = $sche;
 
 
-
+//            dd($input);
             Mail::send("Notifications.purchase", $input, function($msj) {
                 $msj->subject($this->subject);
                 $msj->to($this->mails);

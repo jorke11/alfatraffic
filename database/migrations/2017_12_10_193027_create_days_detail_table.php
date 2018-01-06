@@ -17,8 +17,12 @@ class CreateDaysDetailTable extends Migration {
             $table->integer('day_id');
             $table->integer('course_id');
             $table->integer('location_id');
+            $table->integer('node_id')->nullable();
             $table->date('date');
             $table->time('hour');
+            $table->time('hour_end')->nullable();
+            $table->integer('duration');
+            $table->text('message')->nullable();
             $table->timestamps();
         });
     }
@@ -33,3 +37,5 @@ class CreateDaysDetailTable extends Migration {
     }
 
 }
+
+

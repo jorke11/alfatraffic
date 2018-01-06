@@ -10,7 +10,7 @@ class Purchases extends Model {
     protected $primaryKey = "id";
     protected $fillable = [
         "id",
-        "schedule_id",
+        "programation_id",
         "date_course",
         "name",
         "last_name",

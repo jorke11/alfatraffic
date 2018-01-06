@@ -56,7 +56,8 @@
                         @foreach($start as $i =>$val)
                         <tr>
                             <td>
-                                <input type="checkbox" {{($val->code==(int)date('m'))?'checked':''}} name="dates[]" value="{{$val->code}}" class="input-dates"> {{$val->description}}
+                                <input type="checkbox" {{($val->month==(int)date('m'))?'checked':''}} name="dates[]" value="{{$val->month}}" year="{{$val->year}}" class="input-dates"> 
+                                {{$val->month_text}} {{$val->year}}
                             </td>
                         </tr>
                         @endforeach

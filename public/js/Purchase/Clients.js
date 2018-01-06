@@ -11,7 +11,7 @@ function Clients() {
         })
 
         $("input[name='dates[]']:checked").each(function () {
-            dates.push($(this).val());
+            dates.push({value: $(this).val(), year: $(this).attr("year")});
         })
 
         table = this.table(location, courses, dates);
@@ -47,7 +47,7 @@ function Clients() {
         })
 
         $("input[name='dates[]']:checked").each(function () {
-            dates.push($(this).val());
+            dates.push({value: $(this).val(), year: $(this).attr("year")});
         })
 
         obj.table(location, courses, dates);
@@ -145,6 +145,7 @@ function Clients() {
             },
             success: function (data) {
                 if (data.success == true) {
+
                     obj.setList(data.data);
                     $("#loading-super").addClass("hidden");
                 }
@@ -155,19 +156,22 @@ function Clients() {
     }
 
     this.setList = function (data) {
-        var html = "", rowspan = 0;
+        var html = "", rowspan = 0, j = 0;
+        if (data.length > 0) {
 
-        $.each(data, function (i, val) {
-            if (val != undefined) {
-                if (val[0] != undefined) {
+
+            $.each(data, function (i, father) {
+
+                $.each(father, function (i, val) {
                     html += '<div class="panel panel-yellow">';
                     html += '<div class="panel-heading">';
-                    html += '<div class="row"><div class="col-lg-5">' + val[0].course + '</div><div class="col-lg-4">' + val[0].location + '</div></div>';
+                    html += '<div class="row"><div class="col-lg-5">' + val.course + '</div><div class="col-lg-4">' + val.location + '</div></div>';
                     html += '</div>'
                     html += '<table class="table table-condensed" style="wdth:100%">'
+                    rowspan = 2;
+//                        rowspan = val[i].length;
 
-                    rowspan = val.length;
-                    $.each(val, function (i, value) {
+                    $.each(val.node, function (i, value) {
                         value.message = (value.message == null) ? '' : "<br><strong>" + value.message + "</strong>";
                         if (i == 0) {
                             value.phone = (value.phone == null) ? '' : "<br>Phone: " + value.phone;
@@ -175,7 +179,7 @@ function Clients() {
                             html += '<td align="left" width="40%"> ';
                             html += value.dateFormated + '.....' + value.hour + ' - ' + value.hour_end + '</td>';
                             html += '<td rowspan="' + rowspan + '" align="center">' + value.address + value.phone + value.message + '</td>';
-                            html += '<td rowspan="' + rowspan + '" align="center"><a class="btn btn-primary" href="' + PATH + '/clients/' + value.schedule_id + '/' + value.date + '">Register</button></td>';
+                            html += '<td rowspan="' + rowspan + '" align="center"><a class="btn btn-primary" href="' + PATH + '/clients/' + val.id + '">Register</button></td>';
                             html += '</tr>'
                         } else {
                             html += '<tr>';
@@ -184,11 +188,26 @@ function Clients() {
                             html += '</tr>'
                         }
                     });
-//
                     html += '</table></div>';
-                }
-            }
-        })
+                })
+
+
+
+
+
+
+
+
+
+
+//
+
+
+
+            })
+        } else {
+            html = '<div class="alert alert-warning">No se encontro Programación</div>';
+        }
 
 
         $("#content-list").html(html);
