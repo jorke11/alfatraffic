@@ -33,7 +33,7 @@ function Registry() {
         $("#zip_code").blur(function () {
             $("#zip_code_building").val($(this).val());
         })
-        $("#date_birth").datetimepicker({format: 'm/d/y'});
+        $("#date_birth").datetimepicker({format: 'm/d/y', timepicker:false});
 
         $("#saveDate").click(function () {
             $("#date-selected").val($("#datetimepicker3").val());

@@ -19,7 +19,7 @@ class ProgramationController extends Controller {
             $day = (int) date("d");
         }
 
-        $months = $obj->createMonts();
+        $months = \App\Models\Administration\Parameters::where("group", "months")->orderBy("code")->get();
         $mont = ($mont == null) ? (int) date("m") : $mont;
 
         $daysf = $this->getCalendar($mont);
@@ -76,12 +76,31 @@ class ProgramationController extends Controller {
         $in = $req->all();
 
         $mount_id = $in["mount_id"];
+        $id = $in["id"];
         unset($in["_token"]);
         unset($in["mount_id"]);
+        unset($in["id"]);
         $in["date"] = date("Y-m-d", strtotime($in["date"]));
         $in["node_id"] = ($in["node_id"] != '') ? $in["node_id"] : null;
-        $in["hour_end"] = date('H:i', strtotime('+' . $in["duration"] . ' hour', strtotime(date('H:i'))));
-        DaysDetail::create($in);
+
+
+        if (strpos(".", $in["duration"]) === false) {
+            $date = $in["duration"] * 60;
+            $in["hour_end"] = date('H:i', strtotime('+' . $date . ' minute', strtotime($in["hour"])));
+        } else {
+            $in["hour_end"] = date('H:i', strtotime('+' . $in["duration"] . ' hour', strtotime($in["hour"])));
+        }
+
+
+
+        if ($id == '') {
+            DaysDetail::create($in);
+        } else {
+
+            $row = DaysDetail::find($id);
+            $row->fill($in)->save();
+        }
+
         return redirect("/programation/" . $mount_id);
     }
 
@@ -93,6 +112,12 @@ class ProgramationController extends Controller {
         $daysf = $this->getCalendar($month);
 
         return response()->json(["days" => $daysf, "day" => $day]);
+    }
+
+    public function getProgramation($id) {
+        $row = DaysDetail::find($id);
+
+        return response()->json(["data" => $row]);
     }
 
     public function destroy($id) {

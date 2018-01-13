@@ -8,7 +8,7 @@
                 <label for="email">Months</label>
                 <select class="form-control" id="month_id" name="month_id">
                     @foreach($months as $val)
-                    <option value="{{$val["month"]}}" <?php echo ($mont == (int) $val["month"]) ? "selected" : '' ?>>{{$val["literal"]}}</option>
+                    <option value="{{$val["code"]}}" <?php echo ($mont == (int) $val["month"]) ? "selected" : '' ?>>{{$val["description"]}}</option>
                     @endforeach
                 </select>
             </div>
@@ -19,18 +19,17 @@
             <table class="table table-bordered" id='table-calendar'>
                 <thead>
                     <tr>
-                        <th>Lunes</th>
-                        <th>Martes</th>
-                        <th>Miercoles</th>
-                        <th>Jueves</th>
-                        <th>Viernes</th>
-                        <th>Sabado</th>
-                        <th>Domingo</th>
+                        <th>Monday</th>
+                        <th>Tuesday</th>
+                        <th>Wednesday</th>
+                        <th>Thursday</th>
+                        <th>Friday</th>
+                        <th>Saturday</th>
+                        <th>Sunday</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                    
                     foreach ($daysf as $val) {
 //                        dd($val);
                         ?>
@@ -72,10 +71,15 @@
                                                         <li class="list-group-item" style="font-size: 10px">
                                                             #{{$val2["id"]}} <strong style="color:green">{{$node}}</strong>{{$val2["location"]}}<br>{{$val2["course"]}} 
 
+
                                                             <span class="badge" onclick="obj.delete({{$val2["id"]}})">X</span>
                                                             <span class="badge" onclick="obj.addMessage({{$val2["id"]}})">
                                                                 <span class="glyphicon glyphicon-comment"  aria-hidden="true"></span>
-                                                            </span></li>
+                                                            </span>
+                                                            <span class="badge" onclick="obj.edit({{$val2["id"]}})">
+                                                                <span class="glyphicon glyphicon-edit"  aria-hidden="true"></span>
+                                                            </span>
+                                                        </li>
                                                         <?php
                                                     }
                                                     ?>
@@ -120,7 +124,8 @@
                 </div>
                 <div class="modal-body">
 
-                    <input type="hidden" name="day_id" id='day_id'>
+                    <input type="hidden" name="id" id='id' class="input-programation">
+                    <input type="hidden" name="day_id" id='day_id'  class="input-programation">
                     <input type="hidden" name="mount_id" id='mount_id'>
                     <div class="row">
                         <div class="col-lg-6">
@@ -131,7 +136,7 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label for="email">Hour</label>
+                                <label for="email">Course Start Time</label>
                                 <input type="text" name="hour" id='hour' value="<?php echo date("H:i") ?>" class="form-control input-programation">
                             </div>
                         </div>
@@ -141,7 +146,7 @@
                             <div class="form-group">
                                 <label for="email">Locations</label>
                                 <select class="form-control input-programation" id="location_id" name="location_id">
-                                    <option value="0">Seleccione</option>
+                                    <option value="0">Select Location</option>
                                     @foreach($locations as $val)
                                     <option value="{{$val->id}}">{{$val->description}}</option>
                                     @endforeach
@@ -152,7 +157,7 @@
                             <div class="form-group">
                                 <label for="email">Courses</label>
                                 <select class="form-control input-programation" id="course_id" name="course_id">
-                                    <option value="0">Seleccione</option>
+                                    <option value="0">Select Type of Course</option>
                                     @foreach($courses as $val)
                                     <option value="{{$val->id}}">{{$val->description}}</option>
                                     @endforeach
@@ -163,7 +168,7 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label for="email">Duration</label>
+                                <label for="email">Total Course Hours (include lunch time, if applicable)</label>
                                 <input type="text" name="duration" id='duration' class="form-control input-programation">
                             </div>
                         </div>

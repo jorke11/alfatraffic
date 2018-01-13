@@ -16,7 +16,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="form-group">
-                            <label for="email">Description</label>
+                            <label for="email">Location Description (ex. Midtown Atlanta)</label>
                             <input type="text" class="form-control input-locations input-sm" id="description" name='description' required="">
                         </div>
                     </div>
@@ -24,7 +24,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="form-group">
-                            <label for="email">Address</label>
+                            <label for="email">Street Address (ex. 123 Main Street, Atlanta, GA 30305)</label>
                             <input type="text" class="form-control input-locations input-sm" id="address" name='address' required>
                         </div>
                     </div>
@@ -69,20 +69,6 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-4">
-                        <div class="form-group">
-                            <label for="email">Valor Adulto</label>
-                            <input type="text" class="form-control input-locations input-sm" id="value_adult" name='value_adult' required>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="form-group">
-                            <label for="email">Valor Niños</label>
-                            <input type="text" class="form-control input-locations input-sm" id="value_child" name='value_child' required>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
                     <div class="col-lg-12">
                         <div class="form-group">
                             <label for="email">Customer Service Hours</label>
@@ -90,8 +76,8 @@
                                 <thead>
                                     <tr>
                                         <th>Day</th>
-                                        <th>Init</th>
-                                        <th>End</th>
+                                        <th>Open</th>
+                                        <th>Closed</th>
                                     </tr>
                                 </thead>
                                 <tbody>

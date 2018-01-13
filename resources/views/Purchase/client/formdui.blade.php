@@ -20,7 +20,7 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label for="email">First name</label>
+                        <label for="email">First Name</label>
                         <input type="text" class="form-control input-category input-sm" id="name" name='name' required>
                     </div>
                 </div>
@@ -34,7 +34,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="form-group">
-                        <label for="email">Address</label>
+                        <label for="email">Street Address</label>
                         <input type="text" class="form-control input-category input-sm" id="address" name='address' required>
                     </div>
                 </div>
@@ -95,7 +95,12 @@
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label for="email">License Issuing State</label>
-                        <input type="text" class="form-control input-category input-sm" id="license_issuing" name='license_issuing' required>
+                        <select id="license_issuing" name="license_issuing" class="form-control input-category input-sm" required="">
+                            <option value="0">Selection</option>
+                            @foreach($states as $val)
+                            <option value="{{$val->id}}">{{$val->description}}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
             </div>
@@ -120,7 +125,7 @@
             <br>
             <div class="row">
                 <div class="col-lg-12">
-                    <label for="email">BUILDING INFORMATION</label>
+                    <label for="email">BILLING INFORMATION</label>
                 </div>
             </div>
 
@@ -217,7 +222,7 @@
             <br>
         </div>
 
-        <div class="col-lg-6  " >
+        <div class="col-lg-6" >
             <div class="panel panel-yellow column-left">
                 <div class="panel-heading">
                     <h3 class="panel-title">Order Summary</h3>
@@ -237,9 +242,9 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-12 text-left">
-                            @foreach($sche as $val)
+                            @foreach($schedule as $val)
                             <div class="row">
-                                <div class="col-lg-6">{{$val["dateFormated"]}} .....{{$val["hour"]}} - {{$val["hour_end"]}}</div>
+                                <div class="col-lg-12">{{$val["dateFormated"]}} ....{{$val["hour"]}} - {{$val["hour_end"]}}</div>
                             </div>
                             @endforeach
                         </div>
@@ -249,12 +254,12 @@
                         <div class="col-lg-6 text-left"><label>Location</label></div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-6 text-left">{{$sche[0]["location"]}}<br>
+                        <div class="col-lg-12 text-left">{{$sche[0]["location"]}}<br>
                             {{$sche[0]["address"]}}
                         </div>
                     </div>
                     <br>
-                    <div class="row">
+<!--                    <div class="row">
                         <div class="col-lg-6 text-left"><label>AddOn</label></div>
                     </div>
                     <div class="row">
@@ -265,7 +270,7 @@
                             </div>
                             @endforeach
                         </div>
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </div>

@@ -174,11 +174,11 @@ function Clients() {
                     $.each(val.node, function (i, value) {
                         value.message = (value.message == null) ? '' : "<br><strong>" + value.message + "</strong>";
                         if (i == 0) {
-                            value.phone = (value.phone == null) ? '' : "<br>Phone: " + value.phone;
+                            value.phone = (value.phone == null) ? '' : value.phone;
                             html += '<tr>';
                             html += '<td align="left" width="40%"> ';
                             html += value.dateFormated + '.....' + value.hour + ' - ' + value.hour_end + '</td>';
-                            html += '<td rowspan="' + rowspan + '" align="center">' + value.address + value.phone + value.message + '</td>';
+                            html += '<td rowspan="' + rowspan + '" align="center">' + value.address + '<br>Phone <a href="tel:' + value.phone + '"> ' + value.phone + '</a>' + value.message + '</td>';
                             html += '<td rowspan="' + rowspan + '" align="center"><a class="btn btn-primary" href="' + PATH + '/clients/' + val.id + '">Register</button></td>';
                             html += '</tr>'
                         } else {

@@ -31,6 +31,7 @@ Route::get('/programation/{month}/getMonth', 'Administration\ProgramationControl
 Route::delete('/programation/{mounth}', 'Administration\ProgramationController@destroy');
 Route::put('setMessage/{id}', 'Administration\ProgramationController@setMessage');
 Route::get('getMessage/{id}', 'Administration\ProgramationController@getMessage');
+Route::get('getProgramation/{id}', 'Administration\ProgramationController@getProgramation');
 
 Route::get('/purchases', 'Report\PurchasesController@index');
 

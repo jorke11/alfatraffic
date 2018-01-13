@@ -114,13 +114,25 @@ class ClientsController extends Controller {
 
         $dat = [];
 
-//        dd($data);
+
         foreach ($data as $i => $value) {
 //            dd($value);
             $res = \App\Models\DaysDetail::select("days_detail.id", "courses.description as course", "locations.description as location", "days_detail.date", "days_detail.date as dateFormated", "days_detail.hour", "days_detail.hour_end", "days_detail.day_id", "locations.address", "days_detail.message")
                             ->join("courses", "courses.id", "days_detail.course_id")
                             ->join("locations", "locations.id", "days_detail.location_id")
-                            ->where("day_id", $value->id)->whereNull("node_id")->orderBy("day_id")->get()->toArray();
+                            ->where("day_id", $value->id)->whereNull("node_id");
+
+
+            if (isset($in["location"])) {
+                $res->whereIn("locations.id", $in["location"]);
+            }
+            if (isset($in["courses"])) {
+                $res->whereIn("courses.id", $in["courses"]);
+            }
+
+            $res = $res->orderBy("day_id")
+                            ->orderBy("days_detail.date")->get()->toArray();
+
 //                            ->where("day_id", $value->id)->whereNull("node_id")->orderBy("day_id")->toSql();
 //            $res = \App\Models\DaysDetail::where("day_id", $value->id)->whereNull("node_id")->orderBy("day_id")->get()->toArray();
 //            dd($res);
@@ -131,15 +143,28 @@ class ClientsController extends Controller {
                     $result = \App\Models\DaysDetail::select("days_detail.id", "courses.description as course", "locations.description as location", "days_detail.date", "days_detail.hour", "days_detail.hour_end", "days_detail.day_id", "days_detail.date as dateFormated", "locations.address", "locations.phone", "days_detail.message")
                                     ->join("courses", "courses.id", "days_detail.course_id")
                                     ->join("locations", "locations.id", "days_detail.location_id")
-                                    ->where("node_id", $val["id"])->whereNotNull("node_id")->get()->toArray();
+                                    ->where("node_id", $val["id"])->whereNotNull("node_id")->Orwhere("days_detail.id", $val["id"])->orderBy("days_detail.date")->get()->toArray();
+//                                    ->where("node_id", $val["id"])->whereNotNull("node_id")->orderBy("days_detail.date")->toSql();
 //                                    ->where("node_id", $val["day_id"])->whereNotNull("node_id")->toSql();
-
+//                    echo ($result);exit;
                     if (count($result) > 0) {
-                        $result[] = $val;
+
+                        foreach ($result as $k => $val2) {
+                            $result[$k]["date"] = date("Y/m/d", strtotime($result[$k]["date"]));
+                            $result[$k]["dateFormated"] = date("l, F d", strtotime($result[$k]["date"]));
+//                                    $data[$k]["hour"] = date("h:i A", strtotime($data[$k]["hour"]));
+                            $result[$k]["hour"] = date("h:i A", strtotime($result[$k]["hour"]));
+                            $result[$k]["hour_end"] = date("h:i A", strtotime($result[$k]["hour_end"]));
+                        }
+
+
+
+//                        $result[] = $val;
                         $res[$j]["node"] = $result;
                     } else {
                         $res[$j]["node"][] = $val;
                     }
+//                    dd($res[$j]);
                 }
                 $dat[] = $res;
             }
@@ -162,8 +187,6 @@ class ClientsController extends Controller {
         $end = ($month->value + $init);
 
         $events = Events::where("dateevent", ">=", date("Y-m-d"))->get();
-
-//        echo cal_days_in_month(CAL_GREGORIAN, 1, date("y"));exit;
 
 
         for ($i = $init; $i <= $end; $i++) {
@@ -274,7 +297,7 @@ class ClientsController extends Controller {
         $res = \App\Models\DaysDetail::select("days_detail.id", "courses.description as course", "courses.value", "locations.description as location", "days_detail.date", "days_detail.date as dateFormated", "days_detail.hour", "days_detail.hour_end", "days_detail.day_id", "locations.address", "courses.value", "days_detail.course_id", "days_detail.message", "locations.phone")
                         ->join("courses", "courses.id", "days_detail.course_id")
                         ->join("locations", "locations.id", "days_detail.location_id")
-                        ->where("days_detail.id", $programation_id)->whereNull("node_id")->orderBy("day_id")->get()->toArray();
+                        ->where("days_detail.id", $programation_id)->whereNull("node_id")->orderBy("days_detail.date")->get()->toArray();
 //                            ->where("day_id", $value->id)->whereNull("node_id")->orderBy("day_id")->toSql();
 //            $res = \App\Models\DaysDetail::where("day_id", $value->id)->whereNull("node_id")->orderBy("day_id")->get()->toArray();
 
@@ -286,11 +309,10 @@ class ClientsController extends Controller {
                 $result = \App\Models\DaysDetail::select("days_detail.id", "courses.description as course", "locations.description as location", "days_detail.date", "days_detail.hour", "days_detail.hour_end", "days_detail.day_id", "days_detail.date as dateFormated", "locations.address", "locations.phone", "days_detail.message", "days_detail.course_id", "locations.phone")
                                 ->join("courses", "courses.id", "days_detail.course_id")
                                 ->join("locations", "locations.id", "days_detail.location_id")
-                                ->where("node_id", $val["id"])->whereNotNull("node_id")->get()->toArray();
+                                ->where("node_id", $val["id"])->whereNotNull("node_id")->Orwhere("days_detail.id", $val["id"])->orderBy("days_detail.date")->get()->toArray();
 //                                    ->where("node_id", $val["day_id"])->whereNotNull("node_id")->toSql();
 //                    dd($val);
                 if (count($result) > 0) {
-                    $result[] = $val;
                     $res[$j]["node"] = $result;
                 } else {
                     $res[$j]["node"] = $val;
@@ -309,15 +331,25 @@ class ClientsController extends Controller {
         $sche = $this->getSchedule($programation_id);
 
 //        $sche[0]["dateFormated"] = date("l, d / F", strtotime($sche[0]["date"]));
+
         foreach ($sche as $key => $value) {
             $sche[$key]["value"] = "$ " . number_format($sche[$key]["value"], 2, ".", ",");
 
-            if ($key > 0) {
+            if ($key >= 0) {
                 $sche[$key]["date"] = date("Y/m/d", strtotime('+' . $key . " days", strtotime($sche[0]["date"])));
-                $sche[$key]["dateFormated"] = date("l, d / F", strtotime($sche[$key]["date"]));
+                $sche[$key]["dateFormated"] = date("l, F d", strtotime($sche[$key]["date"]));
+                $sche[$key]["hour"] = date("h:i A", strtotime($sche[0]["hour"]));
+                $sche[$key]["hour_end"] = date("h:i A", strtotime($sche[0]["hour_end"]));
             }
         }
-
+        $schedule = $sche[0]["node"];
+        foreach ($schedule as $i => $value) {
+            $schedule[$i]["date"] = date("Y/m/d", strtotime('+' . $key . " days", strtotime($schedule[$i]["date"])));
+            $schedule[$i]["dateFormated"] = date("l, F d", strtotime($schedule[$i]["date"]));
+            $schedule[$i]["hour"] = date("h:i A", strtotime($schedule[$i]["hour"]));
+            $schedule[$i]["hour_end"] = date("h:i A", strtotime($schedule[$i]["hour_end"]));
+        }
+//        dd($schedule);
 //        $addon = Addon::where("schedule_id", $schedule_id)->get();
         $addon = array();
 //        dd($sche);
@@ -325,9 +357,10 @@ class ClientsController extends Controller {
 //        session(['sche' => $sche, "months" => $month, "addon" => $addon]);
         $states = States::all();
         if ($course->dui == true) {
-            return view("Purchase.client.formdui", compact("programation_id", "sche", "addon", "states"));
+            return view("Purchase.client.formdui", compact("programation_id", "sche", "schedule", "addon", "states"));
         } else {
-            return view("Purchase.client.form", compact("programation_id", "sche", "addon", "states"));
+//            dd($sche);
+            return view("Purchase.client.form", compact("programation_id", "sche", "schedule", "addon", "states"));
         }
     }
 
@@ -464,7 +497,7 @@ class ClientsController extends Controller {
 
 
         $row = Purchases::find($row_id);
-        
+
         $sche = $this->getSchedule(Session::get('programation_id'));
 //        dd($sche);
         $email = Email::where("description", "invoices")->first();
@@ -489,8 +522,7 @@ class ClientsController extends Controller {
             $input["name"] = ucwords($row->name);
             $input["last_name"] = ucwords($row->last_name);
 
-            $sche[0]["date"] = date("Y/m/d", strtotime($row->date_course));
-            $sche[0]["dateFormated"] = date("l, d / F", strtotime($sche[0]["date"]));
+        
 //            dd($sche);
             foreach ($sche as $key => $value) {
                 $sche[$key]["value"] = "$ " . number_format($sche[$key]["value"], 2, ".", ",");
@@ -502,6 +534,7 @@ class ClientsController extends Controller {
             }
             $input["sche"] = $sche;
 
+            
 
 //            dd($input);
             Mail::send("Notifications.purchase", $input, function($msj) {

@@ -27,6 +27,8 @@ class LocationsController extends Controller {
     public function store(Request $request) {
         if ($request->ajax()) {
             $input = $request->all();
+            $input["phone"] = $this->formatPhoneNumber($input["phone"]);
+
             unset($input["id"]);
 //            $user = Auth::User();
             $input["status_id"] = 1;
@@ -42,13 +44,13 @@ class LocationsController extends Controller {
             }
 
             if ($day != null) {
-                $input["days"] =(string) json_encode($day);
+                $input["days"] = (string) json_encode($day);
             }
             if (isset($input["courses"])) {
-                $input["courses"] = (string)json_encode($input["courses"]);
+                $input["courses"] = (string) json_encode($input["courses"]);
             }
-            
-            
+
+
             $result = Locations::create($input);
             if ($result) {
                 return response()->json(['success' => true]);
@@ -56,6 +58,32 @@ class LocationsController extends Controller {
                 return response()->json(['success' => false]);
             }
         }
+    }
+
+    public function formatPhoneNumber($phoneNumber) {
+        $phoneNumber = preg_replace('/[^0-9]/', '', $phoneNumber);
+
+        if (strlen($phoneNumber) > 10) {
+            $countryCode = substr($phoneNumber, 0, strlen($phoneNumber) - 10);
+            $areaCode = substr($phoneNumber, -10, 3);
+            $nextThree = substr($phoneNumber, -7, 3);
+            $lastFour = substr($phoneNumber, -4, 4);
+
+            $phoneNumber = '+' . $countryCode . ' ' . $areaCode . '-' . $nextThree . '-' . $lastFour;
+        } else if (strlen($phoneNumber) == 10) {
+            $areaCode = substr($phoneNumber, 0, 3);
+            $nextThree = substr($phoneNumber, 3, 3);
+            $lastFour = substr($phoneNumber, 6, 4);
+
+            $phoneNumber =  $areaCode . '-' . $nextThree . '-' . $lastFour;
+        } else if (strlen($phoneNumber) == 7) {
+            $nextThree = substr($phoneNumber, 0, 3);
+            $lastFour = substr($phoneNumber, 3, 4);
+
+            $phoneNumber = $nextThree . '-' . $lastFour;
+        }
+
+        return $phoneNumber;
     }
 
     public function edit($id) {
@@ -78,6 +106,9 @@ class LocationsController extends Controller {
                 $day[] = array("day" => $i + 1, "init" => $value, "end" => $input["end"][$i]);
             }
         }
+
+
+        $input["phone"] = $this->formatPhoneNumber($input["phone"]);
 
         if ($day != null) {
             $input["days"] = json_encode($day);

@@ -21,8 +21,8 @@ class CreateLocationsTable extends Migration {
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
             $table->integer('status_id');
-            $table->text('days')->nullable();
-            $table->text('courses')->nullable();
+            $table->text('days');
+            $table->text('courses');
             $table->timestamps();
         });
     }

@@ -17,7 +17,6 @@ class CreateScheduleDetailTable extends Migration {
             $table->integer('schedule_id');
             $table->integer('day');
             $table->integer('course_id');
-            $table->integer('node_id')->nullable();
             $table->time('hour');
             $table->time('hour_end');
             $table->integer('duration');

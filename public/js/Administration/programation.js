@@ -12,8 +12,9 @@ function Programation() {
     }
 
     this.add = function (id, day, year, month) {
+        $(".input-programation").cleanFields();
         $("#modalCourse").modal("show");
-        $("#frm #date").val(day + "-" + month + "-" + year);
+        $("#frm #date").val(month + "-" + day + "-" + year);
         $("#frm #day_id").val(id);
     }
 
@@ -52,6 +53,21 @@ function Programation() {
                     $("#frmMessage #message").text("");
                 }
 
+            }
+        })
+
+    }
+
+    this.edit = function (id) {
+        $("#modalCourse").modal("show");
+
+
+        $.ajax({
+            url: "getProgramation/" + id,
+            method: "get",
+            dataType: 'JSON',
+            success: function (data) {
+                $(".input-programation").setFields({data: data.data});
             }
         })
 
@@ -189,25 +205,6 @@ function Programation() {
         }
     }
 
-    this.edit = function (id) {
-        var frm = $("#frmEdit");
-        var data = frm.serialize();
-        var url = "/schedules/" + id + "/edit";
-
-        $.ajax({
-            url: url,
-            method: "GET",
-            data: data,
-            dataType: 'JSON',
-            success: function (data) {
-                $('#myTabs a[href="#management"]').tab('show');
-                $(".input-schedules").setFields({data: data.header});
-                $("#btnNewDetail").attr("disabled", false);
-                obj.setTableDetail(data.detail);
-
-            }
-        })
-    }
 
     this.delete = function (id) {
         toastr.remove();

@@ -21,7 +21,7 @@ class CreateDaysDetailTable extends Migration {
             $table->date('date');
             $table->time('hour');
             $table->time('hour_end')->nullable();
-            $table->integer('duration');
+            $table->double('duration');
             $table->text('message')->nullable();
             $table->timestamps();
         });

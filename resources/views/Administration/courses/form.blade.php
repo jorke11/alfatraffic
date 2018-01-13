@@ -11,7 +11,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="form-group">
-                            <label for="email">Description</label>
+                            <label for="email">Course Description / Type of Course (ex. Defensive Driving)</label>
                             <input type="text" class="form-control input-courses" id="description" name='description' required="">
                         </div>
                     </div>
@@ -19,7 +19,15 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="form-group">
-                            <label for="email">Value</label>
+                            <label for="email">Check HERE If DUI Course Selected</label>
+                            <input type="checkbox" class="input-courses" id="dui" name='dui'>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label for="email">Cost (ex. 95.00) <i>no need to use "$" symbol</i></label>
                             <input type="text" class="form-control input-courses" id="value" name='value' required>
                         </div>
                     </div>
@@ -28,18 +36,11 @@
                     <div class="col-lg-12">
                         <div class="form-group">
                             <label for="email">Order</label>
-                            <input type="text" class="form-control input-courses" id="order" name='order' required>
+                            <input type="text" class="form-control" id="order" name='order' required value="1" disabled>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="form-group">
-                            <label for="email">DUI</label>
-                            <input type="checkbox" class="input-courses" id="dui" name='dui'>
-                        </div>
-                    </div>
-                </div>
+
                 {!!Form::close()!!}
             </div>
             <div class="modal-footer">
