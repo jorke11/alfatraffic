@@ -97,7 +97,24 @@ class ClientsController extends Controller {
 
         $query = \App\Models\Days::select("id", "day", "month", "year");
         $limit = false;
-        $data = $in["start_date"];
+
+        if (isset($in["start_date"])) {
+            $data = $in["start_date"];
+        } else {
+            $sql = "
+            select month as value,year 
+            from days 
+            group by 1,2
+            ORDER BY 1 , 2 ASC ";
+
+            $data = (array) DB::select($sql);
+
+            $json = json_encode($data);
+            $data = json_decode($json, true);
+
+        }
+
+
         $query->where(function($sql) use($data) {
             foreach ($data as $value) {
 
@@ -522,7 +539,7 @@ class ClientsController extends Controller {
             $input["name"] = ucwords($row->name);
             $input["last_name"] = ucwords($row->last_name);
 
-        
+
 //            dd($sche);
             foreach ($sche as $key => $value) {
                 $sche[$key]["value"] = "$ " . number_format($sche[$key]["value"], 2, ".", ",");
@@ -534,7 +551,7 @@ class ClientsController extends Controller {
             }
             $input["sche"] = $sche;
 
-            
+
 
 //            dd($input);
             Mail::send("Notifications.purchase", $input, function($msj) {
