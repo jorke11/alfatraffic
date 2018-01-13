@@ -141,6 +141,11 @@
                     <label for="email">BILLING INFORMATION</label>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <input type="checkbox" id="btnCopy"> <label>Copy address from Student Information</label>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="col-lg-6">
@@ -156,11 +161,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <input type="checkbox" id="btnCopy"> <label>Copy address from Student Information</label>
-                </div>
-            </div>
+
 
             <div class="row">
                 <div class="col-lg-12">
@@ -269,18 +270,18 @@
                         </div>
                     </div>
                     <br>
-<!--                    <div class="row">
-                        <div class="col-lg-6 text-left"><label>AddOn</label></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-12 text-left">
-                            @foreach($addon as $val)
-                            <div class="row">
-                                <div class="col-lg-6">{{$val->description}}</div>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>-->
+                    <!--                    <div class="row">
+                                            <div class="col-lg-6 text-left"><label>AddOn</label></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12 text-left">
+                                                @foreach($addon as $val)
+                                                <div class="row">
+                                                    <div class="col-lg-6">{{$val->description}}</div>
+                                                </div>
+                                                @endforeach
+                                            </div>
+                                        </div>-->
                 </div>
             </div>
         </div>
