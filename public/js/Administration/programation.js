@@ -65,7 +65,7 @@ function Programation() {
 
 
         $.ajax({
-            url: "getProgramation/" + id,
+            url: PATH+"/getProgramation/" + id,
             method: "get",
             dataType: 'JSON',
             success: function (data) {
