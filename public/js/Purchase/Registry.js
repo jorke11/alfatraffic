@@ -11,29 +11,14 @@ function Registry() {
         });
 
 
+        $("#btnCopy").click(this.copyInfo)
 
-        $("#frm #name").blur(function () {
-            $("#name_building").val($(this).val());
-        })
-
-        $("#last_name").blur(function () {
-            $("#last_name_building").val($(this).val());
-        })
-
-        $("#address").blur(function () {
-            $("#address_building").val($(this).val());
-        })
-
-        $("#city_id").blur(function () {
-            $("#city_id_building").val($(this).val());
-        })
         $("#state_id").change(function () {
             $("#state_id_building").val($(this).val()).change();
         })
-        $("#zip_code").blur(function () {
-            $("#zip_code_building").val($(this).val());
-        })
-        $("#date_birth").datetimepicker({format: 'm/d/y', timepicker:false});
+
+
+        $("#date_birth").datetimepicker({format: 'm/d/y', timepicker: false});
 
         $("#saveDate").click(function () {
             $("#date-selected").val($("#datetimepicker3").val());
@@ -63,6 +48,17 @@ function Registry() {
 
 
     }
+
+    this.copyInfo = function () {
+        if ($(this).is(":checked")) {
+            $("#zip_code_building").val($("#zip_code").val());
+            $("#city_id_building").val($("#city_id").val());
+            $("#address_building").val($("#address").val());
+            $("#last_name_building").val($("#last_name").val());
+            $("#name_building").val($("#name").val());
+        }
+    }
+
 
     this.save = function () {
         toastr.remove();

@@ -12,6 +12,7 @@
         width: 48%;
     }
 </style>
+
 <div class="container-fluid">
     {!! Form::open(['id'=>'frm','url' => 'payment', 'method' => 'post']) !!}
     <div class="row">
@@ -124,7 +125,7 @@
                     </div>
                 </div>
             </div>
-            @if($sche[0]["course_id"]!=1)
+            @if($sche[0]["course_id"]!=5)
             <div class="row">
                 <div class="col-lg-12">
                     <div class="form-group">
@@ -157,7 +158,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <input type="checkbox" id="copy_address"> <label>Copy address from Student Informaiont</label>
+                    <input type="checkbox" id="btnCopy"> <label>Copy address from Student Information</label>
                 </div>
             </div>
 
