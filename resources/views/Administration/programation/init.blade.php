@@ -69,7 +69,7 @@
                                                         $node = ($val2["node_id"] == null) ? '' : "(" . $val2["node_id"] . ") ";
                                                         ?>
                                                         <li class="list-group-item" style="font-size: 10px">
-                                                            #{{$val2["id"]}} <strong style="color:green">{{$node}}</strong>{{$val2["location"]}}<br>{{$val2["course"]}} 
+                                                            <a href="#" onclick="obj.edit({{$val2["id"]}})" >#{{$val2["id"]}} <strong style="color:green">{{$node}}</strong>{{$val2["location"]}}<br>{{$val2["course"]}} </a>
 
 
                                                             <span class="badge" onclick="obj.delete({{$val2["id"]}})">X</span>
