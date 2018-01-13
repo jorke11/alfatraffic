@@ -118,7 +118,9 @@ class ProgramationController extends Controller {
 
     public function getProgramation($id) {
         $row = DaysDetail::find($id);
-
+        
+        $row->date = date("m-d-Y", strtotime($row->date));
+        
         return response()->json(["data" => $row]);
     }
 
