@@ -16,7 +16,7 @@ class CreateLocationsTable extends Migration {
             $table->increments('id');
             $table->string('description');
             $table->string('address');
-            $table->integer('order');
+            $table->integer('order')->nullable();
             $table->string('phone')->nullable();
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();

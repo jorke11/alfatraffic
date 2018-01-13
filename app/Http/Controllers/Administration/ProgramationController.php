@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\CronController;
 use App\Models\Days;
 use App\Models\DaysDetail;
+use DateTime;
 
 class ProgramationController extends Controller {
 
@@ -80,18 +81,19 @@ class ProgramationController extends Controller {
         unset($in["_token"]);
         unset($in["mount_id"]);
         unset($in["id"]);
-        $in["date"] = date("Y-m-d", strtotime($in["date"]));
+       
+        $d = explode("-", $in["date"]);
+        
+        $in["date"] = date("Y-m-d", strtotime($d[2] . "-" . $d[0] . "-" . $d[1]));
         $in["node_id"] = ($in["node_id"] != '') ? $in["node_id"] : null;
 
-
+ 
         if (strpos(".", $in["duration"]) === false) {
             $date = $in["duration"] * 60;
             $in["hour_end"] = date('H:i', strtotime('+' . $date . ' minute', strtotime($in["hour"])));
         } else {
             $in["hour_end"] = date('H:i', strtotime('+' . $in["duration"] . ' hour', strtotime($in["hour"])));
         }
-
-
 
         if ($id == '') {
             DaysDetail::create($in);

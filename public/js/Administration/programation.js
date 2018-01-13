@@ -14,6 +14,8 @@ function Programation() {
     this.add = function (id, day, year, month) {
         $(".input-programation").cleanFields();
         $("#modalCourse").modal("show");
+        
+        month = (month <= 9) ? '0' + month : month;
         $("#frm #date").val(month + "-" + day + "-" + year);
         $("#frm #day_id").val(id);
     }
