@@ -126,7 +126,7 @@
 
                     <input type="hidden" name="id" id='id' class="input-programation">
                     <input type="hidden" name="day_id" id='day_id'  class="input-programation">
-                    <input type="hidden" name="mount_id" id='mount_id'>
+                    <input type="hidden" name="mount_id" id='mount_id' value="{{$mont}}">
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group">
