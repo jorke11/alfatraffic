@@ -26,9 +26,10 @@ return [
       | the Mailgun mail service which will provide reliable deliveries.
       |
      */
-    'host' => env('MAIL_HOST', 'smtp.gmail.com'),
+//    'host' => env('MAIL_HOST', 'smtp.gmail.com'),
 //    'host' => env('MAIL_HOST', 'a2plcpnl0354.prod.iad2.secureserver.net'),
-//    'host' => env('MAIL_HOST', 'mail.new.alfadrivingschool.com'),
+//    'host' => env('MAIL_HOST', 'smtpout.secureserve.net'),
+    'host' => 'smtpout.secureserver.net',
     /*
       |--------------------------------------------------------------------------
       | SMTP Host Port
@@ -39,9 +40,10 @@ return [
       | stay compatible with the Mailgun e-mail application by default.
       |
      */
-    'port' => env('MAIL_PORT', 587),
+//    'port' => env('MAIL_PORT', 587),
 //    'port' => env('MAIL_PORT', 465),
-//    'port' => env('MAIL_PORT', 25),
+//    'port' => env('MAIL_PORT', 465),
+    'port' =>  465,
     /*
       |--------------------------------------------------------------------------
       | Global "From" Address
@@ -53,7 +55,7 @@ return [
       |
      */
     'from' => [
-        'address' => 'sistemas@superfuds.com.co',
+        'address' => 'new@alfadrivingschool.com',
 //        'address' => 'info@new.alfadrivingschool.com',
         'name' => 'Notification Alfa driving',
     ],
@@ -67,7 +69,8 @@ return [
       | transport layer security protocol should provide great security.
       |
      */
-    'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+//    'encryption' => env('MAIL_ENCRYPTION', 'ssl'),
+    'encryption' => 'ssl',
     /*
       |--------------------------------------------------------------------------
       | SMTP Server Username
@@ -78,8 +81,9 @@ return [
       | connection. You may also set the "password" value below this one.
       |
      */
-//    'username' => env('info@new.alfadrivingschool.com'),
-    'username' => env('sistemas@superfuds.com.co'),
+//    'username' => env('new@alfadrivingschool.com'),
+    'username' => 'new@alfadrivingschool.com',
+//    'username' => env('sistemas@superfuds.com.co'),
     /*
       |--------------------------------------------------------------------------
       | SMTP Server Password
@@ -91,7 +95,9 @@ return [
       |
      */
 //    'password' => env('desarrollo2017+'),
-    'password' => env('sistemas2017+'),
+//    'password' => env('sistemas2017+'),
+//    'password' => env('alfa2018+'),
+    'password' => 'alfa2018+',
     /*
       |--------------------------------------------------------------------------
       | Sendmail System Path

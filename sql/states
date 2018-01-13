@@ -1,0 +1,3 @@
+pg_dump -U postgres --column-inserts --data-only --table=states alfa > $PWD/states.sql
+
+echo "finish backup info states";

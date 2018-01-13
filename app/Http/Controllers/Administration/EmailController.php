@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Administration\Email;
 use App\Models\Administration\EmailDetail;
+use Mail;
 
 class EmailController extends Controller {
 
@@ -110,6 +111,13 @@ class EmailController extends Controller {
         } else {
             return response()->json(['success' => false]);
         }
+    }
+
+    public function testEmail() {
+        Mail::send("Notifications.test", [], function($msj) {
+            $msj->subject("notificaicontio");
+            $msj->to("jpinedom@hotmail.com");
+        });
     }
 
 }

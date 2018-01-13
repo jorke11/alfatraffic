@@ -42,6 +42,8 @@ Route::put('/email/detail/{id}', 'Administration\EmailController@updateDetail');
 Route::get('/email/detail/{id}/edit', 'Administration\EmailController@editDetail');
 Route::delete('/email/detail/{id}', 'Administration\EmailController@destroyDetail');
 
+Route::get('/testemail', 'Administration\EmailController@testEmail');
+
 Route::get('/api/listEmail', function() {
     return Datatables::eloquent(App\Models\Administration\Email::query())->make(true);
 });
