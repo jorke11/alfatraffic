@@ -8,7 +8,7 @@
                 <label for="email">Months</label>
                 <select class="form-control" id="month_id" name="month_id">
                     @foreach($months as $val)
-                    <option value="{{$val["code"]}}" <?php echo ($mont == (int) $val["month"]) ? "selected" : '' ?>>{{$val["description"]}}</option>
+                    <option value="{{$val["code"]}}" <?php echo (($mont == $val["code"]) ? "selected" : '') ?>>{{$val["description"]}}</option>
                     @endforeach
                 </select>
             </div>

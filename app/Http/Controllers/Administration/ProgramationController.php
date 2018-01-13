@@ -13,9 +13,10 @@ class ProgramationController extends Controller {
 
     public function index($mont = null) {
         $obj = new CronController();
-
+        
+        
         if ((int) $mont != (int) date("m")) {
-            $day = 0;
+            $day = $mont;
         } else {
             $day = (int) date("d");
         }
@@ -27,7 +28,7 @@ class ProgramationController extends Controller {
         $courses = \App\Models\Administration\Courses::all();
         $locations = \App\Models\Administration\Locations::all();
 
-//        dd($day);
+      
         return view("Administration.programation.init", compact("months", "daysf", "courses", "locations", "mont", "day"));
     }
 
