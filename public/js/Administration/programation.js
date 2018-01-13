@@ -114,8 +114,10 @@ function Programation() {
                                 if (value.detail != undefined) {
                                     html += '<ul class="list-group">'
                                     $.each(value.detail, function (k, val2) {
-                                        html += '<li class="list-group-item" style="font-size: 10px">#' + val2.id + ' ' + val2.location + '<br>' + val2.course
-                                        html += '<span class="badge" onclick="obj.delete(' + val2.id + ')">X</span></li>'
+                                        html += '<li class="list-group-item" style="font-size: 10px"><a href="#" onclick="obj.edit('+val2.id+')">#' + val2.id + ' ' + val2.location + '<br>' + val2.course+'</a>'
+                                        html += '<span class="badge" onclick="obj.delete(' + val2.id + ')">X</span>'
+                                        html += '<span class="badge" onclick="obj.addMessage('+val2.id+')"><span class="glyphicon glyphicon-comment"  aria-hidden="true"></span></span>'
+                                        html += '<span class="badge" onclick="obj.edit('+val2.id+')"><span class="glyphicon glyphicon-edit"  aria-hidden="true"></span></span></li>'
                                     })
                                     html += '</ul>'
                                 }
