@@ -609,6 +609,7 @@ class ClientsController extends Controller {
       
         
         foreach ($sche[0]["node"] as $key => $value) {
+            dd($value);
             $sche[$key]["value"] = "$ " . number_format($sche[$key]["value"], 2, ".", ",");
 
             if ($key >= 0) {
