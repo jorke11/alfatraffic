@@ -375,7 +375,7 @@ class ClientsController extends Controller {
 
     public function payment(Request $req) {
         $in = $req->all();
-
+//        dd($in);
         $programation = \App\Models\DaysDetail::find($in["programation_id"]);
 
         $in["status_id"] = 2;
@@ -440,7 +440,7 @@ class ClientsController extends Controller {
         }
 
 
-
+//        dd($in);
         $id = Purchases::create($in)->id;
 
         Session::put('paypal_payment_id', $payment->getId());
@@ -494,9 +494,11 @@ class ClientsController extends Controller {
         $row_id = Session::get('row_id');
         Session::forget('row_id');
 
-
         $row = Purchases::find($row_id);
+        $det = \App\Models\DaysDetail::find($row->programation_id);
 
+        $course = Courses::find($det->course_id);
+        $input["selected"] = date("l, d / F", strtotime($row->date_selected));
         $sche = $this->getSchedule(Session::get('programation_id'));
 
         $email = Email::where("description", "invoices")->first();
@@ -515,27 +517,22 @@ class ClientsController extends Controller {
 
             $state = States::find($row->state_id);
 
-            $this->subject = "DUI School confirmation with AlfaDrivingSchool.com";
+            $this->subject = $course->description . " confirmation with AlfaDrivingSchool.com";
             $input["state"] = $state->description;
 
             $input["name"] = ucwords($row->name);
             $input["last_name"] = ucwords($row->last_name);
 
-
-//            dd($sche);
-            foreach ($sche as $key => $value) {
-                $sche[$key]["value"] = "$ " . number_format($sche[$key]["value"], 2, ".", ",");
-
-                if ($key > 0) {
-                    $sche[$key]["date"] = date("Y/m/d", strtotime('+' . $key . " days", strtotime($sche[0]["date"])));
-                    $sche[$key]["dateFormated"] = date("l, d / F", strtotime($sche[$key]["date"]));
-                }
+            foreach ($sche[0]["node"] as $key => $value) {
+                $sche[0]["node"][$key]["date"] = date("Y/m/d", strtotime('+' . $key . " days", strtotime($value["date"])));
+                $sche[0]["node"][$key]["dateFormated"] = date("l, F d", strtotime($value["date"]));
+                $sche[0]["node"][$key]["hour"] = date("h:i A", strtotime($value["hour"]));
+                $sche[0]["node"][$key]["hour_end"] = date("h:i A", strtotime($value["hour_end"]));
             }
-            $input["sche"] = $sche;
+
+            $input["sche"] = $sche[0]["node"];
 
 
-
-//            dd($input);
             Mail::send("Notifications.purchase", $input, function($msj) {
                 $msj->subject($this->subject);
                 $msj->to($this->mails);
@@ -554,6 +551,9 @@ class ClientsController extends Controller {
     public function testSendNotification($row_id) {
 
         $row = Purchases::find($row_id);
+        $det = \App\Models\DaysDetail::find($row->programation_id);
+
+        $course = Courses::find($det->course_id);
 
 
         $sche = $this->getSchedule($row->programation_id);
@@ -573,58 +573,65 @@ class ClientsController extends Controller {
             $state = States::find($row->state_id);
 
 
-            $this->subject = "DUI School confirmation with AlfaDrivingSchool.com";
+            $this->subject = $course->description . " confirmation with AlfaDrivingSchool.com";
             $input["state"] = $state->description;
 
+            $input["selected"] = date("l, d / F", strtotime($row->date_selected));
+            $selected = date("l, d / F", strtotime($row->date_selected));
             $input["name"] = ucwords($row->name);
+            $name = ucwords($row->name);
             $input["last_name"] = ucwords($row->last_name);
-
-            $sche[0]["date"] = date("Y/m/d", strtotime($row->date_course));
-            $sche[0]["dateFormated"] = date("l, d / F", strtotime($sche[0]["date"]));
+            $last_name = ucwords($row->last_name);
 
 
 
-            foreach ($sche as $key => $value) {
-                $sche[$key]["value"] = "$ " . number_format($sche[$key]["value"], 2, ".", ",");
-
-                if ($key > 0) {
-                    $sche[$key]["date"] = date("Y/m/d", strtotime('+' . $key . " days", strtotime($sche[0]["date"])));
-                    $sche[$key]["dateFormated"] = date("l, d / F", strtotime($sche[$key]["date"]));
+            foreach ($sche[0]["node"] as $key => $value) {
+                if ($key >= 0) {
+                    $sche[0]["node"][$key]["date"] = date("Y/m/d", strtotime('+' . $key . " days", strtotime($value["date"])));
+                    $sche[0]["node"][$key]["dateFormated"] = date("l, F d", strtotime($value["date"]));
+                    $sche[0]["node"][$key]["hour"] = date("h:i A", strtotime($value["hour"]));
+                    $sche[0]["node"][$key]["hour_end"] = date("h:i A", strtotime($value["hour_end"]));
                 }
             }
+
+            $sche = $sche[0]["node"];
             $input["sche"] = $sche;
 
-            return view("Notifications.purchase", compact("name", "last_name", "address", "location", "phone", "sche"));
+//            return view("Notifications.purchase", compact("name", "last_name", "address", "location", "phone", "sche", "selected"));
 
-//            Mail::send("Notifications.purchase", $input, function($msj) {
-//                $msj->subject($this->subject);
-//                $msj->to($this->mails);
-//            });
+            Mail::send("Notifications.purchase", $input, function($msj) {
+                $msj->subject($this->subject);
+                $msj->to($this->mails);
+            });
         }
     }
 
     public function testNotification($row_id) {
         $row = Purchases::find($row_id);
-        $sche = $this->getSchedule($row->programation_id);
-      
-        
-        foreach ($sche[0]["node"] as $key => $value) {
-//            dd($value);
-//            $sche[$key]["value"] = "$ " . number_format($sche[$key]["value"], 2, ".", ",");
+        $det = \App\Models\DaysDetail::find($row->programation_id);
 
+        $course = Courses::find($det->course_id);
+        $sche = $this->getSchedule($row->programation_id);
+        $selected = date("l, d / F", strtotime($row->date_selected));
+
+        foreach ($sche[0]["node"] as $key => $value) {
             if ($key >= 0) {
-                $sche[$key]["date"] = date("Y/m/d", strtotime('+' . $key . " days", strtotime($sche[0]["date"])));
-                $sche[$key]["dateFormated"] = date("l, d / F", strtotime($sche[$key]["date"]));
+                $sche[0]["node"][$key]["date"] = date("Y/m/d", strtotime('+' . $key . " days", strtotime($value["date"])));
+                $sche[0]["node"][$key]["dateFormated"] = date("l, F d", strtotime($value["date"]));
+                $sche[0]["node"][$key]["hour"] = date("h:i A", strtotime($value["hour"]));
+                $sche[0]["node"][$key]["hour_end"] = date("h:i A", strtotime($value["hour_end"]));
             }
         }
 
+        $sche = $sche[0]["node"];
+
         $name = "jorge";
         $last_name = "jorge";
-//        $address = $sche[0]["address"];
-//        $location = $sche[0]["location"];
+        $address = $sche[0]["address"];
+        $hour = '12:00';
         $phone = $sche[0]["phone"];
 
-        return view("Notifications.purchase", compact("name", "last_name", "address", "location", "phone", "sche"));
+        return view("Notifications.purchase", compact("name", "last_name", "address", "location", "phone", "sche", 'hour', "selected"));
     }
 
 }

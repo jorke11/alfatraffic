@@ -212,7 +212,7 @@
                     </div>
                 </div>
 
-                <input type="hidden" class="input-category" id="date-selected" name='date-selected'>
+                <input type="hidden" class="input-category" id="date_selected" name='date_selected'>
 
             </div>
             <div class="row">

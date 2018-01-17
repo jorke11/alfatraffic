@@ -21,7 +21,7 @@ function Registry() {
         $("#date_birth").datetimepicker({format: 'm/d/y', timepicker: false});
 
         $("#saveDate").click(function () {
-            $("#date-selected").val($("#datetimepicker3").val());
+            $("#date_selected").val($("#datetimepicker3").val());
             $("#modaldui").modal("hide");
             $("#frm").submit();
         });
@@ -30,7 +30,7 @@ function Registry() {
             if (validate.length == 0) {
 
                 if ($("#email").val() == $("#confirm_email").val()) {
-                    if ($("#date-selected").val() != '') {
+                    if ($("#date_selected").val() != '') {
                         $("#frm").submit();
                     } else {
                         $("#modaldui").modal("show");
