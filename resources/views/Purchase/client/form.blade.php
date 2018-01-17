@@ -206,8 +206,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="form-group">
-                        <label for="email">Card</label>
-                        <input type="text" class="form-control input-category input-sm" id="card_building" name='card_building' required>
+                        <label for="email">Card Number</label>
+                        <input type="text" class="form-control input-category input-sm" id="card_building" name='card_building' required placeholder="Card Number">
                     </div>
                 </div>
             </div>
@@ -215,7 +215,7 @@
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label for="email">Expires</label>
-                        <input type="text" class="form-control input-category input-sm" id="date_expired_building" name='date_expired_building' required>
+                        <input type="text" class="form-control input-category input-sm" id="date_expired_building" name='date_expired_building' required placeholder="MM/YY">
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -225,6 +225,7 @@
                     </div>
                 </div>
             </div>
+            
             <div class="row">
                 <div class="col-lg-3 col-lg-offset-4">
                     <button class="btn btn-success" id="complete">Complete Registration</button>
@@ -288,6 +289,28 @@
     </div>
     {!!Form::close()!!}
 </div>
+
+<div class="modal fade" role="dialog" id="modaldui">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add Calendar</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <input type="text" id="datetimepicker3" name='datetimepicker3' class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" id="saveDate">Save changes</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+</div><!-- /.modal -->
 
 {!!Html::script('js/Purchase/Registry.js')!!}
 @endsection

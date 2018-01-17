@@ -128,6 +128,11 @@
                     <label for="email">BILLING INFORMATION</label>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <input type="checkbox" id="btnCopy"> <label>Copy address from Student Information</label>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="col-lg-6">
@@ -143,11 +148,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <input type="checkbox" id="btnCopy"> <label>Copy address from Student Information</label>
-                </div>
-            </div>
+
 
             <div class="row">
                 <div class="col-lg-12">
@@ -192,8 +193,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="form-group">
-                        <label for="email">Card</label>
-                        <input type="text" class="form-control input-category input-sm" id="card_building" name='card_building' required>
+                        <label for="email">Card Number</label>
+                        <input type="text" class="form-control input-category input-sm" id="card_building" name='card_building' required placeholder="Card Number">
                     </div>
                 </div>
             </div>
@@ -201,7 +202,7 @@
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label for="email">Expires</label>
-                        <input type="text" class="form-control input-category input-sm" id="date_expired_building" name='date_expired_building' required>
+                        <input type="text" class="form-control input-category input-sm" id="date_expired_building" name='date_expired_building' required placeholder="12/25">
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -278,7 +279,7 @@
     {!!Form::close()!!}
 </div>
 
-<div class="modal fade" tabindex="-1" role="dialog" id="modaldui">
+<div class="modal fade" role="dialog" id="modaldui">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -298,7 +299,8 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+</div><!-- /.modal -->
 
 
-    {!!Html::script('js/Purchase/Registry.js')!!}
-    @endsection
+{!!Html::script('js/Purchase/Registry.js')!!}
+@endsection
