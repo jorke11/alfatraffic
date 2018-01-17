@@ -93,7 +93,6 @@ class ClientsController extends Controller {
 
             $json = json_encode($data);
             $data = json_decode($json, true);
-
         }
 
 
@@ -355,7 +354,7 @@ class ClientsController extends Controller {
         $course = Courses::find($sche[0]["course_id"]);
 //        session(['sche' => $sche, "months" => $month, "addon" => $addon]);
         $states = States::all();
-        
+
         if ($course->id == 5) {
             return view("Purchase.client.formdui", compact("programation_id", "sche", "schedule", "addon", "states"));
         } else {
@@ -499,7 +498,7 @@ class ClientsController extends Controller {
         $row = Purchases::find($row_id);
 
         $sche = $this->getSchedule(Session::get('programation_id'));
-//        dd($sche);
+
         $email = Email::where("description", "invoices")->first();
 
         if ($email != null) {
@@ -555,7 +554,9 @@ class ClientsController extends Controller {
     public function testSendNotification($row_id) {
 
         $row = Purchases::find($row_id);
-        $sche = $this->getSchedule($row->schedule_id);
+
+
+        $sche = $this->getSchedule($row->programation_id);
         $email = Email::where("description", "invoices")->first();
 
         if ($email != null) {
@@ -571,6 +572,7 @@ class ClientsController extends Controller {
 
             $state = States::find($row->state_id);
 
+
             $this->subject = "DUI School confirmation with AlfaDrivingSchool.com";
             $input["state"] = $state->description;
 
@@ -579,6 +581,9 @@ class ClientsController extends Controller {
 
             $sche[0]["date"] = date("Y/m/d", strtotime($row->date_course));
             $sche[0]["dateFormated"] = date("l, d / F", strtotime($sche[0]["date"]));
+
+
+
             foreach ($sche as $key => $value) {
                 $sche[$key]["value"] = "$ " . number_format($sche[$key]["value"], 2, ".", ",");
 
@@ -587,24 +592,27 @@ class ClientsController extends Controller {
                     $sche[$key]["dateFormated"] = date("l, d / F", strtotime($sche[$key]["date"]));
                 }
             }
+            $input["sche"] = $sche;
 
-            Mail::send("Notifications.purchase", $input, function($msj) {
-                $msj->subject($this->subject);
-                $msj->to($this->mails);
-            });
+            return view("Notifications.purchase", compact("name", "last_name", "address", "location", "phone", "sche"));
+
+//            Mail::send("Notifications.purchase", $input, function($msj) {
+//                $msj->subject($this->subject);
+//                $msj->to($this->mails);
+//            });
         }
     }
 
     public function testNotification($row_id) {
         $row = Purchases::find($row_id);
-        $sche = $this->getSchedule($row->schedule_id);
+        $sche = $this->getSchedule($row->programation_id);
 
         $sche[0]["date"] = date("Y/m/d", strtotime($row->date_course));
         $sche[0]["dateFormated"] = date("l, d / F", strtotime($sche[0]["date"]));
-        foreach ($sche as $key => $value) {
+        foreach ($sche[0]["node"] as $key => $value) {
             $sche[$key]["value"] = "$ " . number_format($sche[$key]["value"], 2, ".", ",");
 
-            if ($key > 0) {
+            if ($key >= 0) {
                 $sche[$key]["date"] = date("Y/m/d", strtotime('+' . $key . " days", strtotime($sche[0]["date"])));
                 $sche[$key]["dateFormated"] = date("l, d / F", strtotime($sche[$key]["date"]));
             }

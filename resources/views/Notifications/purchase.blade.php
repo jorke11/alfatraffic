@@ -47,10 +47,10 @@
         <table class="detail" align="center" width="850" align="center" id="main"  border="0" cellspacing="0"cellpadding="0" >
             <tr>
                 <td align="center"><h3><u>Assessment Appointment</u></h3></td>
-                <td align="center"><h3><u>Class Location</u></h3></td>
+                <td align="center"><h3><u>Class Location and Office Hours</u></h3></td>
             </tr>
             <tr>
-                <td align="center">Wednesday, August 16 at 1:00PM<br>@ 1533 Howell Mill Road, Atlanta 30318.</td>
+                <td align="center">Wednesday, August 16 at 1:00PM<br>{{$sche[0]["address"]}}, {{$sche[0]["location"]}} {{$sche[0]["phone"]}}.</td>
                 <td align="center">{{$sche[0]["address"]}}, {{$sche[0]["location"]}} {{$sche[0]["phone"]}}<br>
                     Mon-Fri 9:00AM to 6:00PM and Sat 9:00AM-2:00PM</td>
             </tr>
