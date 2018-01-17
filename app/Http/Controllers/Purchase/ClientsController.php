@@ -606,7 +606,7 @@ class ClientsController extends Controller {
     public function testNotification($row_id) {
         $row = Purchases::find($row_id);
         $sche = $this->getSchedule($row->programation_id);
-
+        dd($sche);exit;
         $sche[0]["date"] = date("Y/m/d", strtotime($row->date_course));
         $sche[0]["dateFormated"] = date("l, d / F", strtotime($sche[0]["date"]));
         foreach ($sche[0]["node"] as $key => $value) {
