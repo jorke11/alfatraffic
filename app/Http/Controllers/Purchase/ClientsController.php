@@ -608,7 +608,7 @@ class ClientsController extends Controller {
         $sche = $this->getSchedule($row->programation_id);
       
    
-        foreach ($sche[0]["node"] as $key => $value) {
+        foreach ($sche[0]->node as $key => $value) {
             $sche[$key]["value"] = "$ " . number_format($sche[$key]["value"], 2, ".", ",");
 
             if ($key >= 0) {
