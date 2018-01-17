@@ -18,6 +18,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+Route::resource('/workTimer', 'Administration\WorkTimerController');
 Route::resource('/locations', 'Administration\LocationsController');
 Route::resource('/courses', 'Administration\CoursesController');
 Route::resource('/parameters', 'Administration\ParametersController');

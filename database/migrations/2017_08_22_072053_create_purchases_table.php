@@ -22,9 +22,9 @@ class CreatePurchasesTable extends Migration {
             $table->string('email');
             $table->integer('state_id');
             $table->integer('zip_code');
-            $table->integer('telephone');
-            $table->integer('license');
-            $table->integer('license_issuing');
+            $table->string('telephone');
+            $table->string('license');
+            $table->string('license_issuing');
             $table->string('name_building');
             $table->string('last_name_building');
             $table->string('address_building');

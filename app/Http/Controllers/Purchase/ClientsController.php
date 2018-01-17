@@ -373,7 +373,8 @@ class ClientsController extends Controller {
         $course = Courses::find($sche[0]["course_id"]);
 //        session(['sche' => $sche, "months" => $month, "addon" => $addon]);
         $states = States::all();
-        if ($course->dui == true) {
+        
+        if ($course->id == 5) {
             return view("Purchase.client.formdui", compact("programation_id", "sche", "schedule", "addon", "states"));
         } else {
 //            dd($sche);
