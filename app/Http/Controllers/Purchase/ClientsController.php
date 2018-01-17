@@ -607,7 +607,7 @@ class ClientsController extends Controller {
         $row = Purchases::find($row_id);
         $sche = $this->getSchedule($row->programation_id);
       
-        dd($sche);
+        dd($sche[0]);
         foreach ($sche[0]->node as $key => $value) {
             $sche[$key]["value"] = "$ " . number_format($sche[$key]["value"], 2, ".", ",");
 
