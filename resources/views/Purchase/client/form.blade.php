@@ -214,13 +214,13 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label for="email">Expires</label>
+                        <label for="email">Expiration</label>
                         <input type="text" class="form-control input-category input-sm" id="date_expired_building" name='date_expired_building' required placeholder="MM/YY">
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label for="email">Security Code</label>
+                        <label for="email">Card Security Code</label>
                         <input type="text" class="form-control input-category input-sm" id="security_code_building" name='security_code_building' required>
                     </div>
                 </div>
