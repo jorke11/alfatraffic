@@ -607,7 +607,7 @@ class ClientsController extends Controller {
         $row = Purchases::find($row_id);
         $sche = $this->getSchedule($row->programation_id);
       
-        dd($sche[0]["node"]);
+        
         foreach ($sche[0]["node"] as $key => $value) {
             $sche[$key]["value"] = "$ " . number_format($sche[$key]["value"], 2, ".", ",");
 
@@ -619,8 +619,8 @@ class ClientsController extends Controller {
 
         $name = "jorge";
         $last_name = "jorge";
-        $address = $sche[0]["address"];
-        $location = $sche[0]["location"];
+//        $address = $sche[0]["address"];
+//        $location = $sche[0]["location"];
         $phone = $sche[0]["phone"];
 
         return view("Notifications.purchase", compact("name", "last_name", "address", "location", "phone", "sche"));
