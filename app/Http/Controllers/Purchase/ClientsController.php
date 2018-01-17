@@ -55,33 +55,15 @@ class ClientsController extends Controller {
         $end = (int) date("m") + $quantity->value;
 
         $sql = "
-            select month,year 
+            select month,year,p.description as month_text
             from days 
-            group by 1,2
+            LEFT JOIN parameters p ON p.code=days.month and p.group='months'
+            group by 1,2,3
             ORDER BY 1 , 2 ASC ";
 
         $start = DB::select($sql);
 
-        foreach ($start as $i => $value) {
-            $start[$i]->month_text = $this->getMonth($value->month);
-        }
-
         return view("Purchase.client.init", compact("locations", "courses", "start", "course_id"));
-    }
-
-    public function getMonth($month) {
-
-        $months = array(1 => "Enero", 2 => "Febrary", 3 => "march", 4 => "april", 5 => "may", 6 => "june", 7 => "july", 8 => "august", 9 => "september",
-            10 => 'october', 11 => 'november', 12 => "december");
-        $res = "";
-
-        foreach ($months as $i => $value) {
-            if ($month == $i) {
-                $res = $value;
-            }
-        }
-
-        return $res;
     }
 
     public function getDay($day) {
