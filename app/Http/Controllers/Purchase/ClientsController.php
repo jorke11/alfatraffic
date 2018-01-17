@@ -498,7 +498,7 @@ class ClientsController extends Controller {
         $det = \App\Models\DaysDetail::find($row->programation_id);
 
         $course = Courses::find($det->course_id);
-        $input["selected"] = date("l, d / F", strtotime($row->date_selected));
+        $input["selected"] = date("l, F d At h:i A", strtotime($row->date_selected));
         $sche = $this->getSchedule(Session::get('programation_id'));
 
         $email = Email::where("description", "invoices")->first();
