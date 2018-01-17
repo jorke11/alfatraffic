@@ -19,11 +19,26 @@ class SchedulesController extends Controller {
     }
 
     public function index() {
-        $day = Parameters::where("group", "days")->get();
+        $days = Parameters::where("group", "days")->get();
+//        dd($day);
         $courses = Courses::all();
         $locations = Locations::all();
         $today = $this->getDay();
-        return view("Administration.schedules.init", compact("day", "courses", "today", "locations"));
+        return view("Administration.schedules.init", compact("days", "courses", "today", "locations"));
+    }
+
+    public function viewSchedule() {
+
+        $schedule = Schedules::all();
+
+        foreach ($schedule as $i => $val) {
+            $schedule[$i]->detail = SchedulesDetail::select("schedules_detail.id", "courses.description as course", "parameters.description")
+                            ->join("courses", "courses.id", "schedules_detail.course_id")
+                            ->join("parameters", "schedules_detail.day", DB::raw("parameters.code and parameters.group='days'"))
+                            ->where("schedule_id", $val->id)->get();
+        }
+
+        return view("Administration.schedules.view", compact("schedule"));
     }
 
     public function getDay() {
@@ -97,12 +112,12 @@ class SchedulesController extends Controller {
             if ($location->days != '') {
                 $days = Parameters::where("group", "days");
                 $arr = json_decode($location->days);
-                
+
                 foreach ($arr as $value) {
-                    $wh[]=$value->day;
+                    $wh[] = $value->day;
                 }
-                
-                                
+
+
                 $days->whereIn("code", $wh);
                 $days = $days->get();
             }

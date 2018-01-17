@@ -125,7 +125,7 @@ echo json_encode([
                                     <li><a href="{{ url('/locations') }}">Locations</a></li>
                                     <li><a href="{{url('/courses') }}">Courses</a></li>
                                     <li><a href="{{url('/schedules') }}">Schedules</a></li>
-                                    <!--<li><a href="{{url('/addon') }}">AddON</a></li>-->
+                                    <li><a href="{{url('/viewSchedules') }}">View Schedule</a></li>
                                     <li><a href="{{url('/events') }}">Events</a></li>
                                     <li><a href="{{url('/email') }}">Emails</a></li>
                                     <li><a href="{{url('/programation') }}">Programation</a></li>

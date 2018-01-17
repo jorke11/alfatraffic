@@ -14,7 +14,6 @@ function Schedules() {
             format: 'H:i'
         });
 
-
         $("#btnAddDetail").click(this.saveDetail);
 
         $("#location_id").change(this.dayslocation);
@@ -35,12 +34,12 @@ function Schedules() {
                     html += "<option value='" + val.id + "'>" + val.description + "</option>";
                 })
                 $("#course_id").html(html);
-                html = "";
-                html += "<option value='0'>Seleccione</option>";
-                $.each(data.days, function (i, val) {
-                    html += "<option value='" + val.code + "'>" + val.description + "</option>";
-                })
-                $("#day").html(html);
+//                html = "";
+//                html += "<option value='0'>Seleccione</option>";
+//                $.each(data.days, function (i, val) {
+//                    html += "<option value='" + val.code + "'>" + val.description + "</option>";
+//                })
+//                $("#day").html(html);
             }
         })
 

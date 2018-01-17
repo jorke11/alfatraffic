@@ -57,6 +57,7 @@ Route::post('/schedules/detail', 'Administration\SchedulesController@storeDetail
 Route::get('/schedules/{id}/editDetail', 'Administration\SchedulesController@getDetail');
 Route::delete('/schedules/detail/{id}', 'Administration\SchedulesController@destroyItem');
 Route::get('/schedules/{id}/getModal', 'Administration\SchedulesController@getModalData');
+Route::get('/viewSchedules', 'Administration\SchedulesController@viewSchedule');
 
 
 //Route::get('/clients', 'Purchase\ClientsController@index');
@@ -75,6 +76,7 @@ Route::post('/paymentDui', 'Purchase\ClientsController@paymentDui');
 Route::get('paypal', 'Payment\PaypalController@index');
 Route::post('paypal/payment', ["as" => "paypal.payment", "uses" => 'Payment\PaypalController@payment']);
 Route::get('paypal/payment', ["as" => "paypal.status", "uses" => 'Payment\PaypalController@getPaymentStatus']);
+
 
 
 Route::get('/drivered', 'PageController@driverEd');
