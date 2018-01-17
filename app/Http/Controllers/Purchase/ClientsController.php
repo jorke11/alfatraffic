@@ -609,8 +609,8 @@ class ClientsController extends Controller {
       
         
         foreach ($sche[0]["node"] as $key => $value) {
-            dd($value);
-            $sche[$key]["value"] = "$ " . number_format($sche[$key]["value"], 2, ".", ",");
+//            dd($value);
+//            $sche[$key]["value"] = "$ " . number_format($sche[$key]["value"], 2, ".", ",");
 
             if ($key >= 0) {
                 $sche[$key]["date"] = date("Y/m/d", strtotime('+' . $key . " days", strtotime($sche[0]["date"])));
