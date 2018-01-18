@@ -25,19 +25,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <label for="email">Locations</label>
-                                <select class="form-control input-schedules" name="location_id" id="location_id">
-                                    <option value="0">Selection</option>
-                                    @foreach($locations as $i=>$val)
-                                    <option value="{{$val->id}}">{{$val->description}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
                     {!! Form::close() !!}
                 </div>
             </div>

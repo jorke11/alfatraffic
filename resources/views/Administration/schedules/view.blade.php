@@ -5,6 +5,10 @@
         display: flex;
         justify-content: center;
     }
+    .thumbnail .caption  p.button-custom{
+        padding: 0 !important;
+        margin: 0;
+    }
 </style>
 <div class="container-fluid">
     <div class="row row-space">
@@ -21,7 +25,7 @@
                     @foreach($val->detail as $value)
                     <p>{{$value->course}}</p>
                     @endforeach
-                    <p class="text-center"><a href="#" class="btn btn-success" role="button">Buy</a></p>
+                    <p class="text-center button-custom"><a href="#" class="btn btn-success" role="button" style="width: 100%">Buy</a></p>
                 </div>
             </div>
         </div>
