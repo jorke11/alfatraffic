@@ -22,6 +22,7 @@ class SchedulesController extends Controller {
         $days = Parameters::where("group", "days")->get();
 //        dd($day);
         $courses = Courses::all();
+       
         $locations = Locations::all();
         $today = $this->getDay();
         return view("Administration.schedules.init", compact("days", "courses", "today", "locations"));

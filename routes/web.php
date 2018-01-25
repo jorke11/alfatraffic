@@ -60,9 +60,11 @@ Route::get('/schedules/{id}/getModal', 'Administration\SchedulesController@getMo
 Route::get('/viewSchedules', 'Administration\SchedulesController@viewSchedule');
 
 
-//Route::get('/clients', 'Purchase\ClientsController@index');
+Route::get('/clients', 'Purchase\ClientsController@index');
 Route::get('clients/page/{id}', 'Purchase\ClientsController@index');
-Route::get('clients', ["as" => "paypal.clients", "uses" => 'Purchase\ClientsController@index']);
+Route::get('clients/pdf/{id}', 'Purchase\ClientsController@pdfReceipt');
+Route::get('clients/receipt', ["as" => "paypal.clients", "uses" => 'Purchase\ClientsController@receipt']);
+
 Route::get('/clients/getList', 'Purchase\ClientsController@getList');
 Route::get('/clients/{programation_id}', 'Purchase\ClientsController@formInput');
 Route::post('/ClientDui', 'Purchase\ClientsController@formDui');

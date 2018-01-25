@@ -489,10 +489,23 @@ class ClientsController extends Controller {
 //        return Redirect::route('addmoney.paywithpaypal');
     }
 
+    public function receipt() {
+        $row_id = Session::get('row_id');
+        echo Session::get('row_id');
+        return view("Purchase.client.receipt", compact("row_id"));
+    }
+    
+    public function pdfReceipt($id) {
+        $row_id = Session::get('row_id');
+        
+        return view("Purchase.client.pdf", compact("row_id", "month", "addon"));
+        
+    }
+
     public function sendEmailPurchase() {
 
         $row_id = Session::get('row_id');
-        Session::forget('row_id');
+//        Session::forget('row_id');
 
         $row = Purchases::find($row_id);
         $det = \App\Models\DaysDetail::find($row->programation_id);
@@ -541,11 +554,6 @@ class ClientsController extends Controller {
             $row->status_id = 1;
             $row->save();
         }
-    }
-
-    public function paymentDui(Request $req) {
-        $in = $req->all();
-        dd($in);
     }
 
     public function testSendNotification($row_id) {
