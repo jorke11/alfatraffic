@@ -18,10 +18,12 @@ class CreatePurchasesTable extends Migration {
             $table->date('date_course');
             $table->string('name');
             $table->string('last_name');
+            $table->text('address');
             $table->string('city_id');
             $table->string('email');
             $table->integer('state_id');
             $table->integer('zip_code');
+            $table->date('date_birth');
             $table->string('telephone');
             $table->string('license');
             $table->string('license_issuing');

@@ -191,19 +191,6 @@ function Clients() {
                     html += '</table></div>';
                 })
 
-
-
-
-
-
-
-
-
-
-//
-
-
-
             })
         } else {
             html = '<div class="alert alert-warning">No se encontro Programación</div>';

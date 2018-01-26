@@ -23,14 +23,15 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-8" >
-            <iframe width="100%" src="http://localhost:8080/clients/pdf/{{$row_id}}" height="100%">
+            <iframe id="iframe" width="100%" src="{{url("clients/pdf/".$row_id)}}" height="800px">
 
             </iframe>
+            <input type="hidden" id="purchase_id" value="{{$row_id}}">
         </div>
         <div class="col-lg-4">
             <div class="row row-space">
                 <div class="col-lg-12">
-                    <button class="btn btn-success">Add Sign</button>
+                    <button class="btn btn-success" type="button" id="btnAdd">Add Sign</button>
                 </div>
             </div>
             <div class="row">
@@ -60,7 +61,7 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Name</label>
-                                        <input type="text" id="name" name="name" class="form-control" disabled>
+                                        <input type="text" id="text_sign" name="text_sign" class="form-control" disabled>
                                     </div>
                                 </div>
                             </div>
@@ -70,10 +71,10 @@
                                         <label for="exampleInputEmail1">Font</label>
                                         <select id="type_form" class="form-control" disabled="">
                                             <option value="0">Selection</option>
-                                            <option value="1" class="pacifico">your Sign ex 1</option>
-                                            <option value="2" class="indie">your Sign ex 2</option>
-                                            <option value="3" class="dancing">your Sign ex 3</option>
-                                            <option value="4" class="tangerine">your Sign ex 4</option>
+                                            <option value="pacifico" class="pacifico">your Sign ex 1</option>
+                                            <option value="indie" class="indie">your Sign ex 2</option>
+                                            <option value="dancing" class="dancing">your Sign ex 3</option>
+                                            <option value="tangerine" class="tangerine">your Sign ex 4</option>
                                         </select>
                                     </div>
                                 </div>

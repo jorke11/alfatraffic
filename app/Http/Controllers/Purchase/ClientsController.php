@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Purchase;
 
+use Intervention\Image\ImageManager;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Administration\Locations;
@@ -31,6 +32,8 @@ use PayPal\Api\Transaction;
 use Session;
 use Mail;
 use Illuminate\Support\Facades\Input;
+use File;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class ClientsController extends Controller {
 
@@ -375,7 +378,7 @@ class ClientsController extends Controller {
 
     public function payment(Request $req) {
         $in = $req->all();
-//        dd($in);
+
         $programation = \App\Models\DaysDetail::find($in["programation_id"]);
 
         $in["status_id"] = 2;
@@ -385,6 +388,8 @@ class ClientsController extends Controller {
 
         $price = $sche[0]["value"];
         $course = $sche[0]["course"];
+
+        $in["value"] = $price;
 
         $payer = new Payer();
         $payer->setPaymentMethod("paypal");
@@ -440,7 +445,8 @@ class ClientsController extends Controller {
         }
 
 
-//        dd($in);
+        $in["date_birth"] = date("Y-m-d", strtotime($in["date_birth"]));
+
         $id = Purchases::create($in)->id;
 
         Session::put('paypal_payment_id', $payment->getId());
@@ -490,16 +496,44 @@ class ClientsController extends Controller {
     }
 
     public function receipt() {
+
         $row_id = Session::get('row_id');
-        echo Session::get('row_id');
         return view("Purchase.client.receipt", compact("row_id"));
     }
-    
+
     public function pdfReceipt($id) {
+
         $row_id = Session::get('row_id');
-        
-        return view("Purchase.client.pdf", compact("row_id", "month", "addon"));
-        
+        $client = Purchases::select("purchases.id", "purchases.name", "purchases.last_name", "purchases.city_id", "purchases.address", "states.description as state", 
+                "states.short as state_short", "purchases.zip_code", "purchases.telephone", "purchases.license", "purchases.date_course", "purchases.date_birth", 
+                "purchases.email", "purchases.value", "purchases.type_sign", "purchases.text_sign","purchases.img_sign")
+                        ->join("states", "states.id", "purchases.state_id")
+                        ->where("purchases.id", $row_id)->first();
+
+        return view("Purchase.client.pdf", compact("row_id", "client"));
+    }
+
+    function signReceipt(Request $req, $id) {
+        $in = $req->all();
+        $purc = Purchases::find($id);
+
+        if ($in["type_sign"] == 'sign') {
+            $manager = new ImageManager(array('driver' => 'imagick'));
+
+            $path = public_path() . "/signs/" . $id;
+            $pathsys = "signs/" . $id . "/" . $purc->license . ".png";
+
+            File::makeDirectory($path, $mode = 0777, true, true);
+            chmod($path, 0777);
+
+            $image = Image::make($in["src"])->save($path . "/" . $purc->license . ".png");
+
+            $purc->img_sign = $pathsys;
+            $purc->save();
+        }
+
+        $purc->fill($in)->save();
+        return response()->json(["status" => true]);
     }
 
     public function sendEmailPurchase() {

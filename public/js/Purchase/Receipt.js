@@ -1,24 +1,21 @@
 function Receipt() {
     var table;
-
     var canvas = document.getElementById("canvas");
     var context = canvas.getContext("2d");
-
-
     this.init = function () {
 
         $("#digital").click(function () {
             if ($("#digital").is(":checked")) {
-                $("#name,#type_form").attr("disabled", false);
+                $("#text_sign,#type_form").attr("disabled", false);
             }
         })
         $("#sign").click(function () {
             if ($("#sign").is(":checked")) {
-                $("#name,#type_form").attr("disabled", true);
+                $("#text_sign,#type_form").attr("disabled", true);
             }
         })
 
-        $("#name").keyup(function () {
+        $("#text_sign").keyup(function () {
             $("#name_preview").val($(this).val());
         })
 
@@ -41,20 +38,62 @@ function Receipt() {
         })
 
         this.paint();
+        $("#btnAdd").click(this.addSign)
 
     }
 
+    this.addSign = function () {
+        var form = {};
+
+
+        if ($("#sign").is(":checked") || $("#digital").is(":checked")) {
+
+            if ($("#digital").is(":checked")) {
+                form.name_preview = $("#name_preview").val();
+                form.text_sign = $("#text_sign").val();
+                form.font_select = $("#type_form").val();
+
+            } else {
+                form.src = canvas.toDataURL();
+            }
+
+
+            form.type_sign = ($("#digital").is(":checked")) ? 'digital' : 'sign';
+
+            $.ajax({
+                url: PATH + "/clients/sign/" + $("#purchase_id").val(),
+                method: "put",
+                data: form,
+                dataType: 'JSON',
+                success: function (data) {
+                    if (data.status == true) {
+                        toastr.success("Sign Updated");
+                        $('#iframe').attr('src', function () {
+                            return $(this)[0].src;
+                        });
+
+                    }
+                }
+            })
+
+
+
+        } else {
+            toastr.error("Es necesario seleccionar la firma");
+            return false;
+        }
+
+    }
+
+
     this.paint = function () {
         var radius = 2;
-
         var dragging = false;
 //        canvas.width = window.innerWidth;
         canvas.width = canvas.offsetWidth;
 //        canvas.height = window.innerHeight;
         canvas.height = canvas.offsetHeight;
-
         context.lineWidth = radius * 2;
-
         console.log(canvas.offsetWidth)
 
         var putPoint = function (e) {
@@ -69,7 +108,6 @@ function Receipt() {
                 context.moveTo(e.offsetX, e.offsetY)
             }
         };
-
         var engage = function (e) {
             dragging = true;
             putPoint(e);

@@ -67,6 +67,7 @@ Route::get('clients/receipt', ["as" => "paypal.clients", "uses" => 'Purchase\Cli
 
 Route::get('/clients/getList', 'Purchase\ClientsController@getList');
 Route::get('/clients/{programation_id}', 'Purchase\ClientsController@formInput');
+Route::put('/clients/sign/{id}', 'Purchase\ClientsController@signReceipt');
 Route::post('/ClientDui', 'Purchase\ClientsController@formDui');
 Route::get('clients/testNotification/{id}', 'Purchase\ClientsController@testNotification');
 Route::get('clients/testSendNotification/{id}', 'Purchase\ClientsController@testSendNotification');

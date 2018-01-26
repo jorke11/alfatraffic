@@ -26,7 +26,10 @@
             font-weight: bold;
         }
     </style>
-
+    <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Dancing+Script" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Tangerine" rel="stylesheet">
 
     <br>
     <br>
@@ -54,45 +57,45 @@
     <table width='100%'>
         <tr>
             <td style="font-size: 16px">Name:</td>
-            <td style="font-size: 16px" colspan="3"><u>Pinedo, Jorge</u></td>
+            <td style="font-size: 16px" colspan="3"><u>{{$client->last_name}}, {{$client->name}}</u></td>
             <td style="font-size: 16px">Course Date:</td>
-            <td style="font-size: 16px"><u>01/14/18</u></td>
+            <td style="font-size: 16px"><u>{{$client->date_course}}</u></td>
         </tr>
         <tr>
             <td style="font-size: 16px">Address:</td>
-            <td style="font-size: 16px" colspan="3"><u>Carrera 87a 91 - 5</u></td>
+            <td style="font-size: 16px" colspan="3"><u>{{$client->address}}</u></td>
             <td style="font-size: 16px">Course Time:</td>
             <td style="font-size: 16px"><u>9:00 Am - 4:00 Pm</u></td>
         </tr>
         <tr>
             <td style="font-size: 16px">City/State/Zip:</td>
-            <td style="font-size: 16px" colspan="3"><u>Bogota Co, 13123</u></td>
+            <td style="font-size: 16px" colspan="3"><u>{{$client->city_id}} {{$client->state_short}}, {{$client->zip_code}}</u></td>
             <td style="font-size: 16px">Course Location</td>
             <td style="font-size: 16px"><u>Sandy Springs: Roswell Rd (974)</u></td>
         </tr>
         <tr>
             <td style="font-size: 16px">Date of Birth:</td>
-            <td style="font-size: 16px" colspan="3">10-11-87</td>
+            <td style="font-size: 16px" colspan="3">{{$client->date_birth}}</td>
             <td colspan="2" style="font-size: 16px"><u>8610 Roswell Rd, Suite 340, Atlanta 30350</u></td>
 
         </tr>
         <tr>
             <td style="font-size: 16px">Drivers License No:</td>
-            <td style="font-size: 16px"><u>1234567890</u></td>
+            <td style="font-size: 16px"><u>{{$client->license}}</u></td>
             <td style="font-size: 16px">State</td>
-            <td style="font-size: 16px"><u>GA</u></td>
+            <td style="font-size: 16px"><u>{{$client->state_short}}</u></td>
             <td style="font-size: 16px">Course Intent</td>
             <td style="font-size: 16px"><u>Point Reduction</u></td>
         </tr>
         <tr>
             <td style="font-size: 16px">Telephone:</td>
-            <td style="font-size: 16px" colspan="3"><u>Bogota Co, 13123</u></td>
+            <td style="font-size: 16px" colspan="3"><u>{{$client->telephone}}</u></td>
             <td style="font-size: 16px">Amount Paid</td>
-            <td style="font-size: 16px"><u>$ 93</u></td>
+            <td style="font-size: 16px"><u>$ {{$client->value}}</u></td>
         </tr>
         <tr>
             <td style="font-size: 16px">Email:</td>
-            <td style="font-size: 16px" colspan="5"><u>jpinedom@hotmail.com</u></td>
+            <td style="font-size: 16px" colspan="5"><u>{{$client->email}}</u></td>
         </tr>
 
     </table>
@@ -176,10 +179,21 @@
     <br>
     <br>
     <br>
+    
     <table width='100%' align="center">
+        
         <tr>
-            <td width="50%">__________________________________________________</td>
-            <td width="50%">__________________________________________________</td>
+            @if($client->type_sign=='digital')
+            <td width="50%">{{$client->text_sign}}</td>
+            @else
+            <td width="50%"><img src='{{url($client->img_sign)}}'></td>
+            @endif
+            <td width="50%">Firma de Alvaro driving</td>
+        </tr>
+        
+        <tr>
+            <td width="50%">_______________________________________________________</td>
+            <td width="50%">_______________________________________________________</td>
         </tr>
         <tr>
             <td>Signature of Student</td>

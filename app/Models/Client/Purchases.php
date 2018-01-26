@@ -14,9 +14,11 @@ class Purchases extends Model {
         "date_course",
         "name",
         "last_name",
+        "address",
         "city_id",
         "state_id",
         "zip_code",
+        "date_birth",
         "telephone",
         "license",
         "email",
@@ -32,6 +34,11 @@ class Purchases extends Model {
         "security_code_building",
         "date_selected",
         "status_id",
+        "value",
+        "type_sign",
+        "text_sign",
+        "img_sign",
+        "form_select",
         ];
 
 }

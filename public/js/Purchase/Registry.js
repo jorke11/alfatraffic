@@ -18,7 +18,7 @@ function Registry() {
         })
 
 
-        $("#date_birth").datetimepicker({format: 'm/d/y', timepicker: false});
+        $("#date_birth").datetimepicker({format: 'm-d-Y', timepicker: false});
 
         $("#saveDate").click(function () {
             $("#date_selected").val($("#datetimepicker3").val());
