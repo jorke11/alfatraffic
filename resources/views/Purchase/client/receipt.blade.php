@@ -30,8 +30,11 @@
         </div>
         <div class="col-lg-4">
             <div class="row row-space">
-                <div class="col-lg-12">
-                    <button class="btn btn-success" type="button" id="btnAdd">Add Sign</button>
+                <div class="col-lg-3">
+                    <button class="btn btn-info" type="button" id="btnAdd">Preview</button>
+                </div>
+                <div class="col-lg-4">
+                    <button class="btn btn-success" type="button" id="btnSend">Send Receipt</button>
                 </div>
             </div>
             <div class="row">
@@ -40,11 +43,11 @@
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <input type="radio" id="sign" name="digital">Sign
+                                    <input type="radio" id="sign" name="digital"><a href="#"  onclick="obj.selectedOption('sign');return false;">Sign</a>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-lg-12" >
+                                <div class="col-lg-10 col-lg-offset-1" >
                                     <canvas style="border: 1px solid #000;width: 100%" id="canvas" style="display:block;" disabled>
                                         Problemas
                                     </canvas>
@@ -54,7 +57,7 @@
                             <br>
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <input type="radio" id="digital" name="digital" >Digital
+                                    <input type="radio" id="digital" name="digital" ><a href="#" onclick="obj.selectedOption('digital');return false;">Digital</a>
                                 </div>
                             </div>
                             <div class="row">
@@ -69,7 +72,7 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Font</label>
-                                        <select id="type_form" class="form-control" disabled="">
+                                        <select id="type_font" class="form-control" disabled="">
                                             <option value="0">Selection</option>
                                             <option value="pacifico" class="pacifico">your Sign ex 1</option>
                                             <option value="indie" class="indie">your Sign ex 2</option>

@@ -504,13 +504,94 @@ class ClientsController extends Controller {
     public function pdfReceipt($id) {
 
         $row_id = Session::get('row_id');
-        $client = Purchases::select("purchases.id", "purchases.name", "purchases.last_name", "purchases.city_id", "purchases.address", "states.description as state", 
-                "states.short as state_short", "purchases.zip_code", "purchases.telephone", "purchases.license", "purchases.date_course", "purchases.date_birth", 
-                "purchases.email", "purchases.value", "purchases.type_sign", "purchases.text_sign","purchases.img_sign")
+        $client = Purchases::select("purchases.id", "purchases.name", "purchases.last_name", "purchases.city_id", "purchases.address", "states.description as state", "states.short as state_short", "purchases.zip_code", "purchases.telephone", "purchases.license", "purchases.date_course", "purchases.date_birth", "purchases.email", "purchases.value", "purchases.type_sign", "purchases.text_sign", "purchases.img_sign", "purchases.type_font")
                         ->join("states", "states.id", "purchases.state_id")
                         ->where("purchases.id", $row_id)->first();
 
-        return view("Purchase.client.pdf", compact("row_id", "client"));
+//        return view("Purchase.client.pdf", compact("row_id", "client"));
+
+
+        $data["row_id"] = $row_id;
+        $data["client"] = $client;
+
+//        dd($data);
+
+        $pdf = \PDF::loadView('Purchase.client.pdf', $data);
+
+//        $pdf->SetProtection(array(), '123', '123');
+//          $pdf->showWatermarkImage = true;
+//        $pdf->SetWatermarkImage(url("/").'/assets/images/logo.png');
+        header('Content-Type: application/pdf');
+//        return $pdf->download('factura_' . $dep["invoice"] . '_' . $cli["business_name"] . '.pdf');
+        return $pdf->stream('receipt_' . $client["id"] . '_' . date("Y-m-d") . '.pdf')->setTitle("test");
+    }
+
+    public function confirm($id) {
+
+        $row_id = Session::get('row_id');
+        $client = Purchases::select("purchases.id", "purchases.name", "purchases.last_name", "purchases.city_id", "purchases.address", "states.description as state", "states.short as state_short", "purchases.zip_code", "purchases.telephone", "purchases.license", "purchases.date_course", "purchases.date_birth", "purchases.email", "purchases.value", "purchases.type_sign", "purchases.text_sign", "purchases.img_sign", "purchases.type_font")
+                        ->join("states", "states.id", "purchases.state_id")
+                        ->where("purchases.id", $row_id)->first();
+
+
+        $path = public_path() . "/pdf/" . $id;
+        $pathsys = "pdf/" . $id . "/" . $client->license . ".pdf";
+
+        File::makeDirectory($path, $mode = 0777, true, true);
+        chmod($path, 0777);
+
+        $row = Purchases::find($row_id);
+        $row->url_pdf = $pathsys;
+        $row->save();
+
+        $data["row_id"] = $row_id;
+        $data["client"] = $client;
+
+
+        header('Content-Type: application/pdf');
+        $path .= "/" . $client->license . ".pdf";
+
+        $pdf = \PDF::loadView('Purchase.client.pdf', $data)->save($path);
+
+//        $pdf->SetProtection(array(), '123', '123');
+//          $pdf->showWatermarkImage = true;
+//        $pdf->SetWatermarkImage(url("/").'/assets/images/logo.png');
+//        return $pdf->download('factura_' . $dep["invoice"] . '_' . $cli["business_name"] . '.pdf');
+
+        Session::flash('success', 'Successful');
+
+        return response()->json(["status" => true]);
+    }
+
+    public function pdfReceiptExt($row_id) {
+
+        $row = Purchases::find($row_id);
+        if ($row->url_pdf != '') {
+            Session::flash('warning', 'Are you already sign ? or contact with us');
+            return redirect("clients");
+        } else {
+            
+            return view("Purchase.client.receipt", compact("row_id"));
+        }
+//        dd($row);
+    }
+
+    public function testpdf() {
+
+        $row_id = Session::get('row_id');
+        $client = Purchases::select("purchases.id", "purchases.name", "purchases.last_name", "purchases.city_id", "purchases.address", "states.description as state", "states.short as state_short", "purchases.zip_code", "purchases.telephone", "purchases.license", "purchases.date_course", "purchases.date_birth", "purchases.email", "purchases.value", "purchases.type_sign", "purchases.text_sign", "purchases.img_sign", "purchases.type_font")
+                        ->join("states", "states.id", "purchases.state_id")
+                        ->where("purchases.id", 7)->first();
+
+
+
+        $data["row_id"] = $row_id;
+        $data["client"] = $client;
+
+        $pdf = \PDF::loadView('Purchase.client.pdf2', $data);
+
+
+        return $pdf->stream('receit_' . date("Y-m-d") . '.pdf');
     }
 
     function signReceipt(Request $req, $id) {
@@ -540,7 +621,7 @@ class ClientsController extends Controller {
 
         $row_id = Session::get('row_id');
 //        Session::forget('row_id');
-
+        $input["id"] = $row_id;
         $row = Purchases::find($row_id);
         $det = \App\Models\DaysDetail::find($row->programation_id);
 

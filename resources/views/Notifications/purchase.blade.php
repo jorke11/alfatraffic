@@ -104,6 +104,15 @@
             </tr>
         </table>
 
+        <table align="center" width="850" align="center" id="main"  border="0" cellspacing="0"cellpadding="0" >
+            <tr>
+                <td align="center"><a href="{{url("clients/pdfext/".$id)}}">if you not Sign, click here</a></td>
+            </tr>
+
+        </table>
+        <br>
+
+
     </body>
 </html>
 

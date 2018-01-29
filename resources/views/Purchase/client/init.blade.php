@@ -70,7 +70,14 @@
         @if(Session::has('success'))
         <div class="row">
             <div class="col-lg-12">
-                <div class="alert alert-success"><strong>Successfull Purchase!</strong></div>
+                <div class="alert alert-success"><strong>Successful Purchase!</strong></div>
+            </div>
+        </div>
+        @endif
+        @if(Session::has('warning'))
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="alert alert-danger"><strong>You already sign, if are  you not sign contact with us</strong></div>
             </div>
         </div>
         @endif
