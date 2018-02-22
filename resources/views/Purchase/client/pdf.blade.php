@@ -186,7 +186,11 @@
             @if($client->type_sign=='digital')
             <td width="50%">{{$client->text_sign}}</td>
             @else
-            <td width="50%"><img src='{{url($client->img_sign)}}'></td>
+                @if($client->img_sign!='')
+                <td width="50%"><img src='{{url($client->img_sign)}}'></td>
+                @else
+                <td width="50%"></td>
+                @endif
             @endif
             <td width="50%">Firma de Alvaro driving</td>
         </tr>

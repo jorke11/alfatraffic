@@ -502,15 +502,17 @@ class ClientsController extends Controller {
     }
 
     public function pdfReceipt($id) {
-
+        
         $row_id = Session::get('row_id');
+
         $client = Purchases::select("purchases.id", "purchases.name", "purchases.last_name", "purchases.city_id", "purchases.address", "states.description as state", 
                 "states.short as state_short", "purchases.zip_code", "purchases.telephone", "purchases.license", "purchases.date_course", "purchases.date_birth", 
                 "purchases.email", "purchases.value", "purchases.type_sign", "purchases.text_sign","purchases.img_sign")
                         ->join("states", "states.id", "purchases.state_id")
                         ->where("purchases.id", $row_id)->first();
-
+        
         return view("Purchase.client.pdf", compact("row_id", "client"));
+        
     }
 
     function signReceipt(Request $req, $id) {
