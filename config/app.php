@@ -88,7 +88,7 @@ return [
       | will not be safe. Please do this before deploying an application!
       |
      */
-    'key' => env('APP_KEY','base64:my3gwJobJovVMM6bKTBTTzt/ISdqOjb+A1InAVbcbpE='),
+    'key' => env('APP_KEY', 'base64:my3gwJobJovVMM6bKTBTTzt/ISdqOjb+A1InAVbcbpE='),
     'cipher' => 'AES-256-CBC',
     /*
       |--------------------------------------------------------------------------
@@ -143,6 +143,7 @@ return [
         Yajra\Datatables\DatatablesServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
+        niklasravnsborg\LaravelPdf\PdfServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -203,6 +204,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
-        'Image' => Intervention\Image\Facades\Image::class
+        'Image' => Intervention\Image\Facades\Image::class,
+        'PDF' => niklasravnsborg\LaravelPdf\Facades\Pdf::class
     ],
 ];

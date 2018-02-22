@@ -4,42 +4,64 @@ function Receipt() {
     var context = canvas.getContext("2d");
     this.init = function () {
 
-        $("#digital").click(function () {
-            if ($("#digital").is(":checked")) {
-                $("#text_sign,#type_form").attr("disabled", false);
-            }
-        })
-        $("#sign").click(function () {
-            if ($("#sign").is(":checked")) {
-                $("#text_sign,#type_form").attr("disabled", true);
-            }
-        })
-
         $("#text_sign").keyup(function () {
             $("#name_preview").val($(this).val());
         })
 
-        $("#type_form").change(function () {
+        $("#type_font").change(function () {
+            ;
             $("#name_preview").removeClass("pacifico")
             $("#name_preview").removeClass("indie")
             $("#name_preview").removeClass("dancing")
             $("#name_preview").removeClass("tangerine")
 
 
-            if ($(this).val() == 1) {
+            if ($(this).val() == 'pacifico') {
                 $("#name_preview").addClass("pacifico")
-            } else if ($(this).val() == 2) {
+            } else if ($(this).val() == 'indie') {
                 $("#name_preview").addClass("indie")
-            } else if ($(this).val() == 3) {
+            } else if ($(this).val() == 'dancing') {
                 $("#name_preview").addClass("dancing")
-            } else if ($(this).val() == 4) {
+            } else if ($(this).val() == 'tangerine') {
                 $("#name_preview").addClass("tangerine")
             }
         })
 
         this.paint();
         $("#btnAdd").click(this.addSign)
+        $("#btnSend").click(this.send);
 
+
+
+    }
+
+    this.send = function () {
+        $.ajax({
+            url: PATH + "/clients/confirm/" + $("#purchase_id").val(),
+            method: "put",
+            dataType: 'JSON',
+            success: function (data) {
+                if (data.status == true) {
+                    location.href = PATH + "/clients";
+                }
+            }
+        })
+    }
+
+    this.selectedOption = function (id) {
+        var elem = $("#" + id);
+        if (elem.is(":checked")) {
+
+            $("#text_sign,#type_font").attr("disabled", true);
+            elem.attr("checked", false);
+        } else {
+            if (id == 'digital') {
+                $("#text_sign,#type_font").attr("disabled", false);
+            } else {
+                $("#text_sign,#type_font").attr("disabled", true);
+            }
+            elem.prop("checked", true);
+        }
     }
 
     this.addSign = function () {
@@ -52,6 +74,7 @@ function Receipt() {
                 form.name_preview = $("#name_preview").val();
                 form.text_sign = $("#text_sign").val();
                 form.font_select = $("#type_form").val();
+                form.type_font = $("#type_font").val();
 
             } else {
                 form.src = canvas.toDataURL();
@@ -67,8 +90,8 @@ function Receipt() {
                 dataType: 'JSON',
                 success: function (data) {
                     if (data.status == true) {
-                        toastr.success("Sign Updated");
                         $('#iframe').attr('src', function () {
+                            toastr.success("Sign Updated");
                             return $(this)[0].src;
                         });
 

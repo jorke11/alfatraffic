@@ -40,6 +40,7 @@ class ClientsController extends Controller {
     public $months;
     public $days;
     private $_api_context;
+    private $pdf_path;
 
     public function __construct() {
         date_default_timezone_set("America/Bogota");
@@ -48,6 +49,7 @@ class ClientsController extends Controller {
         $this->_api_context = new ApiContext(new OAuthTokenCredential($paypal_conf["client_id"], $paypal_conf["secret"]));
 //        $this->_apiContext = Payment::ApiContext($paypal_conf["client_id"], $paypal_conf["secret"]);
         $this->_api_context->setConfig($paypal_conf["settings"]);
+        $this->pdf_path = '';
     }
 
     public function index($course_id = -1) {
@@ -502,17 +504,123 @@ class ClientsController extends Controller {
     }
 
     public function pdfReceipt($id) {
-        
+
         $row_id = Session::get('row_id');
 
-        $client = Purchases::select("purchases.id", "purchases.name", "purchases.last_name", "purchases.city_id", "purchases.address", "states.description as state", 
-                "states.short as state_short", "purchases.zip_code", "purchases.telephone", "purchases.license", "purchases.date_course", "purchases.date_birth", 
-                "purchases.email", "purchases.value", "purchases.type_sign", "purchases.text_sign","purchases.img_sign")
+        $client = Purchases::select("purchases.id", "purchases.name", "purchases.last_name", "purchases.city_id", "purchases.address", "states.description as state", "states.short as state_short", "purchases.zip_code", "purchases.telephone", "purchases.license", "purchases.date_course", "purchases.date_birth", "purchases.email", "purchases.value", "purchases.type_sign", "purchases.text_sign", "purchases.img_sign")
                         ->join("states", "states.id", "purchases.state_id")
                         ->where("purchases.id", $row_id)->first();
+
+//        return view("Purchase.client.pdf", compact("row_id", "client"));
+
+        $data["row_id"] = $row_id;
+        $data["client"] = $client;
+
+        $pdf = \PDF::loadView('Purchase.client.pdf', $data);
+
+//        $pdf->SetProtection(array(), '123', '123');
+//          $pdf->showWatermarkImage = true;
+//        $pdf->SetWatermarkImage(url("/").'/assets/images/logo.png');
+        header('Content-Type: application/pdf');
+
+        return $pdf->stream('receipt_' . $client->id . '_' . date("Y-m-d") . '.pdf')->setTitle("test");
+    }
+
+    public function createFile($data, $client) {
+//        File::make("pdf/".$client->id . '_' . $client->business_name . '.pdf');
+        $path = 'pdf/' . $client->id . '_' . $client->name . '.pdf';
+        $pdf = \PDF::loadView('Purchase.client.pdf', $data);
+
+        $pdf->save($path);
+        $client->url_pdf = $path;
+        $client->save();
+    }
+
+    public function confirm($id) {
+
+        $row_id = Session::get('row_id');
+        $client = Purchases::select("purchases.id", "purchases.name", "purchases.last_name", "purchases.city_id", "purchases.address", "states.description as state", "states.short as state_short", "purchases.zip_code", "purchases.telephone", "purchases.license", "purchases.date_course", "purchases.date_birth", "purchases.email", "purchases.value", "purchases.type_sign", "purchases.text_sign", "purchases.img_sign", "purchases.type_font")
+                        ->join("states", "states.id", "purchases.state_id")
+                        ->where("purchases.id", $row_id)->first();
+
+        $path = 'pdf/' . $client->id . '_' . $client->name . '.pdf';
         
-        return view("Purchase.client.pdf", compact("row_id", "client"));
         
+        $data["row_id"] = $row_id;
+        $data["client"] = $client;
+        
+        $pdf = \PDF::loadView('Purchase.client.pdf', $data);
+
+        $pdf->save($path);
+        $client->url_pdf = $path;
+        $client->save();
+
+        $this->pdf_path = $client->url_pdf;
+        
+
+        $email = Email::where("description", "invoices")->first();
+
+        if ($email != null) {
+            $emDetail = EmailDetail::where("email_id", $email->id)->get();
+        }
+
+
+        if (count($emDetail) > 0) {
+            $this->mails = array();
+
+            $this->mails[] = $client->email;
+            foreach ($emDetail as $value) {
+                $this->mails[] = $value->description;
+            }
+
+            $input = array();
+
+            $this->subject = "Contract with AlfaDrivingSchool.com";
+
+            Mail::send("Notifications.contract", $input, function($msj) {
+                $msj->subject($this->subject);
+                $msj->to($this->mails);
+                $msj->attach($this->pdf_path);
+            });
+
+            
+            echo "termino";exit;
+
+            Session::flash('success', 'Successful');
+
+            return response()->json(["status" => true]);
+        }
+    }
+
+    public function pdfReceiptExt($row_id) {
+
+        $row = Purchases::find($row_id);
+        if ($row->url_pdf != '') {
+            Session::flash('warning', 'Are you already sign ? or contact with us');
+            return redirect("clients");
+        } else {
+
+            return view("Purchase.client.receipt", compact("row_id"));
+        }
+//        dd($row);
+    }
+
+    public function testpdf() {
+
+        $row_id = Session::get('row_id');
+        $client = Purchases::select("purchases.id", "purchases.name", "purchases.last_name", "purchases.city_id", "purchases.address", "states.description as state", "states.short as state_short", "purchases.zip_code", "purchases.telephone", "purchases.license", "purchases.date_course", "purchases.date_birth", "purchases.email", "purchases.value", "purchases.type_sign", "purchases.text_sign", "purchases.img_sign", "purchases.type_font")
+                        ->join("states", "states.id", "purchases.state_id")
+                        ->where("purchases.id", 7)->first();
+
+
+
+        $data["row_id"] = $row_id;
+        $data["client"] = $client;
+
+        $pdf = \PDF::loadView('Purchase.client.pdf2', $data);
+
+
+        return $pdf->stream('receit_' . date("Y-m-d") . '.pdf');
     }
 
     function signReceipt(Request $req, $id) {
@@ -542,7 +650,7 @@ class ClientsController extends Controller {
 
         $row_id = Session::get('row_id');
 //        Session::forget('row_id');
-
+        $input["id"] = $row_id;
         $row = Purchases::find($row_id);
         $det = \App\Models\DaysDetail::find($row->programation_id);
 

@@ -38,7 +38,7 @@ class Purchases extends Model {
         "type_sign",
         "text_sign",
         "img_sign",
-        "form_select",
+        "type_font",
         ];
 
 }

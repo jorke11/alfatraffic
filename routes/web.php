@@ -63,6 +63,9 @@ Route::get('/viewSchedules', 'Administration\SchedulesController@viewSchedule');
 Route::get('/clients', 'Purchase\ClientsController@index');
 Route::get('clients/page/{id}', 'Purchase\ClientsController@index');
 Route::get('clients/pdf/{id}', 'Purchase\ClientsController@pdfReceipt');
+Route::get('clients/pdfext/{id}', 'Purchase\ClientsController@pdfReceiptExt');
+Route::put('clients/confirm/{id}', 'Purchase\ClientsController@confirm');
+Route::get('clients/testpdf', 'Purchase\ClientsController@testPdf');
 Route::get('clients/receipt', ["as" => "paypal.clients", "uses" => 'Purchase\ClientsController@receipt']);
 
 Route::get('/clients/getList', 'Purchase\ClientsController@getList');
